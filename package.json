@@ -1,0 +1,21 @@
+{
+  "name": "uni-move-local",
+  "version": "1.0.0",
+  "description": "UniMove es una plataforma web para estudiantes nacionales e internacionales que se trasladan a **Madrid**, facilitando su **mudanza**, búsqueda de **vivienda** y acceso a **servicios de salud**, todo en un solo lugar.",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pilarbourg/uni-move.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pilarbourg/uni-move/issues"
+  },
+  "homepage": "https://github.com/pilarbourg/uni-move#readme"
+}
