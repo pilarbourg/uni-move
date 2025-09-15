@@ -2,7 +2,7 @@
 
 UniMove es una plataforma web para estudiantes nacionales e internacionales que se trasladan a **Madrid**, facilitando su **mudanza**, búsqueda de **vivienda** y acceso a **servicios de salud**, todo en un solo lugar.
 
-![UniMove Logo](assets/images/prototipo-readme.png)
+![UniMove Logo](/frontend/assets/images/prototipo-readme.png)
 
 ---
 
