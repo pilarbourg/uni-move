@@ -91,9 +91,9 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-# 📘 Requisitos y Criterios de Validación
+## 📘 Requisitos y Criterios de Validación
 
-## Registro con email + contraseña
+### Registro con email + contraseña
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se meten los datos.  
 2. Permitir que un usuario mete sus datos.  
@@ -102,7 +102,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Inicio de sesión con email + contraseña
+### Inicio de sesión con email + contraseña
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se meten los datos.  
 2. Permitir que un usuario mete sus datos.  
@@ -111,7 +111,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Creación de perfil básico (nombre, email, nacionalidad, grado de interés, foto de perfil)
+### Creación de perfil básico (nombre, email, nacionalidad, grado de interés, foto de perfil)
 **Criterio de Validación:**
 1. Entrar a la pantalla de datos personales.  
 2. Permitir al usuario ingresar sus datos.  
@@ -120,7 +120,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Orientación y seguimiento del proceso de solicitud de nacionalidad española
+### Orientación y seguimiento del proceso de solicitud de nacionalidad española
 **Criterio de Validación:**
 1. Entrar en la pantalla de estudiantes internacionales.  
 2. Permitir al usuario introducir el país de donde procede.  
@@ -128,7 +128,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Módulo de apoyo al aprendizaje del idioma español
+### Módulo de apoyo al aprendizaje del idioma español
 **Criterio de Validación:**
 1. Entrar en la pantalla de idiomas.  
 2. Permitir al usuario seleccionar su lengua materna.  
@@ -136,7 +136,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Recomendador de material y equipo académico según la carrera elegida
+### Recomendador de material y equipo académico según la carrera elegida
 **Criterio de Validación:**
 1. Entrar a la pantalla donde se muestran los materiales.  
 2. Permitir al usuario seleccionar su carrera.  
@@ -146,7 +146,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Conectar a los usuarios con universidades en Madrid
+### Conectar a los usuarios con universidades en Madrid
 **Criterio de Validación:**
 1. Permite al usuario ingresar el grado/grados de interés.  
 2. Entra a una pantalla donde se muestran todas las universidades donde esté disponible el grado seleccionado.  
@@ -156,7 +156,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Permitir buscar un grado y ver todas las universidades que lo ofrecen
+### Permitir buscar un grado y ver todas las universidades que lo ofrecen
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestran diferentes universidades con sus respectivos grados.  
 2. Permitir al usuario insertar el grado deseado.  
@@ -165,7 +165,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Mostrar la ubicación de cada universidad en Madrid en un mapa
+### Mostrar la ubicación de cada universidad en Madrid en un mapa
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestra un mapa.  
 2. En el mapa se verán iconos que determinen la ubicación de la universidad además del nombre de esta.  
@@ -174,7 +174,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Alertas meteorológicas geolocalizadas para estudiantes en Madrid
+### Alertas meteorológicas geolocalizadas para estudiantes en Madrid
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestra el tiempo.  
 2. Preguntar al usuario por su ubicación.  
@@ -183,7 +183,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Mostrar información detallada de cada universidad (ranking, datos clave, contacto)
+### Mostrar información detallada de cada universidad (ranking, datos clave, contacto)
 **Criterio de Validación:**
 1. Entra en una pantalla donde se muestra la información de cada universidad ordenadas por ranking (incluyendo fotos del campus) de forma resumida y fácil de leer.  
 2. Permite al usuario filtrarlas ingresando el grado/grados de interés.  
@@ -191,7 +191,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Sugerir grados similares cuando un usuario realice una búsqueda
+### Sugerir grados similares cuando un usuario realice una búsqueda
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestran los grados.  
 2. Permitir al usuario seleccionar el grado que desea.  
@@ -200,7 +200,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Mostrar apartamentos disponibles dentro de un rango de precios accesible para estudiantes
+### Mostrar apartamentos disponibles dentro de un rango de precios accesible para estudiantes
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestran apartamentos con sus precios.  
 2. Permitir al usuario ingresar aproximadamente un presupuesto.  
@@ -209,7 +209,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Mostrar información detallada de cada apartamento (precio, fotos, ubicación, disponibilidad)
+### Mostrar información detallada de cada apartamento (precio, fotos, ubicación, disponibilidad)
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestra información sobre apartamentos.  
 2. Permitir al usuario ingresar el apartamento deseado.  
@@ -218,7 +218,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Mostrar otros estudiantes interesados en apartamentos similares (conexión social / confianza)
+### Mostrar otros estudiantes interesados en apartamentos similares (conexión social / confianza)
 **Criterio de Validación:**
 1. Entra en una pantalla donde se muestran todos los demás estudiantes interesados en estos apartamentos.  
 2. Permite al usuario ver la información básica de los estudiantes (edad, nacionalidad, grado que estudian, etc).  
@@ -227,7 +227,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Proporcionar opciones de transporte público entre apartamentos y universidades seleccionadas
+### Proporcionar opciones de transporte público entre apartamentos y universidades seleccionadas
 **Criterio de Validación:**
 1. Entra en una pantalla que muestra los tiempos de origen a destino desde cada apartamento a las universidades seleccionadas.  
 2. Permitir al usuario ingresar la universidad a la que atiende, y donde vive.  
@@ -236,7 +236,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Permitir que propietarios o particulares publiquen apartamentos (función básica de “alquilar vivienda”)
+### Permitir que propietarios o particulares publiquen apartamentos (función básica de “alquilar vivienda”)
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestran los apartamentos ofrecidos para estudiantes.  
 2. Permitir que un usuario añada un apartamento especificando información sobre el alquiler: precio, fotos, metros cuadrados,...  
@@ -244,7 +244,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Conectar a los usuarios con empresas de mudanzas en Madrid
+### Conectar a los usuarios con empresas de mudanzas en Madrid
 **Criterio de Validación:**
 1. Entra a una pantalla donde se muestran las distintas empresas de mudanzas.  
 2. Permite al usuario ingresar la cantidad de bultos a transportar.  
@@ -252,7 +252,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Comparar precios y servicios entre proveedores
+### Comparar precios y servicios entre proveedores
 **Criterio de Validación:**
 1. Entrar en la pantalla donde te muestran diferentes tipos de proveedores.  
 2. Permitir al usuario ingresar un presupuesto.  
@@ -260,7 +260,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Mapa que muestre universidades, apartamentos y empresas de mudanza
+### Mapa que muestre universidades, apartamentos y empresas de mudanza
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestra un mapa.  
 2. El usuario podrá elegir si quiere ver en el mapa las universidades, apartamentos y/o empresas de mudanza.  
@@ -269,7 +269,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Integración con rutas de transporte público (ej. Metro, bus, tren)
+### Integración con rutas de transporte público (ej. Metro, bus, tren)
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestra un mapa.  
 2. El usuario podrá elegir si quiere ver en el mapa las rutas de metro, bus y/o tren.  
@@ -278,7 +278,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Mostrar ofertas de empleo y/o becas en universidades
+### Mostrar ofertas de empleo y/o becas en universidades
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestran las ofertas de empleo y becas en universidades en Madrid.  
 2. Permite al usuario filtrar por barrio, universidad o sueldo.  
@@ -286,7 +286,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Sugerir restaurantes, librerías, cafés y lugares afines a estudiantes en Madrid
+### Sugerir restaurantes, librerías, cafés y lugares afines a estudiantes en Madrid
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestran las sugerencias de sitios en Madrid.  
 2. Permite al usuario filtrar por restaurantes, librerías, cafés, y negocios.  
@@ -295,7 +295,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Posibilidad de pagar a empresas de mudanza o propietarios directamente a través de la plataforma (Stripe, PayPal, Bizum)
+### Posibilidad de pagar a empresas de mudanza o propietarios directamente a través de la plataforma (Stripe, PayPal, Bizum)
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se meten los datos financieros.  
 2. Permitir que un usuario mete sus datos.  
@@ -306,14 +306,14 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Proporcionar opciones de seguros médicos en caso de que lo requieran
+### Proporcionar opciones de seguros médicos en caso de que lo requieran
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestran los seguros médicos más comunes en Madrid.  
 2. Cuando el usuario pulsa el texto de un seguro médico el sistema abre una nueva pestaña y redirige al usuario a la página web del seguro médico.  
 
 ---
 
-## Crear un perfil biomédico mínimo del estudiante
+### Crear un perfil biomédico mínimo del estudiante
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestra el perfil biomédico mínimo del estudiante, vacío.  
 2. Permitir al usuario introducir toda o parte de sus datos biomédicos en su perfil biomédico: peso, altura, alergias, enfermedades, teléfonos de contacto.  
@@ -322,14 +322,14 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Recibir notificaciones de brotes, alertas alimentarias, olas de calor, contaminación alta, polen en el perfil biomédico
+### Recibir notificaciones de brotes, alertas alimentarias, olas de calor, contaminación alta, polen en el perfil biomédico
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestra el perfil biomédico del estudiante.  
 2. El sistema muestra las notificaciones de brotes, alertas alimentarias, olas de calor, contaminación alta y polen.  
 
 ---
 
-## Conectar con clínicas universitarias o centros de salud cercanos a las universidades
+### Conectar con clínicas universitarias o centros de salud cercanos a las universidades
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestran las clínicas o centros de salud.  
 2. Cuando el usuario pone el ratón sobre una imagen de una clínica o centro de salud el sistema muestra el nombre y dirección de la clínica o centro de salud.  
@@ -337,7 +337,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Uso de un chatbot biomédico (IA con fuentes validadas) que responda dudas sobre salud al llegar a Madrid → Ollama + BioMedLM
+### Uso de un chatbot biomédico (IA con fuentes validadas) que responda dudas sobre salud al llegar a Madrid → Ollama + BioMedLM
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se comunica con el chatbot.  
 2. Permitir que un usuario meta texto.  
@@ -346,7 +346,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Botón de pánico / SOS médico
+### Botón de pánico / SOS médico
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestra el perfil biomédica.  
 2. Cuando el usuario pulsa el botón de pánica / SOS médico el sistema pide confirmación.  
@@ -355,14 +355,14 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Protocolos preconfigurados
+### Protocolos preconfigurados
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestra la enfermedad/condición del estudiante.  
 2. Mostrar lista de pasos (protocolo) para saber cómo actuar.  
 
 ---
 
-## Descuentos en gimnasios o supermercados a través de la plataforma
+### Descuentos en gimnasios o supermercados a través de la plataforma
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se muestran las ofertas en gimnasios o supermercados.  
 2. Mostrar lista de ofertas detalladas incluyendo porcentaje de descuento, precio antes y después de aplicar ese descuento, condiciones,...  
@@ -371,7 +371,7 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-## Recordatorios para los estudiantes del mismo piso
+### Recordatorios para los estudiantes del mismo piso
 **Criterio de Validación:**
 1. Entrar en el perfil biomédico.  
 2. Cuando el usuario pulsa **“notificar”**, el sistema pide un mensaje y números de teléfono.  
