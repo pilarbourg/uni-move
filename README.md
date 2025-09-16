@@ -95,8 +95,8 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ### Registro con email + contraseña
 **Criterio de Validación:**
-1. Entrar en la pantalla donde se meten los datos.  
-2. Permitir que un usuario mete sus datos.  
+1. Entrar en la pantalla donde se meten los datos de registro (email + contraseña).  
+2. Permitir que un usuario mete sus datos (email + contraseña).  
 3. Cuando el usuario mete los datos adecuados el sistema dice **“Account created”**.  
 4. Cuando el usuario mete los datos no adecuados y/o que no conforman con un formato dado el sistema dice **“Error”**.  
 
@@ -104,19 +104,20 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ### Inicio de sesión con email + contraseña
 **Criterio de Validación:**
-1. Entrar en la pantalla donde se meten los datos.  
-2. Permitir que un usuario mete sus datos.  
+1. Entrar en la pantalla donde se meten los datos de inicio de sesión (email + contraseña).  
+2. Permitir que un usuario mete sus datos (email + contraseña).  
 3. Cuando el usuario mete los datos adecuados el sistema dice **“Welcome”**.  
 4. Cuando el usuario mete los datos no adecuados el sistema dice **“Error”**.  
 
 ---
 
-### Creación de perfil básico (nombre, email, nacionalidad, grado de interés, foto de perfil)
+### Creación de perfil básico (nombre, nacionalidad, grado de interés, foto de perfil)
 **Criterio de Validación:**
-1. Entrar a la pantalla de datos personales.  
+1. Entrar a la pantalla de datos personales.
 2. Permitir al usuario ingresar sus datos.  
-3. Hacer ciertos datos obligatorios (**Nombre, NºPassport y email**).  
-4. Si el usuario no ingresa alguno, lanzar un error.  
+3. Hacer ciertos datos obligatorios (**Nombre, Nacionalidad y grado de interés**).
+4. Cuando el usuario mete los datos adecuados el sistema dice **"Profile updated"**.
+5. Cuando el usuario mete los datos no adecuados y/o no mete los datos obligatorios el sistema dice **"Error updating profile"**.
 
 ---
 
