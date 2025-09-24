@@ -1,27 +1,32 @@
+from flask import Flask, jsonify
+from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 from supabase import create_client
-import jwt
 
 load_dotenv()
 
-auth_header = request.headers.get("Authorization")
-token = auth_header.split(" ")[1]
+app = Flask(__name__)
+CORS(app)
 
-url = os.getenv("SUPABASE_URL")
-key = os.getenv("SUPABASE_KEY")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-supabase = create_client(url, key)
+@app.route("/api/get_biomedical_profile", methods=["GET"])
+def get_biomedical_profile():
+    # Hardcoded user_id for testing
+    user_id = 1
 
-response = (
-    supabase.table("biomedical_profiles")
-    .select("allergies, illnesses, weight, height_cm")
-    .eq("user_id", user_id)
-    .execute()
-)
+    response = supabase.table("biomedical_profiles").select("*").eq("user_id", user_id).single().execute()
 
-if response.data:
-    print("Success!")
-    print(response.data)
-else:
-    raise Exception(f"Non-success status code: {response.status_code}")
+    if response.data:
+        print(response.data)
+        return jsonify(response.data)
+    else:
+        return jsonify({"message": "No biomedical profile found"}), 404
+    
+    # TODO POST ROUTE FOR WHEN FORM IS SUBMITTED
+
+if __name__ == "__main__":
+    app.run(debug=True)

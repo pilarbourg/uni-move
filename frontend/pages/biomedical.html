@@ -3,7 +3,164 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>UniMove Biomedical Portal</title>
+    <link rel="stylesheet" href="../css/biomedical.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body></body>
+  <body>
+    <header>
+      <div class="container header-container">
+        <h1>UniMove Biomedical Portal</h1>
+        <nav>
+          <a href="../index.html">Home</a>
+          <a href="biomedical.html" class="active">Biomedical</a>
+          <a href="../pages/profile.html">Profile</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- Hero Section -->
+      <section class="hero">
+        <h2>Keep Your Health Info Safe and Accessible</h2>
+        <p>
+          Easily manage your allergies, illnesses, and health profile while
+          moving between universities.
+        </p>
+      </section>
+
+      <!-- Profile Card -->
+      <section class="profile-card">
+        <article class="profile-form">
+          <h2>Biomedical Profile</h2>
+
+          <div id="noProfile" style="display: none" class="empty-profile">
+            <p>You haven’t set up your biomedical profile yet.</p>
+            <a href="#" class="btn" id="getStartedBtn">Get Started</a>
+          </div>
+
+          <div id="profileContainer" style="display: none">
+            <form id="bioProfileForm">
+              <label for="allergies">Allergies</label>
+              <input
+                type="text"
+                id="allergies"
+                name="allergies"
+                placeholder="Peanuts, Pollen..."
+              />
+
+              <label for="illnesses">Illnesses</label>
+              <input
+                type="text"
+                id="illnesses"
+                name="illnesses"
+                placeholder="Asthma, Diabetes..."
+              />
+
+              <label for="weight">Weight (kg)</label>
+              <input
+                type="number"
+                id="weight"
+                name="weight"
+                step="0.1"
+                placeholder="72.5"
+              />
+
+              <label for="height_cm">Height (cm)</label>
+              <input
+                type="number"
+                id="height_cm"
+                name="height_cm"
+                step="0.1"
+                placeholder="175.0"
+              />
+
+              <button type="submit" class="btn">Update Profile</button>
+            </form>
+          </div>
+        </article>
+      </section>
+
+      <!-- Features Grid -->
+      <section class="features-grid">
+        <div class="feature">
+          <h3>Allergies & Conditions</h3>
+          <p>
+            Record and manage allergies or chronic illnesses for a smooth campus
+            experience.
+          </p>
+        </div>
+        <div class="feature">
+          <h3>Weight & Height Tracking</h3>
+          <p>
+            Monitor your health stats and keep them updated for wellness
+            programs.
+          </p>
+        </div>
+        <div class="feature">
+          <h3>Student Friendly</h3>
+          <p>
+            Easy-to-use interface designed specifically for busy students on the
+            move.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2025 UniMove | Student Biomedical Portal</p>
+      </div>
+    </footer>
+
+    <script>
+      async function fetchProfile() {
+        try {
+          const token = "fake-jwt-token"; // Fake token for testing
+          const res = await fetch(
+            "http://127.0.0.1:5000/api/get_biomedical_profile",
+            {
+              method: "GET",
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          const profileContainer = document.getElementById("profileContainer");
+          const noProfile = document.getElementById("noProfile");
+
+          if (!res.ok) {
+            profileContainer.style.display = "block";
+            noProfile.style.display = "none";
+            return;
+          }
+
+          const data = await res.json();
+          console.log("Biomedical profile:", data);
+
+          if (data && Object.keys(data).length > 0 && !data.message) {
+            noProfile.style.display = "none";
+            profileContainer.style.display = "block";
+            profileContainer.innerHTML = `
+            <p><strong>Allergies:</strong> ${data.allergies || "None"}</p>
+            <p><strong>Illnesses:</strong> ${data.illnesses || "None"}</p>
+            <p><strong>Weight:</strong> ${data.weight || "N/A"} kg</p>
+            <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
+          `;
+          } else {
+            profileContainer.style.display = "block";
+            noProfile.style.display = "none";
+          }
+        } catch (err) {
+          console.error("Fetch error:", err);
+          document.getElementById("profileContainer").style.display = "block";
+          document.getElementById("noProfile").style.display = "none";
+        }
+      }
+
+      fetchProfile();
+    </script>
+  </body>
 </html>
