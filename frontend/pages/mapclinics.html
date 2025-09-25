@@ -1,9 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body></body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UniMove | Clinics Map</title>
+  <link rel="stylesheet" href="../css/mapclinics.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container header-container">
+      <h1>Nearby Clinics</h1>
+      <nav>
+        <a href="../index.html">Home</a>
+        <a href="biomedical.html">Biomedical</a>
+        <a href="mapclinics.html" class="active">Clinics</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <h2>Find Clinics Around Your University</h2>
+      <p>Select a university and radius to explore nearby clinics.</p>
+    </section>
+
+    <!-- Controls -->
+    <section class="controls-card">
+      <label for="universitySelect">University</label>
+      <select id="universitySelect" size="5">
+        <option>Loading universities...</option>
+      </select>
+
+      <label for="radiusSelect">Radius (km)</label>
+      <select id="radiusSelect">
+        <option value="2">2 km</option>
+        <option value="3">3 km</option>
+        <option value="5">5 km</option>
+      </select>
+    </section>
+
+    <!-- Map -->
+    <section class="map-container">
+      <div id="map"></div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 UniMove | Student Biomedical Portal</p>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- Your JS -->
+  <script src="../js/mapclinics.js"></script>
+</body>
 </html>
