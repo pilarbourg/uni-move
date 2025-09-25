@@ -8,6 +8,8 @@ load_dotenv()
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+print("Supabase URL:", SUPABASE_URL)
+print("Supabase KEY:", SUPABASE_KEY)  # partial key for security
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # función Haversine para calcular distancia entre coordenadas en km
@@ -80,3 +82,7 @@ def get_clinics(university_id):
     
     nearby_clinics= sorted(nearby_clinics, key = lambda x: x["distance_km"])
     return jsonify(nearby_clinics)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
