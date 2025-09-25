@@ -6,7 +6,7 @@ import os
 from supabase import create_client
 
 app = Flask(__name__) 
-CORS(app)
+CORS(app, origins=["http://localhost:3000"])  # Allow requests from your frontend
 
 load_dotenv()
 
@@ -30,9 +30,6 @@ def haversine(latitude1, longitude1, latitude2, longitude2):
 def get_universities():
     response = supabase.table("universities").select("*").execute()
 
-    if response.error:
-        return jsonify({"error": response.error.message}), 500
-
     universities = [
         {
             "id": u.get("id"),
@@ -42,6 +39,11 @@ def get_universities():
         }
         for u in response.data
     ]
+
+    if universities is None:
+        # Something went wrong
+        return jsonify({"error": "Could not fetch universities"}), 500
+
     return jsonify(universities)
 
 
