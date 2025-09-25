@@ -1,15 +1,18 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
+import math
 import os
 from supabase import create_client
+
+app = Flask(__name__) 
+CORS(app)
 
 load_dotenv()
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-print("Supabase URL:", SUPABASE_URL)
-print("Supabase KEY:", SUPABASE_KEY)  # partial key for security
+
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # función Haversine para calcular distancia entre coordenadas en km
