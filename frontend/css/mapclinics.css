@@ -1,0 +1,102 @@
+/* === RESET AND BASE STYLES === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* === HEADER === */
+header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  padding: 20px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+header h1 {
+  font-size: 28px;
+  color: #d32f2f; /* red accent */
+  margin-bottom: 10px;
+}
+
+header nav {
+  display: flex;
+  gap: 20px;
+}
+
+header nav a {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+header nav a.active,
+header nav a:hover {
+  color: #1976d2; /* blue accent */
+}
+
+/* === MAP PAGE EXTRA STYLES === */
+.controls-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  margin: 20px 0;
+}
+
+.controls-card label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
+  color: #d32f2f;
+}
+
+.controls-card select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.controls-card select:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 5px rgba(25, 118, 210, 0.2);
+  outline: none;
+}
+
+.map-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+#map {
+  height: 500px;
+  border-radius: 8px;
+}
+
+/* === FOOTER === */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 40px;
+  color: #888;
+  font-size: 14px;
+}
