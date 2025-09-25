@@ -3,16 +3,13 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 from supabase import create_client
-import math
 
-app = Flask(__name__)
-CORS(app)
+load_dotenv()  # <-- important! must come before using os.getenv
 
 load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-
 
 # función Haversine para calcular distancia entre coordenadas en km
 def haversine(latitude1, longitude1, latitude2, longitude2):
@@ -27,14 +24,21 @@ def haversine(latitude1, longitude1, latitude2, longitude2):
 
 @app.route("/universities", methods=["GET"])
 def get_universities():
-    response = supabase.table("universities") \
-        .select("id, name, latitude, longitude") \
-        .execute()
+    response = supabase.table("universities").select("*").execute()
 
-    if not response.data:
-        return jsonify([])
+    if response.error:
+        return jsonify({"error": response.error.message}), 500
 
-    return jsonify(response.data)
+    universities = [
+        {
+            "id": u.get("id"),
+            "name": u.get("name"),
+            "latitude": u.get("latitude"),
+            "longitude": u.get("longitude"),
+        }
+        for u in response.data
+    ]
+    return jsonify(universities)
 
 
 @app.route("/universities/<int:university_id>/clinics", methods=["GET"])
@@ -70,9 +74,10 @@ def get_clinics(university_id):
             nearby_clinics.append({
                 "id": clinic["id"],
                 "name": clinic["name"],
+                "latitude": clinic["latitude"],
+                "longitude": clinic["longitude"],
                 "distance_km": round(distance_km, 2)
             })
     
     nearby_clinics= sorted(nearby_clinics, key = lambda x: x["distance_km"])
-
     return jsonify(nearby_clinics)
