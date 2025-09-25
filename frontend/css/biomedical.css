@@ -1,15 +1,54 @@
-/* Reset and base styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
 }
 
 body {
-  background-color: #f5f5f5;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.8;
+  background-color: #fdfcfb;
   color: #333;
-  line-height: 1.6;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --primary: #364a61;
+  --secondary: #627e9e;
+  --accent: #68748b;
+  --bg-light: #ffffff;
+  --bg-alt: #f7f6f3;
+  --muted: #777;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  background: var(--bg-light);
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav h1 {
+  font-size: 1.8rem;
+  color: var(--primary);
+}
+
+nav div a {
+  text-decoration: none;
+  color: var(--secondary);
+  margin: 0 1rem;
+  font-weight: 500;
+  transition: color 0.25s ease;
+}
+
+nav div a:hover {
+  color: var(--accent);
 }
 
 .container {
