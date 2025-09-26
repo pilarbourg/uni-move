@@ -57,37 +57,6 @@ nav div a:hover {
   padding: 20px;
 }
 
-/* Header */
-header {
-  background-color: #ffffff;
-  border-bottom: 1px solid #ddd;
-  padding: 20px 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-header h1 {
-  font-size: 28px;
-  color: #d32f2f; /* red accent */
-  margin-bottom: 10px;
-}
-
-header nav {
-  display: flex;
-  gap: 20px;
-}
-
-header nav a {
-  text-decoration: none;
-  color: #555;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-header nav a.active,
-header nav a:hover {
-  color: #1976d2; /* blue accent */
-}
-
 /* Hero Section */
 .hero {
   background-color: #ffffff;
