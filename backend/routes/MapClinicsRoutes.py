@@ -89,5 +89,38 @@ def get_clinics(university_id):
     return jsonify(nearby_clinics)
 
 
+@app.route("/universities", methods=["POST"])
+def create_university():
+    """
+    Create a new university. Expects JSON body:
+    {
+        "name": "University Name",
+        "latitude": 40.4168,
+        "longitude": -3.7038
+    }
+    """
+    data = request.get_json()
+
+    # Validate required fields
+    if not data or not all(k in data for k in ("name", "latitude", "longitude")):
+        return jsonify({"error": "Missing required fields: name, latitude, longitude"}), 400
+
+    new_uni = {
+        "name": data["name"],
+        "latitude": data["latitude"],
+        "longitude": data["longitude"]
+    }
+
+    try:
+        response = supabase.table("universities").insert(new_uni).execute()
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    if not response.data:
+        return jsonify({"error": "Could not create university"}), 500
+
+    return jsonify(response.data[0]), 201  # Return the created university with status 201
+
+
 if __name__ == "__main__":
     app.run(debug=True)
