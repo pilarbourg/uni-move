@@ -1,5 +1,5 @@
 from typing import List
-from university import University
+from University import University
 
 class DegreeNotFoundException(Exception):
     pass
