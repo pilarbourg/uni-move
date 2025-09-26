@@ -5,6 +5,8 @@ import math
 import os
 from supabase import create_client
 
+from University import fetch_universities
+
 app = Flask(__name__) 
 CORS(app, origins=["http://localhost:3000"])  # Allow requests from your frontend
 
@@ -28,23 +30,8 @@ def haversine(latitude1, longitude1, latitude2, longitude2):
 
 @app.route("/universities", methods=["GET"])
 def get_universities():
-    response = supabase.table("universities").select("*").execute()
-
-    universities = [
-        {
-            "id": u.get("id"),
-            "name": u.get("name"),
-            "latitude": u.get("latitude"),
-            "longitude": u.get("longitude"),
-        }
-        for u in response.data
-    ]
-
-    if universities is None:
-        # Something went wrong
-        return jsonify({"error": "Could not fetch universities"}), 500
-
-    return jsonify(universities)
+    universities = fetch_universities()
+    return jsonify([u.to_dict() for u in universities])
 
 
 @app.route("/universities/<int:university_id>/clinics", methods=["GET"])
