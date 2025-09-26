@@ -6,24 +6,23 @@
   <title>UniMove | Clinics Map</title>
   <link rel="stylesheet" href="../css/mapclinics.css" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <div class="container header-container">
-      <h1>Nearby Clinics</h1>
-      <nav>
-        <a href="../index.html">Home</a>
-        <a href="biomedical.html">Biomedical</a>
-        <a href="mapclinics.html" class="active">Clinics</a>
-        <a href="profile.html">Profile</a>
-      </nav>
+  <nav>
+    <div>
+      <a href="../index.html">Moving</a>
+      <a href="../index.html">Universities</a>
+      <a href="../index.html">Internships</a>
     </div>
-  </header>
+    <h1>UniMove</h1>
+    <div>
+      <a href="biomedical.html">Health</a>
+      <a href="mapclinics.html">Clinical Maps</a>
+      <a href="../index.html">Home</a>
+    </div>
+  </nav>
 
-  <!-- Main Content -->
   <main class="container">
     <!-- Hero Section -->
     <section class="hero">
@@ -31,7 +30,7 @@
       <p>Select a university and radius to explore nearby clinics.</p>
     </section>
 
-    <!-- Controls -->
+    <!-- Controls Card -->
     <section class="controls-card">
       <label for="universitySelect">University</label>
       <select id="universitySelect" size="5">
@@ -50,23 +49,20 @@
       </select>
       <a href="#" id="showClinicsBtn" class="btn">Show Clinics</a>
     </section>
-    
-    <!-- Map -->
+
+    <!-- Map Section -->
     <section class="map-container">
       <div id="map"></div>
     </section>
   </main>
 
-  <!-- Footer -->
   <footer>
     <div class="container">
       <p>&copy; 2025 UniMove | Student Biomedical Portal</p>
     </div>
   </footer>
 
-  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <!-- Your JS -->
   <script src="../js/mapclinics.js"></script>
 </body>
 </html>

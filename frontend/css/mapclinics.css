@@ -1,15 +1,52 @@
-/* === RESET AND BASE STYLES === */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
 }
 
 body {
-  background-color: #f5f5f5;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.8;
+  background-color: #fdfcfb;
   color: #333;
-  line-height: 1.6;
+}
+
+:root {
+  --primary: #364a61;
+  --secondary: #627e9e;
+  --accent: #68748b;
+  --bg-light: #ffffff;
+  --bg-alt: #f7f6f3;
+  --muted: #777;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  background: var(--bg-light);
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav h1 {
+  font-size: 1.8rem;
+  color: var(--primary);
+}
+
+nav div a {
+  text-decoration: none;
+  color: var(--secondary);
+  margin: 0 1rem;
+  font-weight: 500;
+  transition: color 0.25s ease;
+}
+
+nav div a:hover {
+  color: var(--accent);
 }
 
 .container {
@@ -18,42 +55,31 @@ body {
   padding: 20px;
 }
 
-/* === HEADER === */
-header {
-  background-color: #ffffff;
-  border-bottom: 1px solid #ddd;
-  padding: 20px 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+/* Hero Section */
+.hero {
+  background-color: var(--bg-light);
+  padding: 50px 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  text-align: center;
 }
 
-header h1 {
-  font-size: 28px;
-  color: #d32f2f; /* red accent */
-  margin-bottom: 10px;
+.hero h2 {
+  font-size: 26px;
+  color: #1976d2;
+  margin-bottom: 15px;
 }
 
-header nav {
-  display: flex;
-  gap: 20px;
-}
-
-header nav a {
-  text-decoration: none;
+.hero p {
+  font-size: 16px;
   color: #555;
-  font-weight: 500;
-  transition: color 0.2s;
 }
 
-header nav a.active,
-header nav a:hover {
-  color: #1976d2; /* blue accent */
-}
-
-
-/* === MAP PAGE EXTRA STYLES === */
+/* Controls Card */
 .controls-card {
-  background-color: #ffffff;
-  padding: 20px;
+  background-color: var(--bg-light);
+  padding: 25px 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   margin: 20px 0;
@@ -62,13 +88,13 @@ header nav a:hover {
 .controls-card label {
   display: block;
   margin-top: 10px;
-  font-weight: 500;
+  font-weight: 700;
   color: #d32f2f;
 }
 
 .controls-card select {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -81,8 +107,9 @@ header nav a:hover {
   outline: none;
 }
 
+/* Map Section */
 .map-container {
-  background-color: #ffffff;
+  background-color: var(--bg-light);
   border-radius: 12px;
   padding: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
@@ -93,31 +120,30 @@ header nav a:hover {
   border-radius: 8px;
 }
 
+/* Button */
+.btn {
+  display: inline-block;
+  background-color: #d32f2f;
+  color: #fff;
+  text-align: center;
+  padding: 12px 20px;
+  margin-top: 15px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
 
-/* === FOOTER === */
+.btn:hover {
+  background-color: #b71c1c;
+}
+
+/* Footer */
 footer {
   text-align: center;
   padding: 20px 0;
   margin-top: 40px;
   color: #888;
   font-size: 14px;
-}
-
-/* === BUTTON STYLE (like biomedical page, red) === */
-.btn {
-  display: inline-block;
-  background-color: #d32f2f; /* red accent */
-  color: #fff;
-  text-align: center;
-  padding: 10px 20px;
-  margin-top: 15px;
-  border-radius: 8px;
-  font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.btn:hover {
-  background-color: #b71c1c; /* darker red */
 }
