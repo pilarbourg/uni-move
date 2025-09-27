@@ -25,69 +25,77 @@
       </div>
     </nav>
 
-    <main class="container">
-      <!-- Hero Section -->
-      <section class="hero">
-        <h2>Keep Your Health Info Safe and Accessible</h2>
-        <p>
-          Easily manage your allergies, illnesses, and health profile while
-          moving between universities.
-        </p>
-      </section>
-
-      <!-- Profile Card -->
-      <section class="profile-card">
-        <article class="profile-form">
-          <h2>Biomedical Profile</h2>
-
-          <div id="noProfile" style="display: none" class="empty-profile">
-            <p>You haven’t set up your biomedical profile yet.</p>
-            <a href="#" class="btn" id="getStartedBtn">Get Started</a>
-          </div>
-
-          <div id="profileContainer" style="display: none">
-            <form id="bioProfileForm">
-              <label for="allergies">Allergies</label>
-              <input
-                type="text"
-                id="allergies"
-                name="allergies"
-                placeholder="Peanuts, Pollen..."
-              />
-
-              <label for="illnesses">Illnesses</label>
-              <input
-                type="text"
-                id="illnesses"
-                name="illnesses"
-                placeholder="Asthma, Diabetes..."
-              />
-
-              <label for="weight">Weight (kg)</label>
-              <input
-                type="number"
-                id="weight"
-                name="weight"
-                step="0.1"
-                placeholder="72.5"
-              />
-
-              <label for="height_cm">Height (cm)</label>
-              <input
-                type="number"
-                id="height_cm"
-                name="height_cm"
-                step="0.1"
-                placeholder="175.0"
-              />
-
-              <button type="submit" class="btn">Update Profile</button>
-            </form>
-          </div>
+    <main>
+      <section class="main-biomed-section">
+        <article class="hero">
+          <img
+            src="../assets/svgs/health_cross_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"
+            alt="Biomedical Illustration"
+          />
+          <h2>
+            Keep Your Health Info<br />
+            Safe and Accessible
+          </h2>
+          <p>
+            Easily manage your allergies, illnesses, and health profile while
+            moving between universities. Set up your biomedical profile to
+            ensure quick access to vital health information whenever you need
+            it. Focus on your studies and adventures, knowing your health data
+            is just a click away.
+          </p>
         </article>
+        <section class="profile-card">
+          <article class="profile-form">
+            <h2>Biomedical Profile</h2>
+
+            <div id="noProfile" style="display: none" class="empty-profile">
+              <p>You haven’t set up your biomedical profile yet.</p>
+              <a href="#" class="btn" id="getStartedBtn">Get Started</a>
+            </div>
+
+            <div id="profileContainer" style="display: none">
+              <form id="bioProfileForm">
+                <label for="allergies">Allergies</label>
+                <input
+                  type="text"
+                  id="allergies"
+                  name="allergies"
+                  placeholder="Peanuts, Pollen..."
+                />
+
+                <label for="illnesses">Illnesses</label>
+                <input
+                  type="text"
+                  id="illnesses"
+                  name="illnesses"
+                  placeholder="Asthma, Diabetes..."
+                />
+
+                <label for="weight">Weight (kg)</label>
+                <input
+                  type="number"
+                  id="weight"
+                  name="weight"
+                  step="0.1"
+                  placeholder="72.5"
+                />
+
+                <label for="height_cm">Height (cm)</label>
+                <input
+                  type="number"
+                  id="height_cm"
+                  name="height_cm"
+                  step="0.1"
+                  placeholder="175.0"
+                />
+
+                <button type="submit" class="btn">Save Profile</button>
+              </form>
+            </div>
+          </article>
+        </section>
       </section>
 
-      <!-- Features Grid -->
       <section class="features-grid">
         <div class="feature">
           <h3>Allergies & Conditions</h3>
@@ -114,15 +122,29 @@
     </main>
 
     <footer>
-      <div class="container">
-        <p>&copy; 2025 UniMove | Student Biomedical Portal</p>
-      </div>
+      <p>&copy; 2025 UniMove | Built with ❤️ for students around the world</p>
     </footer>
 
     <script>
       async function fetchProfile() {
+        const profileContainer = document.getElementById("profileContainer");
+        const noProfile = document.getElementById("noProfile");
+
+        //const token = localStorage.getItem("token") || "";
+        const token = "fake-jwt-token"; // Simulate logged-in user
+
+        if (!token) {
+          // Case 1: Not logged in
+          profileContainer.style.display = "none";
+          noProfile.style.display = "block";
+          noProfile.innerHTML = `
+            <p>Please log in to view or create your biomedical profile.</p>
+            <a href="/login.html" class="btn">Log In</a>
+          `;
+          return;
+        }
+
         try {
-          const token = "fake-jwt-token"; // Fake token for testing
           const res = await fetch(
             "http://127.0.0.1:5000/api/get_biomedical_profile",
             {
@@ -131,39 +153,79 @@
             }
           );
 
-          const profileContainer = document.getElementById("profileContainer");
-          const noProfile = document.getElementById("noProfile");
-
           if (!res.ok) {
+            // Case 2: Logged in, no profile exists
             profileContainer.style.display = "block";
             noProfile.style.display = "none";
             return;
           }
 
           const data = await res.json();
-          console.log("Biomedical profile:", data);
 
           if (data && Object.keys(data).length > 0 && !data.message) {
+            // Case 3: Profile exists, show read-only
             noProfile.style.display = "none";
             profileContainer.style.display = "block";
             profileContainer.innerHTML = `
-            <p><strong>Allergies:</strong> ${data.allergies || "None"}</p>
-            <p><strong>Illnesses:</strong> ${data.illnesses || "None"}</p>
-            <p><strong>Weight:</strong> ${data.weight || "N/A"} kg</p>
-            <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
-          `;
+              <p><strong>Allergies:</strong> ${data.allergies || "None"}</p>
+              <p><strong>Illnesses:</strong> ${data.illnesses || "None"}</p>
+              <p><strong>Weight:</strong> ${data.weight || "N/A"} kg</p>
+              <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
+            `;
           } else {
+            // Logged in but empty profile
             profileContainer.style.display = "block";
             noProfile.style.display = "none";
           }
         } catch (err) {
           console.error("Fetch error:", err);
-          document.getElementById("profileContainer").style.display = "block";
-          document.getElementById("noProfile").style.display = "none";
+          profileContainer.style.display = "block";
+          noProfile.style.display = "none";
         }
       }
 
       fetchProfile();
+    </script>
+
+    <script>
+      const form = document.getElementById("bioProfileForm");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault(); // prevent page reload
+
+        const token = "fake-jwt-token"; // later: real JWT from user session
+
+        // Gather form values
+        const profileData = {
+          allergies: form.allergies.value,
+          illnesses: form.illnesses.value,
+          weight: form.weight.value,
+          height_cm: form.height_cm.value,
+        };
+
+        try {
+          const res = await fetch(
+            "http://127.0.0.1:5000/api/post_biomedical_profile",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify(profileData),
+            }
+          );
+
+          if (!res.ok) throw new Error("Failed to save profile");
+
+          const data = await res.json();
+          console.log("Profile saved:", data);
+
+          // Optionally, refresh the profile display
+          fetchProfile();
+        } catch (err) {
+          console.error("Error submitting form:", err);
+        }
+      });
     </script>
   </body>
 </html>

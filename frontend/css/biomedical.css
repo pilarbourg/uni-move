@@ -51,13 +51,16 @@ nav div a:hover {
   color: var(--accent);
 }
 
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
+.main-biomed-section {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 5rem;
+  padding: 6rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  background-color: #f3f6f7;
 }
 
-/* Hero Section */
 .hero {
   background-color: #ffffff;
   padding: 50px 20px;
@@ -65,17 +68,32 @@ nav div a:hover {
   margin: 20px 0;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .hero h2 {
-  font-size: 26px;
-  color: #1976d2; /* blue accent */
+  font-size: 2rem;
+  color: #68748b;
   margin-bottom: 15px;
 }
 
 .hero p {
   font-size: 16px;
-  color: #555;
+  color: #627e9e;
+}
+
+.hero img {
+  height: auto;
+  border-radius: 12px;
+  margin-top: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  background-color: #d32f2f;
+  margin: 1rem;
+  padding: 1rem;
+  width: 8rem;
 }
 
 /* Profile Form / Display */
@@ -163,11 +181,12 @@ nav div a:hover {
   font-size: 14px;
 }
 
-/* Footer */
 footer {
   text-align: center;
-  padding: 20px 0;
-  margin-top: 40px;
-  color: #888;
-  font-size: 14px;
+  padding: 1.5rem;
+  background-color: #627e9e;
+  border-top: 1px solid #eee;
+  color: #fff;
+  font-size: 0.9rem;
+  margin-top: 3rem;
 }

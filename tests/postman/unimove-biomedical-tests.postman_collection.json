@@ -1,0 +1,68 @@
+{
+	"info": {
+		"_postman_id": "a6b3a3d9-e9c1-4dd1-a7e2-8e21ad9e31d8",
+		"name": "unimove-biomedical-tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42738876"
+	},
+	"item": [
+		{
+			"name": "http://127.0.0.1:5000/api/post_biomedical_profile",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"allergies\": \"Shellfish, Pollen\",\n  \"illnesses\": \"Type 1 Diabetes\",\n  \"weight\": 90,\n  \"height_cm\": 180\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/post_biomedical_profile",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"post_biomedical_profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5000/api/get_biomedical_profile",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/get_biomedical_profile",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"get_biomedical_profile"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
