@@ -1,7 +1,9 @@
-from dotenv import load_dotenv
 import os
 from supabase import create_client, Client
 import bcrypt
+
+SUPABASE_URL="https://qtclucrcmrhaeqwllccn.supabase.co"
+SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0Y2x1Y3JjbXJoYWVxd2xsY2NuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg2Mjg1NjcsImV4cCI6MjA3NDIwNDU2N30.OvNzc5HNPV0cyVA965JstZ942kaua02lhYXcWEEeWq0"
 
 load_dotenv()
 url = os.getenv("SUPABASE_URL")
