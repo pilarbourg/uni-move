@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa9e2805-b40f-4ef5-aea1-1a3f63e1c207" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/database.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/tests/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/tests/databasetest.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/tests/test_login.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/gestion_usuario.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/login.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/login.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tests/test_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tests/test_login.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +72,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\David Suárez\uni-move\backend\tests" />
       <recent name="C:\Users\David Suárez\uni-move\.venv" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -116,7 +113,7 @@
       <workItem from="1758986416305" duration="139000" />
       <workItem from="1758986575225" duration="1011000" />
       <workItem from="1759069157451" duration="1236000" />
-      <workItem from="1759070491065" duration="3791000" />
+      <workItem from="1759070491065" duration="4868000" />
     </task>
     <servers />
   </component>

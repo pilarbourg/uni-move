@@ -1,9 +1,20 @@
 import pytest
 from backend.login import Login
+from dotenv import load_dotenv
+import os
+from supabase import create_client, Client
+
+load_dotenv()
+url = os.getenv("SUPABASE_URL")
+key = os.getenv("SUPABASE_KEY")
+
+supabase: Client = create_client(url, key)
+
+usuarios = supabase.table("users").select("*").execute()
 
 def test_user_register_new_user(login_instance=Login()):
     login_instance.user_register("sofia","sofia@gmail.com","1234")
-    assert any(user.email == "sofia@gmail.com" for user in databasetest)
+    assert any(user.email == "sofia@gmail.com" for user in usuarios)
 
 def test_user_register_existing_user(login_instance=Login()):
     with pytest.raises(ValueError) as error:
