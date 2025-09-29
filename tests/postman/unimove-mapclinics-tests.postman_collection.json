@@ -1,0 +1,92 @@
+{
+  "info": {
+    "_postman_id": "b1c234ab-23f4-4e4d-bc0e-fdeab8f7d9e5",
+    "name": "university-clinics-api-tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "POST /universities - Create University",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Tech University\",\n  \"latitude\": 40.4168,\n  \"longitude\": -3.7038\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:5000/universities",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "universities"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /universities - List Universities",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:5000/universities",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "universities"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /universities/:id/clinics - Clinics Near University",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:5000/universities/1/clinics?radius=3",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "universities",
+            "1",
+            "clinics"
+          ],
+          "query": [
+            {
+              "key": "radius",
+              "value": "3"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
