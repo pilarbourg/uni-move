@@ -1,9 +1,18 @@
+import os
 from supabase import create_client, Client
+from dotenv import load_dotenv
 
-SUPABASE_URL = "https://qtclucrcmrhaeqwllccn.supabase.co"
-SUPABASE_KEY = "TU_API_KEY"
+
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "database.env"))
+
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+if not SUPABASE_URL or not SUPABASE_KEY:
+    raise ValueError("⚠️ No se pudo cargar SUPABASE_URL o SUPABASE_KEY del .env")
+
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-
 
 def listar_apartamentos():
     result = supabase.table("Apartamentos").select("*") .execute()
