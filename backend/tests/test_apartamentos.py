@@ -2,14 +2,10 @@ import unittest
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from backend.Apartamentos import (
-    listar_apartamentos,
-    buscar_precio,
-    buscar_barrio_precio,
-    buscar_resultado_vacio
-)
+from backend.Apartamentos import listar_apartamentos, buscar_precio, buscar_barrio_precio, buscar_resultado_vacio
 
-class Test_apartamentos(unittest.TestCase):
+
+class test_apartamentos(unittest.TestCase):
 
     def test_listar_apartamentos(self):
         data = listar_apartamentos()
@@ -27,12 +23,12 @@ class Test_apartamentos(unittest.TestCase):
         for row in data:  # Si la lista está vacía, no entra
             self.assertLessEqual(row["precio"], presupuesto)
 
-    def test_busqueda_por_barrio(self):
-        """Requisito 3: Buscar por barrio y presupuesto"""
-        presupuesto = 1500
-        barrio = "Lavapiés-Embajadores"
-        data = buscar_barrio_precio(barrio, presupuesto)
-        self.assertTrue(all(r["barrio"] == barrio for r in data))
+    def test_buscar_barrio_precio(self):
+        data = buscar_barrio_precio("Moncloa", 2000)
+        # Puede que no haya datos, pero si los hay deben cumplir filtros
+        for apt in data:
+            assert "moncloa" in apt["barrio"].lower()
+            assert float(apt["precio"]) <= 2000
 
     def test_resultado_vacio(self):
         """Requisito 4: Caso sin resultados"""
