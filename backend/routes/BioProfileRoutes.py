@@ -15,22 +15,21 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @app.route("/api/get_biomedical_profile", methods=["GET"])
 def get_biomedical_profile():
-    user_id = 6  # Hardcoded for testing
+    user_id = 6  # TESTING
 
     response = supabase.table("biomedical_profiles")\
         .select("*")\
         .eq("user_id", user_id)\
         .execute()
 
-    # response.data is a list
     if response.data and len(response.data) > 0:
-        return jsonify(response.data[0])  # return first profile
+        return jsonify(response.data[0])
     else:
         return jsonify({"message": "No biomedical profile found"}), 404
     
 @app.route("/api/post_biomedical_profile", methods=["POST"])
 def post_biomedical_profile():
-    user_id = 6  # Hardcoded for testing
+    user_id = 6  # TESTING
     data = request.json
 
     user_check = supabase.table("users").select("*").eq("id", user_id).maybe_single().execute()
@@ -57,7 +56,7 @@ def post_biomedical_profile():
     if response and response.data:
         return jsonify(response.data[0]), 201
     else:
-        return jsonify({"message": "Failed to create profile"}), 400
+        return jsonify({"message": "Failed to create biomedical profile"}), 400
     
 if __name__ == "__main__":
     app.run(debug=True)
