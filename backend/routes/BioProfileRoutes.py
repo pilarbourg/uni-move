@@ -15,7 +15,7 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @app.route("/api/get_biomedical_profile", methods=["GET"])
 def get_biomedical_profile():
-    user_id = 1  # Hardcoded for testing
+    user_id = 6  # Hardcoded for testing
 
     response = supabase.table("biomedical_profiles")\
         .select("*")\
@@ -30,7 +30,7 @@ def get_biomedical_profile():
     
 @app.route("/api/post_biomedical_profile", methods=["POST"])
 def post_biomedical_profile():
-    user_id = 4  # Hardcoded for testing
+    user_id = 6  # Hardcoded for testing
     data = request.json
 
     user_check = supabase.table("users").select("*").eq("id", user_id).maybe_single().execute()

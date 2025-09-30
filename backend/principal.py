@@ -1,10 +1,9 @@
 import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
-from backend.Apartamentos import listar_apartamentos, buscar_precio, buscar_barrio_precio, buscar_resultado_vacio
+from backend.Apartamentos import listar_apartamentos, buscar_precio, buscar_barrio_precio
 
 
-# Cargar variables de entorno
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "database.env"))
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -56,4 +55,3 @@ def principal():
 
 if __name__ == "__main__":
     principal()
-
