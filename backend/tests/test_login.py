@@ -11,8 +11,8 @@ usuarios = supabase.table("users").select("*").execute()
 
 def test_user_register_new_user(login_instance=Login()):
     login_instance.user_register("sofia","sofia@gmail.com","1234")
-    assert any(user.email == "sofia@gmail.com" for user in usuarios)
-
+    assert any(usuarios.data[user]["email"] == "sofia@gmail.com" for user in range(len(usuarios.data)))
+    
 def test_user_register_existing_user(login_instance=Login()):
     with pytest.raises(ValueError) as error:
         login_instance.user_register("david", "dx4658@gmail.com", "1234")
