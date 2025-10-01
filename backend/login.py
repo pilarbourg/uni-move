@@ -1,17 +1,10 @@
-import os
-
-from dotenv import load_dotenv
 from supabase import create_client, Client
 import bcrypt
 
 SUPABASE_URL="https://qtclucrcmrhaeqwllccn.supabase.co"
 SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0Y2x1Y3JjbXJoYWVxd2xsY2NuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg2Mjg1NjcsImV4cCI6MjA3NDIwNDU2N30.OvNzc5HNPV0cyVA965JstZ942kaua02lhYXcWEEeWq0"
 
-load_dotenv()
-url = os.getenv("SUPABASE_URL")
-key = os.getenv("SUPABASE_KEY")
-
-supabase: Client = create_client(url, key)
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 usuarios = supabase.table("users").select("*").execute()
 
@@ -56,8 +49,11 @@ class Login:
 if __name__=="__main__":
     login = Login()
     print(login)
-    for user in usuarios:
-        print(user.email)
+    for user in range(0,len(usuarios.data)):
+        if usuarios.data[user]["name"] == "Alice Johnson":
+            print(usuarios.data[0]["name"])
+        
+
     choice = input("\nREGISTER OR LOGIN\n")
     if choice == "REGISTER":
         user_register_name = input("\nEnter your username:\n")
