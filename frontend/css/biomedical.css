@@ -36,7 +36,7 @@ nav {
 
 nav h1 {
   font-size: 1.8rem;
-  color: var(--primary);
+  color: #627e9e;
 }
 
 nav div a {
@@ -71,7 +71,8 @@ nav div a:hover {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 
 .hero h2 {
@@ -96,14 +97,13 @@ nav div a:hover {
   width: 8rem;
 }
 
-/* Profile Form / Display */
 .profile-form {
   margin-top: 30px;
   text-align: left;
 }
 
 .profile-form h2 {
-  color: #d32f2f; /* red accent */
+  color: #d32f2f;
   margin-bottom: 15px;
   font-size: 22px;
 }
@@ -112,10 +112,12 @@ nav div a:hover {
   width: 100%;
   padding: 12px 15px;
   margin: 10px 0 20px 0;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 8px;
   font-size: 16px;
   transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 #bioProfileForm input:focus {
@@ -133,6 +135,8 @@ nav div a:hover {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 #bioProfileForm .btn:hover {
@@ -237,7 +241,8 @@ footer {
   border-radius: 8px;
   font-size: 16px;
   transition: border 0.2s, box-shadow 0.2s;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 
 #chatBtn {
@@ -250,5 +255,6 @@ footer {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
