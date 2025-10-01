@@ -26,6 +26,9 @@ class Login:
         user_register = User(name,email,password)
         if user_register.email in usuarios:
             raise ValueError("User is already registered")
+        #futuro hash
+        #hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+        #password_hash_str = hashed.decode("utf-8")
         supabase.table("users").insert({"name": user_register.name,"email": user_register.email,"password_hash": user_register.password}).execute()
 
     def user_login(self,email,password):
@@ -33,11 +36,15 @@ class Login:
         if not emails:
             raise ValueError("User is not registered")
         user = emails[0]
-        stored_hash = user["password_hash"].encode["utf-8"]
-        if bcrypt.checkpw(password.encode("utf-8"), stored_hash):
+        if user["password_hash"] == password:
             return True
-        else:
-            raise ValueError("Wrong password")
+        raise ValueError("Invalid salt")
+        #futuro hash
+        #stored_hash = user["password_hash"].encode("utf-8")
+        #if bcrypt.checkpw(password.encode("utf-8"), stored_hash):
+        #    return True
+        #else:
+        #    raise ValueError("Wrong password")
 
     def __str__(self):
         string=""
@@ -49,11 +56,6 @@ class Login:
 if __name__=="__main__":
     login = Login()
     print(login)
-    for user in range(len(usuarios.data)):
-        if usuarios.data[user]["name"] == "Alice Johnson":
-            print(usuarios.data[0]["name"])
-        
-
     choice = input("\nREGISTER OR LOGIN\n")
     if choice == "REGISTER":
         user_register_name = input("\nEnter your username:\n")
