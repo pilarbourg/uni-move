@@ -26,7 +26,7 @@ class Login:
         user_register = User(name,email,password)
         if user_register.email in usuarios:
             raise ValueError("User is already registered")
-        supabase.table("users").insert({"name": user_register.name,"email": user_register.email,"password": user_register.password}).execute()
+        supabase.table("users").insert({"name": user_register.name,"email": user_register.email,"password_hash": user_register.password}).execute()
 
     def user_login(self,email,password):
         emails = supabase.table("users").select("*").eq("email", email).execute().data
@@ -49,7 +49,7 @@ class Login:
 if __name__=="__main__":
     login = Login()
     print(login)
-    for user in range(0,len(usuarios.data)):
+    for user in range(len(usuarios.data)):
         if usuarios.data[user]["name"] == "Alice Johnson":
             print(usuarios.data[0]["name"])
         
