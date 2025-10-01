@@ -1,4 +1,3 @@
 export FLASK_APP=backend.app
-export FLASK_ENV=development
+export FLASK_ENV=production
 export PYTHONPATH=$(pwd)
-flask run

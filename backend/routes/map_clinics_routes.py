@@ -1,14 +1,13 @@
-from flask import Flask, jsonify, request
+from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
 import math
 import os
 from supabase import create_client
 
-app = Flask(__name__) 
-CORS(app, origins=["http://localhost:3000"])  # Allow requests from your frontend
-
 load_dotenv()
+
+map_clinics_routes = Blueprint("map_clinics_routes", __name__)
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
@@ -26,7 +25,7 @@ def haversine(latitude1, longitude1, latitude2, longitude2):
     return R * c
 
 
-@app.route("/universities", methods=["GET"])
+@map_clinics_routes.route("/universities", methods=["GET"])
 def get_universities():
     response = supabase.table("universities").select("*").execute()
 
@@ -47,7 +46,7 @@ def get_universities():
     return jsonify(universities)
 
 
-@app.route("/universities/<int:university_id>/clinics", methods=["GET"])
+@map_clinics_routes.route("/universities/<int:university_id>/clinics", methods=["GET"])
 def get_clinics(university_id):
     radius = float(request.args.get("radius", 2))
 
@@ -89,7 +88,7 @@ def get_clinics(university_id):
     return jsonify(nearby_clinics)
 
 
-@app.route("/universities", methods=["POST"])
+@map_clinics_routes.route("/universities", methods=["POST"])
 def create_university():
     """
     Create a new university. Expects JSON body:

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
@@ -6,14 +6,13 @@ from supabase import create_client
 
 load_dotenv()
 
-app = Flask(__name__)
-CORS(app)
+bio_profile_routes = Blueprint("bio_profile_routes", __name__)
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-@app.route("/api/get_biomedical_profile", methods=["GET"])
+@bio_profile_routes.route("/api/get_biomedical_profile", methods=["GET"])
 def get_biomedical_profile():
     user_id = 6  # TESTING
 
@@ -27,7 +26,7 @@ def get_biomedical_profile():
     else:
         return jsonify({"message": "No biomedical profile found"}), 404
     
-@app.route("/api/post_biomedical_profile", methods=["POST"])
+@bio_profile_routes.route("/api/post_biomedical_profile", methods=["POST"])
 def post_biomedical_profile():
     user_id = 6  # TESTING
     data = request.json
@@ -58,5 +57,3 @@ def post_biomedical_profile():
     else:
         return jsonify({"message": "Failed to create biomedical profile"}), 400
     
-if __name__ == "__main__":
-    app.run(debug=True)
