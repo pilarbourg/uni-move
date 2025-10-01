@@ -12,22 +12,22 @@ let radiusSelect = document.getElementById("radiusSelect");
 let universityMarker = null;
 let clinicMarkers = [];
 
+
 // Step 1: Define GitHub icons
 var redIcon = new L.Icon({
-	iconUrl: 'assets\images\marker-icon-2x-red.png',
-	iconSize: [25, 41],
-	iconAnchor: [12, 41],
-	popupAnchor: [1, -34],
-	shadowSize: [41, 41]
+    iconUrl: '/assets/images/marker-icon-2x-red.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34]
 });
 
 var blueIcon = new L.Icon({
-	iconUrl: 'assets\imagesmarker-icon-2x-blue.png',
-	iconSize: [25, 41],
-	iconAnchor: [12, 41],
-	popupAnchor: [1, -34],
-	shadowSize: [41, 41]
+    iconUrl: '/assets/images/marker-icon-2x-blue.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34]
 });
+
 
 // Fetch universities
 async function fetchUniversities() {
