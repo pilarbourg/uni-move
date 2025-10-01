@@ -1,4 +1,4 @@
-from university import University, DegreeNotFoundException
+from backend.university_info.university import University, DegreeNotFoundException
 
 if __name__ == "__main__":
     degree_input = input("Enter the degree you want to search: ")
