@@ -94,7 +94,9 @@
       <section id="protocolSection" class="protocol-section" style="display: none;">
         <article class="protocol-article">
           <h2>Illness Protocol</h2>
-          <p id="protocolContent">Loading protocol...</p>
+          <div id="protocolContent" class="protocol-box">
+            Loading protocol...
+          </div>
         </article>
       </section>
 
@@ -186,10 +188,9 @@
         const protocolContent = document.getElementById("protocolContent");
 
         //const token = localStorage.getItem("token") || "";
-        const token = "fake-jwt-token"; // Simulate logged-in user
+        const token = "fake-jwt-token"; // TESTING
 
         if (!token) {
-          // Case 1: Not logged in
           profileContainer.style.display = "none";
           noProfile.style.display = "block";
           noProfile.innerHTML = `
@@ -209,7 +210,6 @@
           );
 
           if (!res.ok) {
-            // Case 2: Logged in, no profile exists
             profileContainer.style.display = "block";
             noProfile.style.display = "none";
             return;
@@ -218,7 +218,6 @@
           const data = await res.json();
 
           if (data && Object.keys(data).length > 0 && !data.message) {
-            // Case 3: Profile exists, show read-only
             noProfile.style.display = "none";
             profileContainer.style.display = "block";
             profileContainer.innerHTML = `
