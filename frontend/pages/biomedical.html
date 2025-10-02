@@ -93,7 +93,7 @@
 
       <section id="protocolSection" class="protocol-section" style="display: none;">
         <div class="protocol-container">
-          <h2>Illness Protocol</h2>
+          <h2 class="protocol-heading">Illness Protocol</h2>
           <div id="protocolContent" class="protocol-box">
             Loading protocol...
           </div>
@@ -227,14 +227,31 @@
               <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
             `;
             
-            if (data.protocols && data.protocols.length > 0) {
+            if (data.illnesses && data.illnesses.length > 0) {
+              let html = "";
+
+              data.illnesses.forEach(illness => {
+                html += `<h3 class="protocol-disease-name">${illness.name}</h3>`;
+
+                const illnessProtocols = (data.protocols || []).filter(
+                  p => p.illness_id === illness.id
+                );
+
+                if (illnessProtocols.length > 0) {
+                  html += illnessProtocols
+                    .map(p => `<p><strong>Step ${p.step_order}:</strong> ${p.instruction}</p>`)
+                    .join("");
+                } else {
+                  html += "<p>No protocol available</p>";
+                }
+              });
+
+              protocolContent.innerHTML = html;
               protocolSection.style.display = "block";
-              protocolContent.innerHTML = data.protocols
-                .map(p => `<p><strong>Step ${p.step_order}:</strong> ${p.instruction}</p>`)
-                .join("");
             } else {
               protocolSection.style.display = "none";
             }
+
           } else {
             profileContainer.style.display = "block";
             noProfile.style.display = "none";
