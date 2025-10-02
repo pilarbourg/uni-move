@@ -21,9 +21,11 @@ def get_biomedical_profile():
         .eq("user_id", user_id)\
         .execute()
 
-    profile = response.data or None
-    if not profile:
+    profiles = response.data or []
+    if not profiles:
         return jsonify({"message": "No biomedical profile found"}), 404
+
+    profile = profiles[0]  # get first profile
 
     illness_ids_res = (
         supabase.table("biomedical_profile_illnesses")
@@ -58,6 +60,7 @@ def get_biomedical_profile():
     profile["protocols"] = protocols_res
 
     return jsonify(profile)
+
 
     
 @bio_profile_routes.route("/api/post_biomedical_profile", methods=["POST"])
