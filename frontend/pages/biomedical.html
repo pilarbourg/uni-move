@@ -182,10 +182,9 @@
         const noProfile = document.getElementById("noProfile");
 
         //const token = localStorage.getItem("token") || "";
-        const token = "fake-jwt-token"; // Simulate logged-in user
+        const token = "fake-jwt-token"; // TESTING
 
         if (!token) {
-          // Case 1: Not logged in
           profileContainer.style.display = "none";
           noProfile.style.display = "block";
           noProfile.innerHTML = `
@@ -205,7 +204,6 @@
           );
 
           if (!res.ok) {
-            // Case 2: Logged in, no profile exists
             profileContainer.style.display = "block";
             noProfile.style.display = "none";
             return;
@@ -214,7 +212,6 @@
           const data = await res.json();
 
           if (data && Object.keys(data).length > 0 && !data.message) {
-            // Case 3: Profile exists, show read-only
             noProfile.style.display = "none";
             profileContainer.style.display = "block";
             profileContainer.innerHTML = `
@@ -224,7 +221,6 @@
               <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
             `;
           } else {
-            // Logged in but empty profile
             profileContainer.style.display = "block";
             noProfile.style.display = "none";
           }
