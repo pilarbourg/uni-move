@@ -119,7 +119,3 @@ def create_university():
         return jsonify({"error": "Could not create university"}), 500
 
     return jsonify(response.data[0]), 201  # Return the created university with status 201
-
-
-if __name__ == "__main__":
-    app.run(debug=True)

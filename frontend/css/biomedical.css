@@ -108,6 +108,12 @@ nav div a:hover {
   font-size: 22px;
 }
 
+.profile-form form {
+  display: flex;           
+  flex-direction: column;  
+  gap: 15px;               
+}
+
 #bioProfileForm input {
   width: 100%;
   padding: 12px 15px;
@@ -124,6 +130,23 @@ nav div a:hover {
   border-color: #1976d2;
   box-shadow: 0 0 5px rgba(25, 118, 210, 0.2);
   outline: none;
+}
+
+#bioProfileForm select {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 10px 0 20px 0;     
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  background-color: #fff;
+}
+
+#bioProfileForm select[multiple] {
+  height: 120px;  
 }
 
 #bioProfileForm .btn {

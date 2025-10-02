@@ -21,10 +21,44 @@ def get_biomedical_profile():
         .eq("user_id", user_id)\
         .execute()
 
-    if response.data and len(response.data) > 0:
-        return jsonify(response.data[0])
-    else:
+    profile = response.data or None
+    if not profile:
         return jsonify({"message": "No biomedical profile found"}), 404
+
+    illness_ids_res = (
+        supabase.table("biomedical_profile_illnesses")
+        .select("illness_id")
+        .eq("biomedical_profile_id", profile["id"])
+        .execute()
+    )
+    illness_ids = [row["illness_id"] for row in (illness_ids_res.data or [])]
+
+    illnesses_res = []
+    if illness_ids:
+        illnesses_res = (
+            supabase.table("illnesses")
+            .select("id, name")
+            .in_("id", illness_ids)
+            .execute()
+            .data
+        )
+
+    protocols_res = []
+    if illness_ids:
+        protocols_res = (
+            supabase.table("protocols")
+            .select("illness_id, step_order, instruction")
+            .in_("illness_id", illness_ids)
+            .order("step_order")
+            .execute()
+            .data
+        )
+
+    profile["illnesses"] = illnesses_res
+    profile["protocols"] = protocols_res
+
+    return jsonify(profile)
+
     
 @bio_profile_routes.route("/api/post_biomedical_profile", methods=["POST"])
 def post_biomedical_profile():
@@ -45,15 +79,33 @@ def post_biomedical_profile():
     new_profile = {
         "user_id": user_id,
         "allergies": data.get("allergies"),
-        "illnesses": data.get("illnesses"),
         "weight": data.get("weight"),
         "height_cm": data.get("height_cm"),
     }
 
     response = supabase.table("biomedical_profiles").insert(new_profile).execute()
 
-    if response and response.data:
-        return jsonify(response.data[0]), 201
-    else:
+    if not response or not response.data:
         return jsonify({"message": "Failed to create biomedical profile"}), 400
-    
+
+    created_profile = response.data[0]
+
+    illness_ids = data.get("illnesses", [])
+    if illness_ids:
+        inserts = [
+            {"biomedical_profile_id": created_profile["id"], "illness_id": int(ill)}
+            for ill in illness_ids
+        ]
+        supabase.table("biomedical_profile_illnesses").insert(inserts).execute()
+
+    created_profile["illnesses"] = resolve_illness_names(illness_ids)
+
+    return jsonify({"profile": created_profile}), 201
+
+
+#Obtain illnesses names from their ids
+def resolve_illness_names(illness_ids):
+    if not illness_ids:
+        return []
+    res = supabase.table("illnesses").select("id, name").in_("id", illness_ids).execute()
+    return [ill["name"] for ill in res.data]

@@ -64,12 +64,7 @@
                 />
 
                 <label for="illnesses">Illnesses</label>
-                <input
-                  type="text"
-                  id="illnesses"
-                  name="illnesses"
-                  placeholder="Asthma, Diabetes..."
-                />
+                <select id="illnesses" name="illnesses" multiple></select>
 
                 <label for="weight">Weight (kg)</label>
                 <input
@@ -94,6 +89,13 @@
             </div>
           </article>
         </section>
+      </section>
+
+      <section id="protocolSection" class="protocol-section" style="display: none;">
+        <article class="protocol-article">
+          <h2>Illness Protocol</h2>
+          <p id="protocolContent">Loading protocol...</p>
+        </article>
       </section>
 
       <section class="chatbot-section">
@@ -180,6 +182,8 @@
       async function fetchProfile() {
         const profileContainer = document.getElementById("profileContainer");
         const noProfile = document.getElementById("noProfile");
+        const protocolSection = document.getElementById("protocolSection");
+        const protocolContent = document.getElementById("protocolContent");
 
         //const token = localStorage.getItem("token") || "";
         const token = "fake-jwt-token"; // Simulate logged-in user
@@ -219,22 +223,50 @@
             profileContainer.style.display = "block";
             profileContainer.innerHTML = `
               <p><strong>Allergies:</strong> ${data.allergies || "None"}</p>
-              <p><strong>Illnesses:</strong> ${data.illnesses || "None"}</p>
+              <p><strong>Illnesses:</strong> ${(data.illnesses || []).map(i => i.name).join(", ") || "None"}</p>
               <p><strong>Weight:</strong> ${data.weight || "N/A"} kg</p>
               <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
             `;
+            
+            if (data.protocols && data.protocols.length > 0) {
+              protocolSection.style.display = "block";
+              protocolContent.innerHTML = data.protocols
+                .map(p => `<p><strong>Step ${p.step_order}:</strong> ${p.instruction}</p>`)
+                .join("");
+            } else {
+              protocolSection.style.display = "none";
+            }
           } else {
-            // Logged in but empty profile
             profileContainer.style.display = "block";
             noProfile.style.display = "none";
+            loadIllnesses();
           }
         } catch (err) {
           console.error("Fetch error:", err);
           profileContainer.style.display = "block";
           noProfile.style.display = "none";
+          loadIllnesses();
         }
       }
 
+      async function loadIllnesses() {
+        try {
+          const res = await fetch("http://127.0.0.1:5000/api/illnesses");
+          if (!res.ok) throw new Error("Failed to fetch illnesses");
+          const illnesses = await res.json();
+
+          const select = document.getElementById("illnesses");
+          select.innerHTML = "";
+          illnesses.forEach((ill) => {
+            const option = document.createElement("option");
+            option.value = ill.id;
+            option.textContent = ill.name;
+            select.appendChild(option);
+          });
+        } catch (err) {
+          console.error("Error loading illnesses:", err);
+        }
+      }
       fetchProfile();
     </script>
 
@@ -247,7 +279,7 @@
 
         const profileData = {
           allergies: form.allergies.value,
-          illnesses: form.illnesses.value,
+          illnesses: Array.from(form.illnesses.selectedOptions).map(opt => opt.value), 
           weight: form.weight.value,
           height_cm: form.height_cm.value,
         };
