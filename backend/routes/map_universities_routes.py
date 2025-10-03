@@ -1,49 +1,40 @@
-from flask import Blueprint, jsonify
-import requests
-import json
+from flask import Blueprint, jsonify, request
+from flask_cors import CORS
+from dotenv import load_dotenv
+import math
+import os
+from supabase import create_client
 import folium
+
+app = Flask(__name__)
+load_dotenv()
 
 map_universities_routes = Blueprint("map_universities_routes", __name__)
 
-def generate_universities_map():
-    query = """
-    [out:json];
-    area["ISO3166-1"="ES"][admin_level=2];
-    node["amenity"="university"](40.2,-4.5,41.1,-3.0);
-    out;
-    """
-    url = "https://overpass-api.de/api/interpreter"
-    response = requests.post(url, data={"data": query})
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
-    if response.status_code != 200:
-        return f"Error en la petición: {response.status_code}"
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-    data = response.json()
+@map_universities_routes.route("/get_universities", methods=["GET"])
+def get_universities():
+    response = supabase.table("universities").select("*").execute()
 
-    class Universidad:
-        def __init__(self, nombre, lat, lon):
-            self.nombre = nombre
-            self.lat = lat
-            self.lon = lon
-
-    universidades = [
-        Universidad(
-            element.get("tags", {}).get("name", "Desconocida"),
-            element.get("lat"),
-            element.get("lon")
-        )
-        for element in data["elements"]
+    universities = [
+        {
+            "id": u.get("id"),
+            "name": u.get("name"),
+            "latitude": u.get("latitude"),
+            "longitude": u.get("longitude"),
+        }
+        for u in response.data
     ]
 
-    m = folium.Map(location=[40.4, -3.7], zoom_start=6)
+    if universities is None:
+        # Something went wrong
+        return jsonify({"error": "Could not fetch universities"}), 500
 
-    for u in universidades:
-        folium.Marker(location=[u.lat, u.lon], popup=u.nombre).add_to(m)
-
-    m.save("frontend/pages/universidades.html")
-    return "Mapa generado exitosamente"
-
-@map_universities_routes.route("/api/generate_map", methods=["GET"])
-def generate_map_route():
-    result = generate_universities_map()
-    return jsonify({"message": result})
+    return jsonify(universities)
+if __name__ == "__main__":
+    app.run(debug=True)
+print("Mapa generado: mapa_universidades_madrid.html")

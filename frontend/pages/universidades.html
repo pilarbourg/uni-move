@@ -88,65 +88,30 @@
 
   <!-- Tu JS -->
   <script>
-    const map = L.map("map").setView([40.4168, -3.7038], 9);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "© OpenStreetMap contributors"
-    }).addTo(map);
+   async function fetchUniversities() {
+  try {
+    const res = await fetch("http://127.0.0.1:5000/api/get_universities");
+    const universities = await res.json();
 
-    let universities = [];
-    let markers = L.layerGroup().addTo(map);
-
-    async function loadData() {
-      const res = await fetch("/api/universities");
-      universities = await res.json();
-
-      // Rellenar selects
-      const uniSelect = document.getElementById("universitySelect");
-      const locSelect = document.getElementById("localitySelect");
-
-      uniSelect.innerHTML = "";
-      locSelect.innerHTML = "<option value=''>All</option>";
-        uniSelect.sort((a, b) => a.name.localeCompare(b.name));
-      const localities = new Set();
-
-      universities.forEach(u => {
-        let opt1 = document.createElement("option");
-        opt1.value = u.id;
-        opt1.textContent = u.name;
-        uniSelect.appendChild(opt1);
-
-        if (u.locality) localities.add(u.locality);
-      });
-
-      [...localities].sort().forEach(loc => {
-        let opt2 = document.createElement("option");
-        opt2.value = loc;
-        opt2.textContent = loc;
-        locSelect.appendChild(opt2);
-      });
-
-      updateMap(universities);
-    }
-
-    function updateMap(list) {
-      markers.clearLayers();
-      list.forEach(u => {
-        L.marker([u.lat, u.lon]).bindPopup(`<b>${u.name}</b><br>${u.locality}`).addTo(markers);
-      });
-    }
-
-    document.getElementById("universitySelect").addEventListener("change", e => {
-      const id = parseInt(e.target.value);
-      const filtered = universities.filter(u => u.id === id);
-      updateMap(filtered);
+    universitySelect.innerHTML = "";
+    universities.forEach(u => {
+      const option = document.createElement("option");
+      option.value = JSON.stringify({ lat: u.latitude, lng: u.longitude, id: u.id, name: u.name });
+      option.textContent = u.name;
+      universitySelect.appendChild(option);
+      
+    universityMarker = L.marker([parseFloat(uni.lat), parseFloat(uni.lng)], { icon: redIcon })
+      .addTo(map)
+      .bindPopup(`<b>${uni.name}</b>`).openPopup();
+      // Adjust map view
+    const allCoords = [[parseFloat(uni.lat), parseFloat(uni.lng)], ...clinics.map(c => [parseFloat(c.latitude), parseFloat(c.longitude)])];
+    if (allCoords.length > 0) map.fitBounds(allCoords, { padding: [50,50] });
+    else map.setView([parseFloat(uni.lat), parseFloat(uni.lng)], 14);
     });
-
-    document.getElementById("localitySelect").addEventListener("change", e => {
-      const loc = e.target.value;
-      const filtered = loc ? universities.filter(u => u.locality === loc) : universities;
-      updateMap(filtered);
-    });
-
+  } catch (err) {
+    console.error("Error fetching universities:", err);
+  }
+}
     loadData();
   </script>
 </body>
