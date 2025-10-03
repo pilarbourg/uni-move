@@ -1,5 +1,5 @@
 import os
-from backend.Apartamentos import listar_apartamentos, buscar_precio, buscar_barrio_precio
+from backend.apartamentos_info.apartamentos import listar_apartamentos, buscar_precio, buscar_barrio_precio
 from supabase import create_client, Client
 
 SUPABASE_URL = "https://qtclucrcmrhaeqwllccn.supabase.co"
