@@ -1,4 +1,4 @@
-from university import University, DegreeNotFoundException
+from backend.university_info.university import University, DegreeNotFoundException
 
 
 # Comprueba que la clase University tiene el método
