@@ -1,4 +1,4 @@
-// Datos de ejemplo (Sin conexión a BBDD)
+ // Datos de ejemplo (Sin conexión a BBDD)
 const universities = [
     {
         name: "Universidad Complutense de Madrid",
