@@ -1,398 +1,208 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UniMove Biomedical Portal</title>
-    <link rel="stylesheet" href="../css/biomedical.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <nav>
-      <div>
-        <a href="../index.html">Moving</a>
-        <a href="universidades.html">Universities</a>
-        <a href="../index.html">Internships</a>
-      </div>
-      <h1>UniMove</h1>
-      <div>
-        <a href="biomedical.html">Health</a>
-        <a href="mapclinics.html">Clinical Maps</a>
-        <a href="../index.html">Home</a>
-      </div>
-    </nav>
+<script>
+  async function fetchProfile() {
+    const profileContainer = document.getElementById("profileContainer");
+    const noProfile = document.getElementById("noProfile");
+    const protocolSection = document.getElementById("protocolSection");
+    const protocolContent = document.getElementById("protocolContent");
 
-    <main>
-      <section class="main-biomed-section">
-        <article class="hero">
-          <img
-            src="../assets/svgs/health_cross_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"
-            alt="Biomedical Illustration"
-          />
-          <h2>
-            Keep Your Health Info<br />
-            Safe and Accessible
-          </h2>
-          <p>
-            Easily manage your allergies, illnesses, and health profile while
-            moving between universities. Set up your biomedical profile to
-            ensure quick access to vital health information whenever you need
-            it. Focus on your studies and adventures, knowing your health data
-            is just a click away.
-          </p>
-        </article>
-        <section class="profile-card">
-          <article class="profile-form">
-            <h2>Biomedical Profile</h2>
+    const token = "fake-jwt-token"; // TESTING
 
-            <div id="noProfile" style="display: none" class="empty-profile">
-              <p>You haven’t set up your biomedical profile yet.</p>
-              <a href="#" class="btn" id="getStartedBtn">Get Started</a>
-            </div>
+    // Always load illnesses, even if user has no profile
+    await loadIllnesses();
 
-            <div id="profileContainer" style="display: none">
-              <form id="bioProfileForm">
-                <label for="allergies">Allergies</label>
-                <input
-                  type="text"
-                  id="allergies"
-                  name="allergies"
-                  placeholder="Peanuts, Pollen..."
-                />
+    if (!token) {
+      profileContainer.style.display = "none";
+      noProfile.style.display = "block";
+      noProfile.innerHTML = `
+        <p>Please log in to view or create your biomedical profile.</p>
+        <a href="/login.html" class="btn">Log In</a>
+      `;
+      return;
+    }
 
-                <label for="illnesses">Illnesses</label>
-                <select id="illnesses" name="illnesses" multiple></select>
-
-                <label for="weight">Weight (kg)</label>
-                <input
-                  type="number"
-                  id="weight"
-                  name="weight"
-                  step="0.1"
-                  placeholder="72.5"
-                />
-
-                <label for="height_cm">Height (cm)</label>
-                <input
-                  type="number"
-                  id="height_cm"
-                  name="height_cm"
-                  step="0.1"
-                  placeholder="175.0"
-                />
-
-                <button type="submit" class="btn">Save Profile</button>
-              </form>
-            </div>
-          </article>
-        </section>
-      </section>
-
-      <section class="sub-biomed-section">
-        <section
-          id="protocolSection"
-          class="protocol-section"
-          style="display: none"
-        >
-          <div class="protocol-container">
-            <h2 class="protocol-heading">Illness Protocol</h2>
-            <div id="protocolContent" class="protocol-box">
-              Loading protocol...
-            </div>
-          </div>
-        </section>
-
-        <section class="chatbot-section">
-          <article class="biomedical-chatbot-article">
-            <h1>Biomedical Chatbot</h1>
-            <p>
-              Need quick health advice? Our AI-powered biomedical chatbot is
-              here to help! Whether you have questions about symptoms,
-              medications, or general health tips, just type your query and get
-              instant responses.
-            </p>
-
-            <div id="chatLog"></div>
-
-            <div
-              id="loading"
-              style="
-                display: none;
-                margin: 10px 0;
-                font-style: italic;
-                color: gray;
-              "
-            >
-              ⏳ Thinking...
-            </div>
-
-            <div
-              id="errorPopup"
-              style="
-                display: none;
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: red;
-                color: white;
-                padding: 10px 15px;
-                border-radius: 5px;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-              "
-            >
-              Error: Could not connect to chatbot.
-            </div>
-
-            <div class="chatbot-input-div">
-              <input
-                id="chatInput"
-                type="text"
-                placeholder="Ask anything about health..."
-              />
-              <button id="chatBtn" class="btn">Chat Now</button>
-            </div>
-          </article>
-        </section>
-      </section>
-
-      <section class="features-grid">
-        <div class="feature">
-          <h3>Allergies & Conditions</h3>
-          <p>
-            Record and manage allergies or chronic illnesses for a smooth campus
-            experience.
-          </p>
-        </div>
-        <div class="feature">
-          <h3>Weight & Height Tracking</h3>
-          <p>
-            Monitor your health stats and keep them updated for wellness
-            programs.
-          </p>
-        </div>
-        <div class="feature">
-          <h3>Student Friendly</h3>
-          <p>
-            Easy-to-use interface designed specifically for busy students on the
-            move.
-          </p>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <p>&copy; 2025 UniMove | Built with ❤️ for students around the world</p>
-    </footer>
-
-    <script>
-      async function fetchProfile() {
-        const profileContainer = document.getElementById("profileContainer");
-        const noProfile = document.getElementById("noProfile");
-        const protocolSection = document.getElementById("protocolSection");
-        const protocolContent = document.getElementById("protocolContent");
-
-        //const token = localStorage.getItem("token") || "";
-        const token = "fake-jwt-token"; // TESTING
-
-        if (!token) {
-          profileContainer.style.display = "none";
-          noProfile.style.display = "block";
-          noProfile.innerHTML = `
-            <p>Please log in to view or create your biomedical profile.</p>
-            <a href="/login.html" class="btn">Log In</a>
-          `;
-          return;
+    try {
+      const res = await fetch(
+        "http://127.0.0.1:5000/api/get_biomedical_profile",
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
         }
+      );
 
-        try {
-          const res = await fetch(
-            "http://127.0.0.1:5000/api/get_biomedical_profile",
-            {
-              method: "GET",
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          );
+      if (!res.ok) {
+        // No profile found, show empty form with illnesses loaded
+        profileContainer.style.display = "block";
+        noProfile.style.display = "none";
+        return;
+      }
 
-          if (!res.ok) {
-            profileContainer.style.display = "block";
-            noProfile.style.display = "none";
-            return;
-          }
+      const data = await res.json();
+      console.log("Profile data:", data);
 
-          const data = await res.json();
+      if (data && Object.keys(data).length > 0 && !data.message) {
+        noProfile.style.display = "none";
+        profileContainer.style.display = "block";
+        profileContainer.innerHTML = `
+          <p><strong>Allergies:</strong> ${data.allergies || "None"}</p>
+          <p><strong>Illnesses:</strong> ${(data.illnesses || [])
+            .map((i) => i.name)
+            .join(", ") || "None"}</p>
+          <p><strong>Weight:</strong> ${data.weight || "N/A"} kg</p>
+          <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
+        `;
 
-          if (data && Object.keys(data).length > 0 && !data.message) {
-            noProfile.style.display = "none";
-            profileContainer.style.display = "block";
-            profileContainer.innerHTML = `
-              <p><strong>Allergies:</strong> ${data.allergies || "None"}</p>
-              <p><strong>Illnesses:</strong> ${
-                (data.illnesses || []).map((i) => i.name).join(", ") || "None"
-              }</p>
-              <p><strong>Weight:</strong> ${data.weight || "N/A"} kg</p>
-              <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
-            `;
+        // Show illness protocols if available
+        if (data.illnesses && data.illnesses.length > 0) {
+          let html = "";
 
-            if (data.illnesses && data.illnesses.length > 0) {
-              protocolContent.innerHTML = "";
+          data.illnesses.forEach((illness) => {
+            html += `<h3 class="protocol-disease-name">${illness.name}</h3>`;
 
-              data.illnesses.forEach((illness) => {
-                const illnessDiv = document.createElement("div");
-                illnessDiv.classList.add("individual-protocol");
+            const illnessProtocols = (data.protocols || []).filter(
+              (p) => p.illness_id === illness.id
+            );
 
-                const illnessTitle = document.createElement("h3");
-                illnessTitle.classList.add("protocol-disease-name");
-                illnessTitle.textContent = illness.name;
-                illnessDiv.appendChild(illnessTitle);
-
-                const illnessProtocols = (data.protocols || []).filter(
-                  (p) => p.illness_id === illness.id
-                );
-
-                if (illnessProtocols.length > 0) {
-                  illnessProtocols.forEach((p) => {
-                    const step = document.createElement("p");
-                    step.innerHTML = `<strong>Step ${p.step_order}:</strong> ${p.instruction}`;
-                    illnessDiv.appendChild(step);
-                  });
-                } else {
-                  const noProtocol = document.createElement("p");
-                  noProtocol.textContent = "No protocol available.";
-                  illnessDiv.appendChild(noProtocol);
-                }
-
-                protocolContent.appendChild(illnessDiv);
-              });
-
-              protocolSection.style.display = "block";
+            if (illnessProtocols.length > 0) {
+              html += illnessProtocols
+                .map(
+                  (p) =>
+                    `<p><strong>Step ${p.step_order}:</strong> ${p.instruction}</p>`
+                )
+                .join("");
             } else {
-              protocolSection.style.display = "none";
+              html += "<p>No protocol available</p>";
             }
-          } else {
-            profileContainer.style.display = "block";
-            noProfile.style.display = "none";
-            loadIllnesses();
-          }
-        } catch (err) {
-          console.error("Fetch error:", err);
-          profileContainer.style.display = "block";
-          noProfile.style.display = "none";
-          loadIllnesses();
-        }
-      }
-
-      async function loadIllnesses() {
-        try {
-          const res = await fetch("http://127.0.0.1:5000/api/illnesses");
-          if (!res.ok) throw new Error("Failed to fetch illnesses");
-          const illnesses = await res.json();
-
-          const select = document.getElementById("illnesses");
-          select.innerHTML = "";
-          illnesses.forEach((ill) => {
-            const option = document.createElement("option");
-            option.value = ill.id;
-            option.textContent = ill.name;
-            select.appendChild(option);
           });
-        } catch (err) {
-          console.error("Error loading illnesses:", err);
+
+          protocolContent.innerHTML = html;
+          protocolSection.style.display = "block";
+        } else {
+          protocolSection.style.display = "none";
         }
+      } else {
+        // No profile yet
+        profileContainer.style.display = "block";
+        noProfile.style.display = "none";
       }
+    } catch (err) {
+      console.error("Fetch error:", err);
+      profileContainer.style.display = "block";
+      noProfile.style.display = "none";
+    }
+  }
+
+  async function loadIllnesses() {
+    try {
+      const res = await fetch("http://127.0.0.1:5000/api/illnesses");
+      if (!res.ok) throw new Error("Failed to fetch illnesses");
+      const illnesses = await res.json();
+
+      const select = document.getElementById("illnesses");
+      if (!select) return;
+
+      select.innerHTML = "";
+      illnesses.forEach((ill) => {
+        const option = document.createElement("option");
+        option.value = ill.id;
+        option.textContent = ill.name;
+        select.appendChild(option);
+      });
+
+      console.log("Illnesses loaded:", illnesses);
+    } catch (err) {
+      console.error("Error loading illnesses:", err);
+    }
+  }
+
+  fetchProfile();
+</script>
+
+<script>
+  const form = document.getElementById("bioProfileForm");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const token = "fake-jwt-token"; // TESTING VALUE
+
+    const profileData = {
+      allergies: form.allergies.value,
+      illnesses: Array.from(form.illnesses.selectedOptions).map(
+        (opt) => opt.value
+      ),
+      weight: form.weight.value,
+      height_cm: form.height_cm.value,
+    };
+
+    try {
+      const res = await fetch(
+        "http://127.0.0.1:5000/api/post_biomedical_profile",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(profileData),
+        }
+      );
+
+      if (!res.ok) throw new Error("Failed to save profile");
+
+      const data = await res.json();
+      console.log("Profile saved:", data);
+
       fetchProfile();
-    </script>
+    } catch (err) {
+      console.error("Error submitting form:", err);
+    }
+  });
+</script>
 
-    <script>
-      const form = document.getElementById("bioProfileForm");
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+<script>
+  const chatInput = document.getElementById("chatInput");
+  const chatBtn = document.getElementById("chatBtn");
+  const chatLog = document.getElementById("chatLog");
+  const loading = document.getElementById("loading");
+  const errorPopup = document.getElementById("errorPopup");
 
-        const token = "fake-jwt-token"; // TESTING VALUE
+  async function sendChatMessage() {
+    const prompt = chatInput.value.trim();
+    if (!prompt) return;
 
-        const profileData = {
-          allergies: form.allergies.value,
-          illnesses: Array.from(form.illnesses.selectedOptions).map(
-            (opt) => opt.value
-          ),
-          weight: form.weight.value,
-          height_cm: form.height_cm.value,
-        };
+    chatLog.innerHTML += `<p><strong>You:</strong> ${prompt}</p>`;
+    chatInput.value = "";
 
-        try {
-          const res = await fetch(
-            "http://127.0.0.1:5000/api/post_biomedical_profile",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify(profileData),
-            }
-          );
+    loading.style.display = "block";
 
-          if (!res.ok) throw new Error("Failed to save profile");
-
-          const data = await res.json();
-          console.log("Profile saved:", data);
-
-          fetchProfile();
-        } catch (err) {
-          console.error("Error submitting form:", err);
-        }
+    try {
+      const res = await fetch("http://127.0.0.1:5000/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
       });
-    </script>
 
-    <script>
-      const chatInput = document.getElementById("chatInput");
-      const chatBtn = document.getElementById("chatBtn");
-      const chatLog = document.getElementById("chatLog");
-      const loading = document.getElementById("loading");
-      const errorPopup = document.getElementById("errorPopup");
-
-      async function sendChatMessage() {
-        const prompt = chatInput.value.trim();
-        if (!prompt) return;
-
-        chatLog.innerHTML += `<p><strong>You:</strong> ${prompt}</p>`;
-        chatInput.value = "";
-
-        loading.style.display = "block";
-
-        try {
-          const res = await fetch("http://127.0.0.1:5000/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt }),
-          });
-
-          if (!res.ok) {
-            throw new Error("Request failed");
-          }
-
-          const data = await res.json();
-
-          chatLog.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
-          chatLog.scrollTop = chatLog.scrollHeight;
-        } catch (err) {
-          console.error("Chat error:", err);
-
-          errorPopup.style.display = "block";
-          setTimeout(() => {
-            errorPopup.style.display = "none";
-          }, 3000);
-        } finally {
-          loading.style.display = "none";
-        }
+      if (!res.ok) {
+        throw new Error("Request failed");
       }
 
-      chatBtn.addEventListener("click", sendChatMessage);
-      chatInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") sendChatMessage();
-      });
-    </script>
-  </body>
-</html>
+      const data = await res.json();
+
+      chatLog.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
+      chatLog.scrollTop = chatLog.scrollHeight;
+    } catch (err) {
+      console.error("Chat error:", err);
+
+      errorPopup.style.display = "block";
+      setTimeout(() => {
+        errorPopup.style.display = "none";
+      }, 3000);
+    } finally {
+      loading.style.display = "none";
+    }
+  }
+
+  chatBtn.addEventListener("click", sendChatMessage);
+  chatInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") sendChatMessage();
+  });
+</script>
