@@ -1,12 +1,15 @@
-from backend.university_info.university import University, DegreeNotFoundException
+from backend.university_info.university_details import UniversityDetail, DegreeNotFoundException
 
 if __name__ == "__main__":
-    degree_input = input("Enter the degree you want to search: ")
+    print("=== Search for universities by degree ===")
+    degree = input("Enter the degree you want to search for: ")
 
     try:
-        results = University.search_by_degree(degree_input)
-        print(f"\nUniversities offering {degree_input}:")
+        results = UniversityDetail.search_by_degree(degree)
+
+        print(f"Universities that offer '{degree}':\n")
         for uni in results:
-            print(f"- {uni.name} (Ranking: {uni.ranking})")
+            print(uni)
+
     except DegreeNotFoundException as e:
         print("Error:", e)
