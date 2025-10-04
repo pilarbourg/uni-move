@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import os
 from supabase import create_client
 
-
 load_dotenv()
 
 map_universities_routes = Blueprint("map_universities_routes", __name__)
@@ -33,6 +32,3 @@ def get_universities():
         return jsonify({"error": "Could not fetch universities"}), 500
 
     return jsonify(universities)
-
-
-print("Mapa generado: mapa_universidades_madrid.html")
