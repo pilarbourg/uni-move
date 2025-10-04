@@ -14,7 +14,7 @@
     <nav>
       <div>
         <a href="../index.html">Moving</a>
-        <a href="../index.html">Universities</a>
+        <a href="universidades.html">Universities</a>
         <a href="../index.html">Internships</a>
       </div>
       <h1>UniMove</h1>
@@ -91,64 +91,71 @@
         </section>
       </section>
 
-      <section id="protocolSection" class="protocol-section" style="display: none;">
-        <div class="protocol-container">
-          <h2 class="protocol-heading">Illness Protocol</h2>
-          <div id="protocolContent" class="protocol-box">
-            Loading protocol...
+      <section class="sub-biomed-section">
+        <section
+          id="protocolSection"
+          class="protocol-section"
+          style="display: none"
+        >
+          <div class="protocol-container">
+            <h2 class="protocol-heading">Illness Protocol</h2>
+            <div id="protocolContent" class="protocol-box">
+              Loading protocol...
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="chatbot-section">
-        <article class="biomedical-chatbot-article">
-          <h1>Biomedical Chatbot</h1>
-          <p>
-            Need quick health advice? Our AI-powered biomedical chatbot is here
-            to help! Whether you have questions about symptoms, medications, or
-            general health tips, just type your query and get instant responses.
-          </p>
+        <section class="chatbot-section">
+          <article class="biomedical-chatbot-article">
+            <h1>Biomedical Chatbot</h1>
+            <p>
+              Need quick health advice? Our AI-powered biomedical chatbot is
+              here to help! Whether you have questions about symptoms,
+              medications, or general health tips, just type your query and get
+              instant responses.
+            </p>
 
-          <div id="chatLog"></div>
+            <div id="chatLog"></div>
 
-          <div
-            id="loading"
-            style="
-              display: none;
-              margin: 10px 0;
-              font-style: italic;
-              color: gray;
-            "
-          >
-            ⏳ Thinking...
-          </div>
+            <div
+              id="loading"
+              style="
+                display: none;
+                margin: 10px 0;
+                font-style: italic;
+                color: gray;
+              "
+            >
+              ⏳ Thinking...
+            </div>
 
-          <div
-            id="errorPopup"
-            style="
-              display: none;
-              position: fixed;
-              top: 20px;
-              right: 20px;
-              background: red;
-              color: white;
-              padding: 10px 15px;
-              border-radius: 5px;
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-            "
-          >
-            Error: Could not connect to chatbot.
-          </div>
+            <div
+              id="errorPopup"
+              style="
+                display: none;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: red;
+                color: white;
+                padding: 10px 15px;
+                border-radius: 5px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+              "
+            >
+              Error: Could not connect to chatbot.
+            </div>
 
-          <div class="chatbot-input-div">
-            <input
-              id="chatInput"
-              type="text"
-              placeholder="Ask anything about health..."
-            />
-            <button id="chatBtn" class="btn">Chat Now</button>
-          </div>
-        </article>
+            <div class="chatbot-input-div">
+              <input
+                id="chatInput"
+                type="text"
+                placeholder="Ask anything about health..."
+              />
+              <button id="chatBtn" class="btn">Chat Now</button>
+            </div>
+          </article>
+        </section>
       </section>
 
       <section class="features-grid">
@@ -222,36 +229,48 @@
             profileContainer.style.display = "block";
             profileContainer.innerHTML = `
               <p><strong>Allergies:</strong> ${data.allergies || "None"}</p>
-              <p><strong>Illnesses:</strong> ${(data.illnesses || []).map(i => i.name).join(", ") || "None"}</p>
+              <p><strong>Illnesses:</strong> ${
+                (data.illnesses || []).map((i) => i.name).join(", ") || "None"
+              }</p>
               <p><strong>Weight:</strong> ${data.weight || "N/A"} kg</p>
               <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
             `;
-            
-            if (data.illnesses && data.illnesses.length > 0) {
-              let html = "";
 
-              data.illnesses.forEach(illness => {
-                html += `<h3 class="protocol-disease-name">${illness.name}</h3>`;
+            if (data.illnesses && data.illnesses.length > 0) {
+              protocolContent.innerHTML = "";
+
+              data.illnesses.forEach((illness) => {
+                const illnessDiv = document.createElement("div");
+                illnessDiv.classList.add("individual-protocol");
+
+                const illnessTitle = document.createElement("h3");
+                illnessTitle.classList.add("protocol-disease-name");
+                illnessTitle.textContent = illness.name;
+                illnessDiv.appendChild(illnessTitle);
 
                 const illnessProtocols = (data.protocols || []).filter(
-                  p => p.illness_id === illness.id
+                  (p) => p.illness_id === illness.id
                 );
 
                 if (illnessProtocols.length > 0) {
-                  html += illnessProtocols
-                    .map(p => `<p><strong>Step ${p.step_order}:</strong> ${p.instruction}</p>`)
-                    .join("");
+                  illnessProtocols.forEach((p) => {
+                    const step = document.createElement("p");
+                    step.innerHTML = `<strong>Step ${p.step_order}:</strong> ${p.instruction}`;
+                    illnessDiv.appendChild(step);
+                  });
                 } else {
-                  html += "<p>No protocol available</p>";
+                  const noProtocol = document.createElement("p");
+                  noProtocol.textContent = "No protocol available.";
+                  illnessDiv.appendChild(noProtocol);
                 }
+
+                protocolContent.appendChild(illnessDiv);
               });
 
-              protocolContent.innerHTML = html;
               protocolSection.style.display = "block";
             } else {
               protocolSection.style.display = "none";
             }
-
           } else {
             profileContainer.style.display = "block";
             noProfile.style.display = "none";
@@ -295,7 +314,9 @@
 
         const profileData = {
           allergies: form.allergies.value,
-          illnesses: Array.from(form.illnesses.selectedOptions).map(opt => opt.value), 
+          illnesses: Array.from(form.illnesses.selectedOptions).map(
+            (opt) => opt.value
+          ),
           weight: form.weight.value,
           height_cm: form.height_cm.value,
         };

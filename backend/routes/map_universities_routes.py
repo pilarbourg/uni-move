@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
-import math
 import os
 from supabase import create_client
 
@@ -33,5 +32,3 @@ def get_universities():
         return jsonify({"error": "Could not fetch universities"}), 500
 
     return jsonify(universities)
-
-print("Mapa generado: mapa_universidades_madrid.html")
