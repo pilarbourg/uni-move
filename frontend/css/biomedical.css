@@ -118,6 +118,10 @@ nav div a:hover {
   justify-self: center;
 }
 
+#illnesses {
+  color: #627e9e;
+}
+
 .main-biomed {
   display: flex;
   flex-direction: column;
