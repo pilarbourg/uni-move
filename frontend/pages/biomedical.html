@@ -1,9 +1,207 @@
-<script>
-  async function fetchProfile() {
-    const profileContainer = document.getElementById("profileContainer");
-    const noProfile = document.getElementById("noProfile");
-    const protocolSection = document.getElementById("protocolSection");
-    const protocolContent = document.getElementById("protocolContent");
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UniMove Biomedical Portal</title>
+    <link rel="stylesheet" href="../css/biomedical.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <div>
+        <a href="../index.html">Moving</a>
+        <a href="universidades.html">Universities</a>
+        <a href="../index.html">Internships</a>
+      </div>
+      <h1>UniMove</h1>
+      <div>
+        <a href="biomedical.html">Health</a>
+        <a href="mapclinics.html">Clinical Maps</a>
+        <a href="../index.html">Home</a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="main-biomed-section">
+        <article class="hero">
+          <img
+            src="../assets/svgs/health_cross_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"
+            alt="Biomedical Illustration"
+          />
+          <h2>
+            Keep Your Health Info<br />
+            Safe and Accessible
+          </h2>
+          <p>
+            Easily manage your allergies, illnesses, and health profile while
+            moving between universities. Set up your biomedical profile to
+            ensure quick access to vital health information whenever you need
+            it. Focus on your studies and adventures, knowing your health data
+            is just a click away.
+          </p>
+        </article>
+        <div class="main-biomed">
+          <section class="profile-card">
+            <article class="profile-form">
+              <h2>Biomedical Profile</h2>
+
+              <div id="noProfile" style="display: none" class="empty-profile">
+                <p>You haven’t set up your biomedical profile yet.</p>
+                <a href="#" class="btn" id="getStartedBtn">Get Started</a>
+              </div>
+
+              <div id="profileContainer" style="display: none">
+                <form id="bioProfileForm">
+                  <div>
+                    <label for="allergies">Allergies</label>
+                    <input
+                      type="text"
+                      id="allergies"
+                      name="allergies"
+                      placeholder="Peanuts, Pollen..."
+                    />
+
+                    <label for="illnesses">Illnesses</label>
+                    <select id="illnesses" name="illnesses" multiple></select>
+                  </div>
+                  <div>
+                    <label for="weight">Weight (kg)</label>
+                    <input
+                      type="number"
+                      id="weight"
+                      name="weight"
+                      step="0.1"
+                      placeholder="72.5"
+                    />
+
+                    <label for="height_cm">Height (cm)</label>
+                    <input
+                      type="number"
+                      id="height_cm"
+                      name="height_cm"
+                      step="0.1"
+                      placeholder="175.0"
+                    />
+                  </div>
+
+                  <button type="submit" class="btn">Save Profile</button>
+                </form>
+              </div>
+            </article>
+          </section>
+          <section class="features-grid">
+            <div class="feature">
+              <h3>🦠 Allergies & Conditions</h3>
+              <p>
+                Record and manage allergies or chronic illnesses for a smooth
+                campus experience.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>📈 Weight & Height Tracking</h3>
+              <p>
+                Monitor your health stats and keep them updated for wellness
+                programs.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>🎓 Student Friendly</h3>
+              <p>
+                Easy-to-use interface designed specifically for busy students on
+                the move.
+              </p>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="sub-biomed-section">
+        <section
+          id="protocolSection"
+          class="protocol-section"
+          style="display: none"
+        >
+          <div class="protocol-container">
+            <h2 class="protocol-heading">Illness Protocols</h2>
+            <p>
+              Quickly access step-by-step protocols for managing your illnesses
+              during emergencies or routine care so you’re always prepared, no
+              matter where you are.
+            </p>
+            <div id="protocolContent" class="protocol-box">
+              Loading protocol...
+            </div>
+          </div>
+        </section>
+
+        <section class="chatbot-section">
+          <article class="biomedical-chatbot-article">
+            <h1>Biomedical Chatbot</h1>
+            <p>
+              Need quick health advice? Our AI-powered biomedical chatbot is
+              here to help! Whether you have questions about symptoms,
+              medications, or general health tips, just type your query and get
+              instant responses.
+            </p>
+
+            <div id="chatLog"></div>
+
+            <div
+              id="loading"
+              style="
+                display: none;
+                margin: 10px 0;
+                font-style: italic;
+                color: gray;
+              "
+            >
+              ⏳ Thinking...
+            </div>
+
+            <div
+              id="errorPopup"
+              style="
+                display: none;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: red;
+                color: white;
+                padding: 10px 15px;
+                border-radius: 5px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+              "
+            >
+              Error: Could not connect to chatbot.
+            </div>
+
+            <div class="chatbot-input-div">
+              <input
+                id="chatInput"
+                type="text"
+                placeholder="Ask anything about health..."
+              />
+              <button id="chatBtn" class="btn">Chat Now</button>
+            </div>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 UniMove | Built with ❤️ for students around the world</p>
+    </footer>
+
+    <script>
+      async function fetchProfile() {
+        const profileContainer = document.getElementById("profileContainer");
+        const noProfile = document.getElementById("noProfile");
+        const protocolSection = document.getElementById("protocolSection");
+        const protocolContent = document.getElementById("protocolContent");
 
     const token = "fake-jwt-token"; // TESTING
 
