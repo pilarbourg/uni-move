@@ -1,76 +1,89 @@
 from flask import Blueprint, jsonify, request
 from supabase import create_client, Client
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+map_apartamentos_routes = Blueprint("map_apartamentos_routes", __name__)
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-class ApartmentNotFoundException(Exception):
-    pass
 
-
-class Apartment:
-    def __init__(self, id: int, titulo: str, barrio: str, precio: float, disponible: int, amueblado: int):
-        self.id = id
-        self.titulo = titulo
-        self.barrio = barrio
-        self.precio = precio
-        self.disponible = disponible
-        self.amueblado = amueblado
-
-    def __repr__(self):
-        return f"{self.titulo} ({self.barrio}) - {self.precio}€"
-
-
-class ApartmentSearcher:
-
-    @staticmethod
-    def get_all():
-        response = supabase.table("apartamentos").select("id, titulo, barrio, precio, disponible, amueblado").execute()
+@map_apartamentos_routes.route("/apartments", methods=["GET"])
+def get_apartments():
+    """
+    Devuelve todos los apartamentos con coordenadas, si existen.
+    """
+    try:
+        response = supabase.table("apartamentos").select("*").execute()
         data = response.data or []
 
-        if not data:
-            raise ApartmentNotFoundException("No apartments found")
+        # Filtrar solo los que tienen latitud y longitud
+        apartments = [
+            {
+                "id": a["id"],
+                "titulo": a["titulo"],
+                "barrio": a.get("barrio"),
+                "precio": a.get("precio"),
+                "direccion": a.get("direccion"),
+                "descripcion": a.get("descripcion"),
+                "tamaño_m2": a.get("tamaño_m2"),
+                "amueblado": a.get("amueblado"),
+                "disponible": a.get("disponible"),
+                "latitud": a.get("latitud"),
+                "longitud": a.get("longitud")
+            }
+            for a in data if a.get("latitud") and a.get("longitud")
+        ]
 
-        results = [Apartment(a["id"], a["titulo"], a.get("barrio"), a.get("precio"), a.get("disponible"), a.get("amueblado"))
-                   for a in data]
+        return jsonify(apartments), 200
 
-        return results
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-    @staticmethod
-    def search_by_budget(budget: float):
-        response = (
-            supabase.table("apartamentos")
-            .select("id, titulo, barrio, precio, disponible, amueblado")
-            .lte("precio", budget)
-            .execute()
-        )
+
+@map_apartamentos_routes.route("/apartments/search", methods=["GET"])
+def search_apartments():
+    """
+    Busca apartamentos filtrando por barrio y presupuesto.
+    /apartments/search?barrio=Centro&presupuesto=900
+    """
+    try:
+        barrio = request.args.get("barrio", type=str)
+        presupuesto = request.args.get("presupuesto", type=float)
+
+        query = supabase.table("apartamentos").select("*")
+
+        if barrio:
+            query = query.ilike("barrio", f"%{barrio}%")
+        if presupuesto:
+            query = query.lte("precio", presupuesto)
+
+        response = query.execute()
         data = response.data or []
 
-        if not data:
-            raise ApartmentNotFoundException(f"No apartments found under {budget}€")
+        apartments = [
+            {
+                "id": a["id"],
+                "titulo": a["titulo"],
+                "barrio": a.get("barrio"),
+                "precio": a.get("precio"),
+                "direccion": a.get("direccion"),
+                "descripcion": a.get("descripcion"),
+                "tamaño_m2": a.get("tamaño_m2"),
+                "amueblado": a.get("amueblado"),
+                "disponible": a.get("disponible"),
+                "latitud": a.get("latitud"),
+                "longitud": a.get("longitud")
+            }
+            for a in data if a.get("latitud") and a.get("longitud")
+        ]
 
-        results = [Apartment(a["id"], a["titulo"], a.get("barrio"), a.get("precio"), a.get("disponible"), a.get("amueblado"))
-                   for a in data]
+        return jsonify(apartments), 200
 
-        return results
-
-    @staticmethod
-    def search_by_neighborhood(neighborhood: str):
-        response = (
-            supabase.table("apartamentos")
-            .select("id, titulo, barrio, precio, disponible, amueblado")
-            .ilike("barrio", f"%{neighborhood}%")
-            .execute()
-        )
-        data = response.data or []
-
-        if not data:
-            raise ApartmentNotFoundException(f"No apartments found in neighborhood {neighborhood}")
-
-        results = [Apartment(a["id"], a["titulo"], a.get("barrio"), a.get("precio"), a.get("disponible"), a.get("amueblado"))
-                   for a in data]
-
-        return results
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
