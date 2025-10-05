@@ -1,7 +1,6 @@
 import pytest
-from flask import Blueprint, jsonify, request
-from flask_cors import CORS
-from backend.routes.login_routes import Login
+from backend.routes.login_routes import login_routes
+from flask import Flask
 from supabase import create_client, Client
 from postgrest import APIError
 
@@ -10,28 +9,68 @@ SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+@pytest.fixture
+def client():
+    app = Flask(__name__)
+    app.register_blueprint(login_routes)
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        yield client
+
 usuarios = supabase.table("users").select("*").execute()
 
-def test_user_register_new_user(login_instance=Login()):
-    login_instance.user_register("sofia","sofia@gmail.com","1234")
-    result = supabase.table("users").select("*").execute()
-    assert any(user["email"] == "sofia@gmail.com" for user in result.data)
+def test_user_register_new_user(client):
+    response = client.post("/api/register", json={
+        "name": "sofia",
+        "email": "sofia@gmail.com",
+        "password_hash": "1234"})
+    assert response.status_code == 201
+    assert response.json["message"] == "User registered successfully."
     supabase.table("users").delete().eq("email", "sofia@gmail.com").execute()
     
-def test_user_register_existing_user(login_instance=Login()):
-    with pytest.raises(APIError) as errortype:
-        login_instance.user_register("Alice Johnson", "alice@example.com", "hashed_password_123")
-    assert "duplicate key" in str(errortype.value)
+def test_user_register_existing_user(client):
+    supabase.table("users").insert({
+        "name": "Alice Johnson",
+        "email": "alice@example.com",
+        "password_hash": "hashed_password_123"}).execute()
+    response = client.post("/api/register", json={
+        "name": "Alice Johnson",
+        "email": "alice@example.com",
+        "password_hash": "hashed_password_123"})
+    assert response.status_code == 400
+    assert response.json["message"] == "User already registered."
+    supabase.table("users").delete().eq("email", "alice@example.com").execute()
 
-def test_user_login_success(login_instance=Login()):
-    assert login_instance.user_login("alice@example.com", "hashed_password_123") == True
+def test_user_login_success(client):
+    supabase.table("users").insert({
+        "name": "Alice Johnson",
+        "email": "alice@example.com",
+        "password_hash": "hashed_password_123"}).execute()
+    response = client.post("/api/login", json={
+        "email": "alice@example.com",
+        "password": "hashed_password_123"})
+    assert response.status_code == 200
+    assert response.json["message"] == "Login successful."
+    supabase.table("users").delete().eq("email", "alice@example.com").execute()
 
-def test_user_login_wrong_password(login_instance=Login()):
-    with pytest.raises(ValueError) as error:
-        login_instance.user_login("alice@example.com", "wrong")
-    assert str(error.value) == "Invalid salt"
+def test_user_login_wrong_password(client):
+    supabase.table("users").insert({
+        "name": "Alice Johnson",
+        "email": "alice@example.com",
+        "password_hash": "hashed_password_123"
+    }).execute()
+    response = client.post("/api/login", json={
+        "email": "alice@example.com",
+        "password": "wrong"
+    })
+    assert response.status_code == 401
+    assert response.json["message"] == "Invalid salt"
+    supabase.table("users").delete().eq("email", "alice@example.com").execute()
 
-def test_user_login_nonexistent_user(login_instance=Login()):
-    with pytest.raises(ValueError) as error:
-        login_instance.user_login("pepe2442424@gmail.com", "1234")
-    assert str(error.value) == "User is not registered"
+def test_user_login_nonexistent_user(client):
+    response = client.post("/api/login", json={
+        "email": "pepe2442424@gmail.com",
+        "password": "1234"
+    })
+    assert response.status_code == 401
+    assert response.json["message"] == "User is not registered"

@@ -41,11 +41,23 @@ def user_login(self,email,password):
         #    raise ValueError("Wrong password")
 @login_routes.route("/api/register", methods=["POST"])
 def user_register():
-    def user_register(self,name,email,password):
-        user_register = User(name,email,password)
-        if user_register.email in usuarios:
-            return jsonify({"message": "User already registered."}), 200
-        #futuro hash
-        #hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
-        #password_hash_str = hashed.decode("utf-8")
-        supabase.table("users").insert({"name": user_register.name,"email": user_register.email,"password_hash": user_register.password}).execute()
+    data = request.json
+    name = data.get("name")
+    email = data.get("email")
+    password = data.get("password_hash")
+
+    new_user = User(name, email, password)
+
+    existing_users = supabase.table("users").select("*").eq("email", new_user.email).execute()
+
+    if existing_users.data:
+        return jsonify({"message": "User already registered."}), 400
+    
+    #futuro hash
+    #hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+    #password_hash_str = hashed.decode("utf-8")
+        
+    supabase.table("users").insert({"name": new_user.name,"email": new_user.email,"password_hash": new_user.password}).execute()
+
+    #todo --> confirm that user is created with hashed password
+    return jsonify({"message": "User registered successfully."}), 201
