@@ -29,48 +29,30 @@ def test_user_register_new_user(client):
     supabase.table("users").delete().eq("email", "sofia@gmail.com").execute()
     
 def test_user_register_existing_user(client):
-    supabase.table("users").insert({
-        "name": "Alice Johnson",
-        "email": "alice@example.com",
-        "password_hash": "hashed_password_123"}).execute()
     response = client.post("/api/register", json={
         "name": "Alice Johnson",
         "email": "alice@example.com",
         "password_hash": "hashed_password_123"})
     assert response.status_code == 400
     assert response.json["message"] == "User already registered."
-    supabase.table("users").delete().eq("email", "alice@example.com").execute()
 
 def test_user_login_success(client):
-    supabase.table("users").insert({
-        "name": "Alice Johnson",
-        "email": "alice@example.com",
-        "password_hash": "hashed_password_123"}).execute()
-    response = client.post("/api/login", json={
+    response = client.get("/api/login", json={
         "email": "alice@example.com",
         "password": "hashed_password_123"})
     assert response.status_code == 200
     assert response.json["message"] == "Login successful."
-    supabase.table("users").delete().eq("email", "alice@example.com").execute()
 
 def test_user_login_wrong_password(client):
-    supabase.table("users").insert({
-        "name": "Alice Johnson",
+    response = client.get("/api/login", json={
         "email": "alice@example.com",
-        "password_hash": "hashed_password_123"
-    }).execute()
-    response = client.post("/api/login", json={
-        "email": "alice@example.com",
-        "password": "wrong"
-    })
+        "password": "wrong"})
     assert response.status_code == 401
     assert response.json["message"] == "Invalid salt"
-    supabase.table("users").delete().eq("email", "alice@example.com").execute()
 
 def test_user_login_nonexistent_user(client):
-    response = client.post("/api/login", json={
+    response = client.get("/api/login", json={
         "email": "pepe2442424@gmail.com",
-        "password": "1234"
-    })
+        "password": "1234"})
     assert response.status_code == 401
     assert response.json["message"] == "User is not registered"
