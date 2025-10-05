@@ -214,90 +214,90 @@
         const protocolSection = document.getElementById("protocolSection");
         const protocolContent = document.getElementById("protocolContent");
 
-    const token = "fake-jwt-token"; // TESTING
+      const token = "fake-jwt-token"; // TESTING
 
-    await loadIllnesses();
+      await loadIllnesses();
 
-    if (!token) {
-      profileContainer.style.display = "none";
-      noProfile.style.display = "block";
-      noProfile.innerHTML = `
-        <p>Please log in to view or create your biomedical profile.</p>
-        <a href="/login.html" class="btn">Log In</a>
-      `;
-      return;
-    }
-
-    try {
-      const res = await fetch(
-        "http://127.0.0.1:5000/api/get_biomedical_profile",
-        {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (!res.ok) {
-        // No profile found, show empty form with illnesses loaded
-        profileContainer.style.display = "block";
-        noProfile.style.display = "none";
+      if (!token) {
+        profileContainer.style.display = "none";
+        noProfile.style.display = "block";
+        noProfile.innerHTML = `
+          <p>Please log in to view or create your biomedical profile.</p>
+          <a href="/login.html" class="btn">Log In</a>
+        `;
         return;
       }
 
-      const data = await res.json();
-      console.log("Profile data:", data);
+      try {
+        const res = await fetch(
+          "http://127.0.0.1:5000/api/get_biomedical_profile",
+          {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-      if (data && Object.keys(data).length > 0 && !data.message) {
-        noProfile.style.display = "none";
-        profileContainer.style.display = "block";
-        profileContainer.innerHTML = `
-          <p><strong>Allergies:</strong> ${data.allergies || "None"}</p>
-          <p><strong>Illnesses:</strong> ${(data.illnesses || [])
-            .map((i) => i.name)
-            .join(", ") || "None"}</p>
-          <p><strong>Weight:</strong> ${data.weight || "N/A"} kg</p>
-          <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
-        `;
-
-        // Show illness protocols if available
-        if (data.illnesses && data.illnesses.length > 0) {
-          let html = "";
-
-          data.illnesses.forEach((illness) => {
-            html += `<h3 class="protocol-disease-name">${illness.name}</h3>`;
-
-            const illnessProtocols = (data.protocols || []).filter(
-              (p) => p.illness_id === illness.id
-            );
-
-            if (illnessProtocols.length > 0) {
-              html += illnessProtocols
-                .map(
-                  (p) =>
-                    `<p><strong>Step ${p.step_order}:</strong> ${p.instruction}</p>`
-                )
-                .join("");
-            } else {
-              html += "<p>No protocol available</p>";
-            }
-          });
-
-          protocolContent.innerHTML = html;
-          protocolSection.style.display = "block";
-        } else {
-          protocolSection.style.display = "none";
+        if (!res.ok) {
+          // No profile found, show empty form with illnesses loaded
+          profileContainer.style.display = "block";
+          noProfile.style.display = "none";
+          return;
         }
-      } else {
-        // No profile yet
+
+        const data = await res.json();
+        console.log("Profile data:", data);
+
+        if (data && Object.keys(data).length > 0 && !data.message) {
+          noProfile.style.display = "none";
+          profileContainer.style.display = "block";
+          profileContainer.innerHTML = `
+            <p><strong>Allergies:</strong> ${data.allergies || "None"}</p>
+            <p><strong>Illnesses:</strong> ${(data.illnesses || [])
+              .map((i) => i.name)
+              .join(", ") || "None"}</p>
+            <p><strong>Weight:</strong> ${data.weight || "N/A"} kg</p>
+            <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
+          `;
+
+          // Show illness protocols if available
+          if (data.illnesses && data.illnesses.length > 0) {
+            let html = "";
+
+            data.illnesses.forEach((illness) => {
+              html += `<h3 class="protocol-disease-name">${illness.name}</h3>`;
+
+              const illnessProtocols = (data.protocols || []).filter(
+                (p) => p.illness_id === illness.id
+              );
+
+              if (illnessProtocols.length > 0) {
+                html += illnessProtocols
+                  .map(
+                    (p) =>
+                      `<p><strong>Step ${p.step_order}:</strong> ${p.instruction}</p>`
+                  )
+                  .join("");
+              } else {
+                html += "<p>No protocol available</p>";
+              }
+            });
+
+            protocolContent.innerHTML = html;
+            protocolSection.style.display = "block";
+          } else {
+            protocolSection.style.display = "none";
+          }
+        } else {
+          // No profile yet
+          profileContainer.style.display = "block";
+          noProfile.style.display = "none";
+        }
+      } catch (err) {
+        console.error("Fetch error:", err);
         profileContainer.style.display = "block";
         noProfile.style.display = "none";
       }
-    } catch (err) {
-      console.error("Fetch error:", err);
-      profileContainer.style.display = "block";
-      noProfile.style.display = "none";
     }
-  }
 
   async function loadIllnesses() {
     try {
