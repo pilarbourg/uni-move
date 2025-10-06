@@ -14,9 +14,8 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @bio_profile_routes.route("/api/get_biomedical_profile", methods=["GET"])
 def get_biomedical_profile():
-    user_id = 64  # TEMPORARY for testing
+    user_id = 115  # TEMPORARY for testing
 
-    # Fetch biomedical profile for user
     response = supabase.table("biomedical_profiles") \
         .select("*") \
         .eq("user_id", user_id) \
@@ -28,7 +27,6 @@ def get_biomedical_profile():
 
     profile = profiles[0]
 
-    # Get linked illnesses
     illness_links = supabase.table("biomedical_profile_illnesses") \
         .select("illness_id") \
         .eq("biomedical_profile_id", profile["id"]) \
@@ -44,7 +42,6 @@ def get_biomedical_profile():
             .execute()
         illnesses = illnesses_res.data or []
 
-    # Get protocols for those illnesses
     protocols = []
     if illness_ids:
         protocols_res = supabase.table("protocols") \
@@ -62,10 +59,9 @@ def get_biomedical_profile():
 
 @bio_profile_routes.route("/api/post_biomedical_profile", methods=["POST"])
 def post_biomedical_profile():
-    user_id = 64  # TEMPORARY for testing
+    user_id = 115  # TEMPORARY for testing
     data = request.json
 
-    # Check if profile exists
     existing_profile = supabase.table("biomedical_profiles") \
         .select("*") \
         .eq("user_id", user_id) \
@@ -75,7 +71,6 @@ def post_biomedical_profile():
     if existing_profile and existing_profile.data:
         return jsonify({"message": "Biomedical profile already exists"}), 409
 
-    # Create profile
     new_profile = {
         "user_id": user_id,
         "allergies": data.get("allergies"),
@@ -89,7 +84,6 @@ def post_biomedical_profile():
 
     created_profile = response.data[0]
 
-    # Insert illness links
     illness_ids = data.get("illnesses", [])
     if illness_ids:
         inserts = [
@@ -98,7 +92,6 @@ def post_biomedical_profile():
         ]
         supabase.table("biomedical_profile_illnesses").insert(inserts).execute()
 
-    # Fetch illness names for return
     illness_names = []
     if illness_ids:
         ill_res = supabase.table("illnesses").select("id, name").in_("id", illness_ids).execute()
