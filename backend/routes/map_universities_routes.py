@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import os
 from supabase import create_client
 
-
 load_dotenv()
 
 map_universities_routes = Blueprint("map_universities_routes", __name__)

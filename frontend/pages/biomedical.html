@@ -14,7 +14,7 @@
     <nav>
       <div>
         <a href="../index.html">Moving</a>
-        <a href="../index.html">Universities</a>
+        <a href="universidades.html">Universities</a>
         <a href="../index.html">Internships</a>
       </div>
       <h1>UniMove</h1>
@@ -44,135 +44,146 @@
             is just a click away.
           </p>
         </article>
-        <section class="profile-card">
-          <article class="profile-form">
-            <h2>Biomedical Profile</h2>
+        <div class="main-biomed">
+          <section class="profile-card">
+            <article class="profile-form">
+              <h2>Biomedical Profile</h2>
 
-            <div id="noProfile" style="display: none" class="empty-profile">
-              <p>You haven’t set up your biomedical profile yet.</p>
-              <a href="#" class="btn" id="getStartedBtn">Get Started</a>
+              <div id="noProfile" style="display: none" class="empty-profile">
+                <p>You haven’t set up your biomedical profile yet.</p>
+                <a href="#" class="btn" id="getStartedBtn">Get Started</a>
+              </div>
+
+              <div id="profileContainer" style="display: none">
+                <form id="bioProfileForm">
+                  <div>
+                    <label for="allergies">Allergies</label>
+                    <input
+                      type="text"
+                      id="allergies"
+                      name="allergies"
+                      placeholder="Peanuts, Pollen..."
+                    />
+
+                    <label for="illnesses">Illnesses</label>
+                    <select id="illnesses" name="illnesses" multiple></select>
+                  </div>
+                  <div>
+                    <label for="weight">Weight (kg)</label>
+                    <input
+                      type="number"
+                      id="weight"
+                      name="weight"
+                      step="0.1"
+                      placeholder="72.5"
+                    />
+
+                    <label for="height_cm">Height (cm)</label>
+                    <input
+                      type="number"
+                      id="height_cm"
+                      name="height_cm"
+                      step="0.1"
+                      placeholder="175.0"
+                    />
+                    <button type="submit" class="btn">Save Profile</button>
+                  </div>
+                </form>
+              </div>
+            </article>
+          </section>
+          <section class="features-grid">
+            <div class="feature">
+              <h3>🦠 Allergies & Conditions</h3>
+              <p>
+                Record and manage allergies or chronic illnesses for a smooth
+                campus experience.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>📈 Weight & Height Tracking</h3>
+              <p>
+                Monitor your health stats and keep them updated for wellness
+                programs.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>🎓 Student Friendly</h3>
+              <p>
+                Easy-to-use interface designed specifically for busy students on
+                the move.
+              </p>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="sub-biomed-section">
+        <section id="protocolSection" class="protocol-section">
+          <div class="protocol-container">
+            <h2 class="protocol-heading">Illness Protocols</h2>
+            <p>
+              Quickly access step-by-step protocols for managing your illnesses
+              during emergencies or routine care so you’re always prepared, no
+              matter where you are.
+            </p>
+            <div id="protocolContent" class="protocol-box">
+              <i>Create your biomedical profile to see protocols here.</i>
+            </div>
+          </div>
+        </section>
+
+        <section class="chatbot-section">
+          <article class="biomedical-chatbot-article">
+            <h1>Biomedical Chatbot</h1>
+            <p>
+              Need quick health advice? Our AI-powered biomedical chatbot is
+              here to help! Whether you have questions about symptoms,
+              medications, or general health tips, just type your query and get
+              instant responses.
+            </p>
+
+            <div id="chatLog"></div>
+
+            <div
+              id="loading"
+              style="
+                display: none;
+                margin: 10px 0;
+                font-style: italic;
+                color: gray;
+              "
+            >
+              ⏳ Thinking...
             </div>
 
-            <div id="profileContainer" style="display: none">
-              <form id="bioProfileForm">
-                <label for="allergies">Allergies</label>
-                <input
-                  type="text"
-                  id="allergies"
-                  name="allergies"
-                  placeholder="Peanuts, Pollen..."
-                />
+            <div
+              id="errorPopup"
+              style="
+                display: none;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: red;
+                color: white;
+                padding: 10px 15px;
+                border-radius: 5px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+              "
+            >
+              Error: Could not connect to chatbot.
+            </div>
 
-                <label for="illnesses">Illnesses</label>
-                <select id="illnesses" name="illnesses" multiple></select>
-
-                <label for="weight">Weight (kg)</label>
-                <input
-                  type="number"
-                  id="weight"
-                  name="weight"
-                  step="0.1"
-                  placeholder="72.5"
-                />
-
-                <label for="height_cm">Height (cm)</label>
-                <input
-                  type="number"
-                  id="height_cm"
-                  name="height_cm"
-                  step="0.1"
-                  placeholder="175.0"
-                />
-
-                <button type="submit" class="btn">Save Profile</button>
-              </form>
+            <div class="chatbot-input-div">
+              <input
+                id="chatInput"
+                type="text"
+                placeholder="Ask anything about health..."
+              />
+              <button id="chatBtn" class="btn">Chat Now</button>
             </div>
           </article>
         </section>
-      </section>
-
-      <section id="protocolSection" class="protocol-section" style="display: none;">
-        <div class="protocol-container">
-          <h2 class="protocol-heading">Illness Protocol</h2>
-          <div id="protocolContent" class="protocol-box">
-            Loading protocol...
-          </div>
-        </div>
-      </section>
-
-      <section class="chatbot-section">
-        <article class="biomedical-chatbot-article">
-          <h1>Biomedical Chatbot</h1>
-          <p>
-            Need quick health advice? Our AI-powered biomedical chatbot is here
-            to help! Whether you have questions about symptoms, medications, or
-            general health tips, just type your query and get instant responses.
-          </p>
-
-          <div id="chatLog"></div>
-
-          <div
-            id="loading"
-            style="
-              display: none;
-              margin: 10px 0;
-              font-style: italic;
-              color: gray;
-            "
-          >
-            ⏳ Thinking...
-          </div>
-
-          <div
-            id="errorPopup"
-            style="
-              display: none;
-              position: fixed;
-              top: 20px;
-              right: 20px;
-              background: red;
-              color: white;
-              padding: 10px 15px;
-              border-radius: 5px;
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-            "
-          >
-            Error: Could not connect to chatbot.
-          </div>
-
-          <div class="chatbot-input-div">
-            <input
-              id="chatInput"
-              type="text"
-              placeholder="Ask anything about health..."
-            />
-            <button id="chatBtn" class="btn">Chat Now</button>
-          </div>
-        </article>
-      </section>
-
-      <section class="features-grid">
-        <div class="feature">
-          <h3>Allergies & Conditions</h3>
-          <p>
-            Record and manage allergies or chronic illnesses for a smooth campus
-            experience.
-          </p>
-        </div>
-        <div class="feature">
-          <h3>Weight & Height Tracking</h3>
-          <p>
-            Monitor your health stats and keep them updated for wellness
-            programs.
-          </p>
-        </div>
-        <div class="feature">
-          <h3>Student Friendly</h3>
-          <p>
-            Easy-to-use interface designed specifically for busy students on the
-            move.
-          </p>
-        </div>
       </section>
     </main>
 
@@ -187,16 +198,15 @@
         const protocolSection = document.getElementById("protocolSection");
         const protocolContent = document.getElementById("protocolContent");
 
-        //const token = localStorage.getItem("token") || "";
-        const token = "fake-jwt-token"; // TESTING
+        const token = "fake-jwt-token"; // Replace with real token in production
 
         if (!token) {
           profileContainer.style.display = "none";
           noProfile.style.display = "block";
           noProfile.innerHTML = `
-            <p>Please log in to view or create your biomedical profile.</p>
-            <a href="/login.html" class="btn">Log In</a>
-          `;
+          <p>Please log in to view or create your biomedical profile.</p>
+          <a href="/login.html" class="btn">Log In</a>
+        `;
           return;
         }
 
@@ -209,11 +219,14 @@
             }
           );
 
-          if (!res.ok) {
+          if (res.status === 404) {
             profileContainer.style.display = "block";
             noProfile.style.display = "none";
+            await loadIllnesses();
             return;
           }
+
+          if (!res.ok) throw new Error("Failed to fetch profile");
 
           const data = await res.json();
 
@@ -221,47 +234,57 @@
             noProfile.style.display = "none";
             profileContainer.style.display = "block";
             profileContainer.innerHTML = `
-              <p><strong>Allergies:</strong> ${data.allergies || "None"}</p>
-              <p><strong>Illnesses:</strong> ${(data.illnesses || []).map(i => i.name).join(", ") || "None"}</p>
-              <p><strong>Weight:</strong> ${data.weight || "N/A"} kg</p>
-              <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
-            `;
-            
-            if (data.illnesses && data.illnesses.length > 0) {
-              let html = "";
+            <p><strong>Allergies:</strong> ${data.allergies || "None"}</p>
+            <p><strong>Illnesses:</strong> ${
+              (data.illnesses || []).map((i) => i.name).join(", ") || "None"
+            }</p>
+            <p><strong>Weight:</strong> ${data.weight || "N/A"} kg</p>
+            <p><strong>Height:</strong> ${data.height_cm || "N/A"} cm</p>
+          `;
 
-              data.illnesses.forEach(illness => {
-                html += `<h3 class="protocol-disease-name">${illness.name}</h3>`;
+            if (data.illnesses && data.illnesses.length > 0) {
+              protocolContent.innerHTML = "";
+              data.illnesses.forEach((illness) => {
+                const illnessDiv = document.createElement("div");
+                illnessDiv.classList.add("individual-protocol");
+
+                const illnessTitle = document.createElement("h3");
+                illnessTitle.classList.add("protocol-disease-name");
+                illnessTitle.textContent = illness.name;
+                illnessDiv.appendChild(illnessTitle);
 
                 const illnessProtocols = (data.protocols || []).filter(
-                  p => p.illness_id === illness.id
+                  (p) => p.illness_id === illness.id
                 );
 
                 if (illnessProtocols.length > 0) {
-                  html += illnessProtocols
-                    .map(p => `<p><strong>Step ${p.step_order}:</strong> ${p.instruction}</p>`)
-                    .join("");
+                  illnessProtocols.forEach((p) => {
+                    const step = document.createElement("p");
+                    step.innerHTML = `<strong>Step ${p.step_order}:</strong> ${p.instruction}`;
+                    illnessDiv.appendChild(step);
+                  });
                 } else {
-                  html += "<p>No protocol available</p>";
+                  const noStep = document.createElement("p");
+                  noStep.textContent = "No protocol available.";
+                  illnessDiv.appendChild(noStep);
                 }
-              });
 
-              protocolContent.innerHTML = html;
+                protocolContent.appendChild(illnessDiv);
+              });
               protocolSection.style.display = "block";
             } else {
               protocolSection.style.display = "none";
             }
-
           } else {
             profileContainer.style.display = "block";
             noProfile.style.display = "none";
-            loadIllnesses();
+            await loadIllnesses();
           }
         } catch (err) {
           console.error("Fetch error:", err);
           profileContainer.style.display = "block";
           noProfile.style.display = "none";
-          loadIllnesses();
+          await loadIllnesses();
         }
       }
 
@@ -272,6 +295,8 @@
           const illnesses = await res.json();
 
           const select = document.getElementById("illnesses");
+          if (!select) return;
+
           select.innerHTML = "";
           illnesses.forEach((ill) => {
             const option = document.createElement("option");
@@ -279,10 +304,13 @@
             option.textContent = ill.name;
             select.appendChild(option);
           });
+
+          console.log("Illnesses loaded:", illnesses);
         } catch (err) {
           console.error("Error loading illnesses:", err);
         }
       }
+
       fetchProfile();
     </script>
 
@@ -295,7 +323,9 @@
 
         const profileData = {
           allergies: form.allergies.value,
-          illnesses: Array.from(form.illnesses.selectedOptions).map(opt => opt.value), 
+          illnesses: Array.from(form.illnesses.selectedOptions).map(
+            (opt) => opt.value
+          ),
           weight: form.weight.value,
           height_cm: form.height_cm.value,
         };

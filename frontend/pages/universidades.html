@@ -1,67 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UniMove | Clinics Map</title>
-  <link rel="stylesheet" href="../css/mapclinics.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-</head>
-<body>
-  <nav>
-    <div>
-      <a href="../index.html">Moving</a>
-      <a href="../index.html">Universities</a>
-      <a href="../index.html">Internships</a>
-    </div>
-    <h1>UniMove</h1>
-    <div>
-      <a href="biomedical.html">Health</a>
-      <a href="mapclinics.html">Clinical Maps</a>
-      <a href="../index.html">Home</a>
-    </div>
-  </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UniMove | Clinics Map</title>
+    <link rel="stylesheet" href="../css/mapclinics.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  </head>
+  <body>
+    <nav>
+      <div>
+        <a href="../index.html">Moving</a>
+        <a href="../index.html">Universities</a>
+        <a href="../index.html">Internships</a>
+      </div>
+      <h1>UniMove</h1>
+      <div>
+        <a href="biomedical.html">Health</a>
+        <a href="mapclinics.html">Clinical Maps</a>
+        <a href="../index.html">Home</a>
+      </div>
+    </nav>
 
-  <main class="container">
-    <!-- Hero Section -->
-    <section class="hero">
-      <h2>Find Universities around Madrid</h2>
-      <p>Select a filter by name, locality or degrees.</p>
-    </section>
+    <main class="container">
+      <section class="hero">
+        <h2>Find Universities around Madrid</h2>
+        <p>Select a filter by name, locality or degrees.</p>
+      </section>
 
-    <!-- Controls Card -->
-    <section class="controls-card">
-      <!-- Universidades -->
-      <label for="universitySelect">University</label>
-      <select id="universitySelect">
-        <option>Loading universities...</option>
-      </select>
+      <section class="controls-card">
+        <label for="universitySelect">University</label>
+        <select id="universitySelect">
+          <option>Loading universities...</option>
+        </select>
 
-      <!-- Localidades -->
-      <label for="localitySelect">Locality</label>
-      <select id="localitySelect" size="5">
-        <option value="1">Acebeda, La</option>
-        <option value="2">Ajalvir</option>
-        <option value="3">Alameda del Valle</option>
-        <option value="4">Álamo, El</option>
-        <option value="5">Alcalá de Henares</option>
-        <option value="6">Alcobendas</option>
-        <option value="7">Alcorcón</option>
-        <option value="8">Aldea del Fresno</option>
-        <option value="9">Algete</option>
-        <option value="10">Alpedrete</option>
-        <option value="11">Ambite</option>
-        <option value="12">Anchuelo</option>
-        <option value="13">Aranjuez</option>
-        <option value="14">Arganda del Rey</option>
-        <option value="15">Arroyomolinos</option>
-        <option value="16">Batres</option>
-        <option value="17">Becerril de la Sierra</option>
-        <option value="18">Belmonte de Tajo</option>
-        <option value="20">Berzosa del Lozoya</option> <option value="21">Boadilla del Monte</option> <option value="22">Boalo, El</option> <option value="23">Braojos</option> <option value="24">Brea de Tajo</option> <option value="25">Brunete</option> <option value="26">Buitrago del Lozoya</option> <option value="27">Bustarviejo</option> <option value="28">Cabanillas de la Sierra</option> <option value="29">Cabrera, La</option> <option value="30">Cadalso de los Vidrios</option> <option value="31">Camarma de Esteruelas</option> <option value="32">Campo Real</option> <option value="33">Canencia</option> <option value="34">Carabaña</option> <option value="35">Casarrubuelos</option> <option value="36">Cenicientos</option> <option value="37">Cercedilla</option> <option value="38">Cervera de Buitrago</option> <option value="39">Chapinería</option> <option value="40">Chinchón</option> <option value="41">Ciempozuelos</option> <option value="42">Cobeña</option> <option value="43">Collado Mediano</option> <option value="44">Collado Villalba</option> <option value="45">Colmenar de Oreja</option> <option value="46">Colmenar del Arroyo</option> <option value="47">Colmenar Viejo</option> <option value="48">Colmenarejo</option> <option value="49">Corpa</option> <option value="50">Coslada</option> <option value="51">Cubas de la Sagra</option> <option value="52">Daganzo de Arriba</option> <option value="53">Escorial, El</option> <option value="54">Estremera</option> <option value="55">Fresnedillas de la Oliva</option> <option value="56">Fresno de Torote</option> <option value="57">Fuenlabrada</option> <option value="58">Fuente el Saz de Jarama</option> <option value="59">Fuentidueña de Tajo</option> <option value="60">Galapagar</option> <option value="61">Garganta de los Montes</option> <option value="62">Gargantilla del Lozoya y Pinilla de Buitrago</option> <option value="63">Gascones</option> <option value="64">Getafe</option> <option value="65">Griñón</option> <option value="66">Guadalix de la Sierra</option> <option value="67">Guadarrama</option> <option value="68">Hiruela, La</option> <option value="69">Horcajo de la Sierra-Aoslos</option> <option value="70">Horcajuelo de la Sierra</option> <option value="71">Hoyo de Manzanares</option> <option value="72">Humanes de Madrid</option> <option value="73">Leganés</option> <option value="74">Loeches</option> <option value="75">Lozoya</option> <option value="76">Lozoyuela-Navas-Sieteiglesias</option> <option value="77">Madarcos</option> <option value="78">Madrid</option> <option value="79">Majadahonda</option> <option value="80">Manzanares el Real</option> <option value="81">Meco</option> <option value="82">Mejorada del Campo</option> <option value="83">Miraflores de la Sierra</option> <option value="84">Molar, El</option> <option value="85">Molinos, Los</option> <option value="86">Montejo de la Sierra</option> <option value="87">Moraleja de Enmedio</option> <option value="88">Moralzarzal</option> <option value="89">Morata de Tajuña</option> <option value="90">Móstoles</option> <option value="91">Navacerrada</option> <option value="92">Navalafuente</option> <option value="93">Navalagamella</option> <option value="94">Navalcarnero</option> <option value="95">Navarredonda y San Mamés</option> <option value="96">Navas del Rey</option> <option value="97">Nuevo Baztán</option> <option value="98">Olmeda de las Fuentes</option> <option value="99">Orusco de Tajuña</option> <option value="100">Paracuellos de Jarama</option> <option value="101">Parla</option> <option value="102">Patones</option> <option value="103">Pedrezuela</option> <option value="104">Pelayos de la Presa</option> <option value="105">Perales de Tajuña</option> <option value="106">Pezuela de las Torres</option> <option value="107">Pinilla del Valle</option> <option value="108">Pinto</option> <option value="109">Piñuécar-Gandullas</option> <option value="110">Pozuelo de Alarcón</option> <option value="111">Pozuelo del Rey</option> <option value="112">Prádena del Rincón</option> <option value="113">Puebla de la Sierra</option> <option value="114">Quijorna</option> <option value="115">Rascafría</option> <option value="116">Redueña</option> <option value="117">Ribatejada</option> <option value="118">Rivas-Vaciamadrid</option> <option value="119">Robledillo de la Jara</option> <option value="120">Robledo de Chavela</option> <option value="121">Robregordo</option> <option value="122">Rozas de Madrid, Las</option> <option value="123">Rozas de Puerto Real</option> <option value="124">San Agustín del Guadalix</option> <option value="125">San Fernando de Henares</option> <option value="126">San Lorenzo de El Escorial</option> <option value="127">San Martín de la Vega</option> <option value="128">San Martín de Valdeiglesias</option> <option value="129">San Sebastián de los Reyes</option> <option value="130">Santa María de la Alameda</option> <option value="131">Santorcaz</option> <option value="132">Santos de la Humosa, Los</option> <option value="133">Serna del Monte, La</option> <option value="134">Serranillos del Valle</option> <option value="135">Sevilla la Nueva</option> <option value="136">Somosierra</option> <option value="137">Soto del Real</option> <option value="138">Talamanca de Jarama</option> <option value="139">Tielmes</option> <option value="140">Titulcia</option> <option value="141">Torrejón de Ardoz</option> <option value="142">Torrejón de la Calzada</option> <option value="143">Torrejón de Velasco</option> <option value="144">Torrelaguna</option> <option value="145">Torrelodones</option> <option value="146">Torremocha de Jarama</option> <option value="147">Torres de la Alameda</option> <option value="148">Tres Cantos</option> <option value="149">Valdaracete</option> <option value="150">Valdeavero</option> <option value="151">Valdelaguna</option> <option value="152">Valdemanco</option> <option value="153">Valdemaqueda</option> <option value="154">Valdemorillo</option> <option value="155">Valdemoro</option> <option value="156">Valdeolmos-Alalpardo</option> <option value="157">Valdepiélagos</option> <option value="158">Valdetorres de Jarama</option> <option value="159">Valdilecha</option> <option value="160">Valverde de Alcalá</option> <option value="161">Velilla de San Antonio</option> <option value="162">Vellón, El</option> <option value="163">Venturada</option> <option value="164">Villa del Prado</option> <option value="165">Villaconejos</option> <option value="166">Villalbilla</option> <option value="167">Villamanrique de Tajo</option> <option value="168">Villamanta</option> <option value="169">Villamantilla</option> <option value="170">Villanueva de la Cañada</option> <option value="171">Villanueva de Perales</option> <option value="172">Villanueva del Pardillo</option> <option value="173">Villar del Olmo</option> <option value="174">Villarejo de Salvanés</option> <option value="175">Villaviciosa de Odón</option> <option value="176">Villavieja del Lozoya</option>
-        <option value="177">Zarzalejo</option>
-      </select>
+        <label for="localitySelect">Locality</label>
+        <select id="localitySelect" size="5">
+          <option value="1">Acebeda, La</option>
+          <option value="2">Ajalvir</option>
+          <option value="3">Alameda del Valle</option>
+          <option value="4">Álamo, El</option>
+          <option value="5">Alcalá de Henares</option>
+          <option value="6">Alcobendas</option>
+          <option value="7">Alcorcón</option>
+          <option value="8">Aldea del Fresno</option>
+          <option value="9">Algete</option>
+          <option value="10">Alpedrete</option>
+          <option value="11">Ambite</option>
+          <option value="12">Anchuelo</option>
+          <option value="13">Aranjuez</option>
+          <option value="14">Arganda del Rey</option>
+          <option value="15">Arroyomolinos</option>
+          <option value="16">Batres</option>
+          <option value="17">Becerril de la Sierra</option>
+          <option value="18">Belmonte de Tajo</option>
+          <option value="20">Berzosa del Lozoya</option>
+          <option value="21">Boadilla del Monte</option>
+          <option value="22">Boalo, El</option>
+          <option value="23">Braojos</option>
+          <option value="24">Brea de Tajo</option>
+          <option value="25">Brunete</option>
+          <option value="26">Buitrago del Lozoya</option>
+          <option value="27">Bustarviejo</option>
+          <option value="28">Cabanillas de la Sierra</option>
+          <option value="29">Cabrera, La</option>
+          <option value="30">Cadalso de los Vidrios</option>
+          <option value="31">Camarma de Esteruelas</option>
+          <option value="32">Campo Real</option>
+          <option value="33">Canencia</option>
+          <option value="34">Carabaña</option>
+          <option value="35">Casarrubuelos</option>
+          <option value="36">Cenicientos</option>
+          <option value="37">Cercedilla</option>
+          <option value="38">Cervera de Buitrago</option>
+          <option value="39">Chapinería</option>
+          <option value="40">Chinchón</option>
+          <option value="41">Ciempozuelos</option>
+          <option value="42">Cobeña</option>
+          <option value="43">Collado Mediano</option>
+          <option value="44">Collado Villalba</option>
+          <option value="45">Colmenar de Oreja</option>
+          <option value="46">Colmenar del Arroyo</option>
+          <option value="47">Colmenar Viejo</option>
+          <option value="48">Colmenarejo</option>
+          <option value="49">Corpa</option>
+          <option value="50">Coslada</option>
+          <option value="51">Cubas de la Sagra</option>
+          <option value="52">Daganzo de Arriba</option>
+          <option value="53">Escorial, El</option>
+          <option value="54">Estremera</option>
+          <option value="55">Fresnedillas de la Oliva</option>
+          <option value="56">Fresno de Torote</option>
+          <option value="57">Fuenlabrada</option>
+          <option value="58">Fuente el Saz de Jarama</option>
+          <option value="59">Fuentidueña de Tajo</option>
+          <option value="60">Galapagar</option>
+          <option value="61">Garganta de los Montes</option>
+          <option value="62">
+            Gargantilla del Lozoya y Pinilla de Buitrago
+          </option>
+          <option value="63">Gascones</option>
+          <option value="64">Getafe</option>
+          <option value="65">Griñón</option>
+          <option value="66">Guadalix de la Sierra</option>
+          <option value="67">Guadarrama</option>
+          <option value="68">Hiruela, La</option>
+          <option value="69">Horcajo de la Sierra-Aoslos</option>
+          <option value="70">Horcajuelo de la Sierra</option>
+          <option value="71">Hoyo de Manzanares</option>
+          <option value="72">Humanes de Madrid</option>
+          <option value="73">Leganés</option>
+          <option value="74">Loeches</option>
+          <option value="75">Lozoya</option>
+          <option value="76">Lozoyuela-Navas-Sieteiglesias</option>
+          <option value="77">Madarcos</option>
+          <option value="78">Madrid</option>
+          <option value="79">Majadahonda</option>
+          <option value="80">Manzanares el Real</option>
+          <option value="81">Meco</option>
+          <option value="82">Mejorada del Campo</option>
+          <option value="83">Miraflores de la Sierra</option>
+          <option value="84">Molar, El</option>
+          <option value="85">Molinos, Los</option>
+          <option value="86">Montejo de la Sierra</option>
+          <option value="87">Moraleja de Enmedio</option>
+          <option value="88">Moralzarzal</option>
+          <option value="89">Morata de Tajuña</option>
+          <option value="90">Móstoles</option>
+          <option value="91">Navacerrada</option>
+          <option value="92">Navalafuente</option>
+          <option value="93">Navalagamella</option>
+          <option value="94">Navalcarnero</option>
+          <option value="95">Navarredonda y San Mamés</option>
+          <option value="96">Navas del Rey</option>
+          <option value="97">Nuevo Baztán</option>
+          <option value="98">Olmeda de las Fuentes</option>
+          <option value="99">Orusco de Tajuña</option>
+          <option value="100">Paracuellos de Jarama</option>
+          <option value="101">Parla</option>
+          <option value="102">Patones</option>
+          <option value="103">Pedrezuela</option>
+          <option value="104">Pelayos de la Presa</option>
+          <option value="105">Perales de Tajuña</option>
+          <option value="106">Pezuela de las Torres</option>
+          <option value="107">Pinilla del Valle</option>
+          <option value="108">Pinto</option>
+          <option value="109">Piñuécar-Gandullas</option>
+          <option value="110">Pozuelo de Alarcón</option>
+          <option value="111">Pozuelo del Rey</option>
+          <option value="112">Prádena del Rincón</option>
+          <option value="113">Puebla de la Sierra</option>
+          <option value="114">Quijorna</option>
+          <option value="115">Rascafría</option>
+          <option value="116">Redueña</option>
+          <option value="117">Ribatejada</option>
+          <option value="118">Rivas-Vaciamadrid</option>
+          <option value="119">Robledillo de la Jara</option>
+          <option value="120">Robledo de Chavela</option>
+          <option value="121">Robregordo</option>
+          <option value="122">Rozas de Madrid, Las</option>
+          <option value="123">Rozas de Puerto Real</option>
+          <option value="124">San Agustín del Guadalix</option>
+          <option value="125">San Fernando de Henares</option>
+          <option value="126">San Lorenzo de El Escorial</option>
+          <option value="127">San Martín de la Vega</option>
+          <option value="128">San Martín de Valdeiglesias</option>
+          <option value="129">San Sebastián de los Reyes</option>
+          <option value="130">Santa María de la Alameda</option>
+          <option value="131">Santorcaz</option>
+          <option value="132">Santos de la Humosa, Los</option>
+          <option value="133">Serna del Monte, La</option>
+          <option value="134">Serranillos del Valle</option>
+          <option value="135">Sevilla la Nueva</option>
+          <option value="136">Somosierra</option>
+          <option value="137">Soto del Real</option>
+          <option value="138">Talamanca de Jarama</option>
+          <option value="139">Tielmes</option>
+          <option value="140">Titulcia</option>
+          <option value="141">Torrejón de Ardoz</option>
+          <option value="142">Torrejón de la Calzada</option>
+          <option value="143">Torrejón de Velasco</option>
+          <option value="144">Torrelaguna</option>
+          <option value="145">Torrelodones</option>
+          <option value="146">Torremocha de Jarama</option>
+          <option value="147">Torres de la Alameda</option>
+          <option value="148">Tres Cantos</option>
+          <option value="149">Valdaracete</option>
+          <option value="150">Valdeavero</option>
+          <option value="151">Valdelaguna</option>
+          <option value="152">Valdemanco</option>
+          <option value="153">Valdemaqueda</option>
+          <option value="154">Valdemorillo</option>
+          <option value="155">Valdemoro</option>
+          <option value="156">Valdeolmos-Alalpardo</option>
+          <option value="157">Valdepiélagos</option>
+          <option value="158">Valdetorres de Jarama</option>
+          <option value="159">Valdilecha</option>
+          <option value="160">Valverde de Alcalá</option>
+          <option value="161">Velilla de San Antonio</option>
+          <option value="162">Vellón, El</option>
+          <option value="163">Venturada</option>
+          <option value="164">Villa del Prado</option>
+          <option value="165">Villaconejos</option>
+          <option value="166">Villalbilla</option>
+          <option value="167">Villamanrique de Tajo</option>
+          <option value="168">Villamanta</option>
+          <option value="169">Villamantilla</option>
+          <option value="170">Villanueva de la Cañada</option>
+          <option value="171">Villanueva de Perales</option>
+          <option value="172">Villanueva del Pardillo</option>
+          <option value="173">Villar del Olmo</option>
+          <option value="174">Villarejo de Salvanés</option>
+          <option value="175">Villaviciosa de Odón</option>
+          <option value="176">Villavieja del Lozoya</option>
+          <option value="177">Zarzalejo</option>
+        </select>
 
       <!-- Carreras -->
       <label for="degreeSelect">Degree</label>
@@ -72,30 +229,25 @@
       <a href="#" id="showUniversitiesBtn" class="btn">Show Universities</a>
     </section>
 
-    <!-- Map Section -->
-    <section class="map-container">
-      <div id="map"></div>
-    </section>
-  </main>
+      <section class="map-container">
+        <div id="map"></div>
+      </section>
+    </main>
 
-  <footer>
-    <div class="container">
-      <p>&copy; 2024 UniMove. All rights reserved.</p>
-    </div>
-  </footer>
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 UniMove. All rights reserved.</p>
+      </div>
+    </footer>
 
-  <!-- Leaflet -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-  <!-- Tu JS -->
-  <script>
-    // Initialize map
-const map = L.map("map").setView([40.4168, -3.7038], 13);
+    <script>
+      const map = L.map("map").setView([40.4168, -3.7038], 13);
 
-// Add tile layer
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-}).addTo(map);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+      }).addTo(map);
 
  // Variables globales
     let universities = [];

@@ -1,8 +1,7 @@
 from flask import Blueprint, jsonify, request
-from flask_cors import CORS
-from dotenv import load_dotenv
-import os
 from supabase import create_client
+import os
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -12,71 +11,64 @@ SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+
 @bio_profile_routes.route("/api/get_biomedical_profile", methods=["GET"])
 def get_biomedical_profile():
-    user_id = 6  # TESTING
+    user_id = 115  # TEMPORARY for testing
 
-    response = supabase.table("biomedical_profiles")\
-        .select("*")\
-        .eq("user_id", user_id)\
+    response = supabase.table("biomedical_profiles") \
+        .select("*") \
+        .eq("user_id", user_id) \
         .execute()
 
     profiles = response.data or []
     if not profiles:
         return jsonify({"message": "No biomedical profile found"}), 404
 
-    profile = profiles[0]  # get first profile
+    profile = profiles[0]
 
-    illness_ids_res = (
-        supabase.table("biomedical_profile_illnesses")
-        .select("illness_id")
-        .eq("biomedical_profile_id", profile["id"])
+    illness_links = supabase.table("biomedical_profile_illnesses") \
+        .select("illness_id") \
+        .eq("biomedical_profile_id", profile["id"]) \
         .execute()
-    )
-    illness_ids = [row["illness_id"] for row in (illness_ids_res.data or [])]
 
-    illnesses_res = []
+    illness_ids = [row["illness_id"] for row in illness_links.data or []]
+
+    illnesses = []
     if illness_ids:
-        illnesses_res = (
-            supabase.table("illnesses")
-            .select("id, name")
-            .in_("id", illness_ids)
+        illnesses_res = supabase.table("illnesses") \
+            .select("id, name") \
+            .in_("id", illness_ids) \
             .execute()
-            .data
-        )
+        illnesses = illnesses_res.data or []
 
-    protocols_res = []
+    protocols = []
     if illness_ids:
-        protocols_res = (
-            supabase.table("protocols")
-            .select("illness_id, step_order, instruction")
-            .in_("illness_id", illness_ids)
-            .order("step_order")
+        protocols_res = supabase.table("protocols") \
+            .select("illness_id, step_order, instruction") \
+            .in_("illness_id", illness_ids) \
+            .order("step_order") \
             .execute()
-            .data
-        )
+        protocols = protocols_res.data or []
 
-    profile["illnesses"] = illnesses_res
-    profile["protocols"] = protocols_res
+    profile["illnesses"] = illnesses
+    profile["protocols"] = protocols
 
     return jsonify(profile)
 
 
-    
 @bio_profile_routes.route("/api/post_biomedical_profile", methods=["POST"])
 def post_biomedical_profile():
-    user_id = 6  # TESTING
+    user_id = 115  # TEMPORARY for testing
     data = request.json
 
-    user_check = supabase.table("users").select("*").eq("id", user_id).maybe_single().execute()
-    print("DEBUG user_check:", user_check)
+    existing_profile = supabase.table("biomedical_profiles") \
+        .select("*") \
+        .eq("user_id", user_id) \
+        .maybe_single() \
+        .execute()
 
-    if not user_check or not getattr(user_check, "data", None):
-        return jsonify({"message": "User does not exist"}), 404
-
-    existing_profile = supabase.table("biomedical_profiles").select("*").eq("user_id", user_id).maybe_single().execute()
-
-    if existing_profile and getattr(existing_profile, "data", None):
+    if existing_profile and existing_profile.data:
         return jsonify({"message": "Biomedical profile already exists"}), 409
 
     new_profile = {
@@ -87,8 +79,7 @@ def post_biomedical_profile():
     }
 
     response = supabase.table("biomedical_profiles").insert(new_profile).execute()
-
-    if not response or not response.data:
+    if not response.data:
         return jsonify({"message": "Failed to create biomedical profile"}), 400
 
     created_profile = response.data[0]
@@ -101,14 +92,11 @@ def post_biomedical_profile():
         ]
         supabase.table("biomedical_profile_illnesses").insert(inserts).execute()
 
-    created_profile["illnesses"] = resolve_illness_names(illness_ids)
+    illness_names = []
+    if illness_ids:
+        ill_res = supabase.table("illnesses").select("id, name").in_("id", illness_ids).execute()
+        illness_names = ill_res.data or []
+
+    created_profile["illnesses"] = illness_names
 
     return jsonify({"profile": created_profile}), 201
-
-
-#Obtain illnesses names from their ids
-def resolve_illness_names(illness_ids):
-    if not illness_ids:
-        return []
-    res = supabase.table("illnesses").select("id, name").in_("id", illness_ids).execute()
-    return [ill["name"] for ill in res.data]

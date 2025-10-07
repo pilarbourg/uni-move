@@ -6,6 +6,19 @@
     <title>Login</title>
 </head>
 <body>
+    <form id="signupForm">
+        <input type="text" id="user_name" placeholder="Name">
+        <input type="email" id="user_email" placeholder="Email">
+        <input type="password" id="user_password" placeholder="Password">
+        <button type="submit" id="formSubmitBtn">Sign up</button>
+    </form>
+
+    <form id="loginForm">
+        <input type="email" id="login_email" placeholder="Email">
+        <input type="password" id="login_password" placeholder="Password">
+        <button type="submit" id="loginBtn">Login</button>
+    </form>
+
     <script>
     const signupForm = document.getElementById("signupForm");
     const formSubmitBtn = document.getElementById("formSubmitBtn");
@@ -13,9 +26,9 @@
     signupForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-    const username = document.getElementById("user_name").value.trim();
-    const password = document.getElementById("user_password").value;
-    const email = document.getElementById("user_email").value.trim();
+        const username = document.getElementById("user_name").value.trim();
+        const password = document.getElementById("user_password").value;
+        const email = document.getElementById("user_email").value.trim();
 
         if (!username || !password || !email) {
             alert("Please complete all fields.");
@@ -26,7 +39,7 @@
         formSubmitBtn.textContent = "Creating account...";
 
         try {
-            const res = await fetch("http://localhost:8000/users", {
+            const res = await fetch("http://localhost:5000/users", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password, email }),
@@ -48,6 +61,45 @@
             formSubmitBtn.textContent = "Sign up";
         }
     });
-</script>
+
+    const loginForm = document.getElementById("loginForm");
+    const loginBtn = document.getElementById("loginBtn");
+
+    loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("login_email").value.trim();
+        const password = document.getElementById("login_password").value;
+
+        if (!email || !password) {
+            alert("Please complete all fields.");
+            return;
+        }
+
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Logging in...";
+
+        try {
+            const res = await fetch(`http://localhost:5000/api/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, {
+                method: "GET"
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                alert("Login successful");
+                loginForm.reset();
+            } else {
+                alert("Error: " + (data.error || data.message || "Unknown error"));
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Request failed. Please try again.");
+        } finally {
+            loginBtn.disabled = false;
+            loginBtn.textContent = "Login";
+        }
+    });
+    </script>
 </body>
 </html>

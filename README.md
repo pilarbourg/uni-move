@@ -338,12 +338,11 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-### R29: Uso de un chatbot biomédico (IA con fuentes validadas) que responda dudas sobre salud al llegar a Madrid → Ollama + BioMedLM
+### R29: Uso de un chatbot biomédico (IA con fuentes validadas) que responda dudas sobre salud al llegar a Madrid
 **Criterio de Validación:**
 1. Entrar en la pantalla donde se comunica con el chatbot.  
 2. Permitir que un usuario meta texto.  
 3. Cuando el usuario meta texto el chatbot muestra la respuesta.  
-4. Si el usuario sobrepasa el límite de conversación el sistema dice **“Error”**.  
 
 ---
 

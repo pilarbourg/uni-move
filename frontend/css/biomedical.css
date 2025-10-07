@@ -8,7 +8,7 @@ body {
   font-family: "Roboto", sans-serif;
   line-height: 1.8;
   background-color: #fdfcfb;
-  color: #333;
+  color: #556e8c;
   padding: 0;
   margin: 0;
 }
@@ -63,13 +63,12 @@ nav div a:hover {
 
 .hero {
   background-color: #ffffff;
-  padding: 50px 20px;
-  border-radius: 12px;
-  margin: 20px 0;
+  padding: 3rem;
+  border-radius: 1rem;
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
@@ -78,7 +77,7 @@ nav div a:hover {
 .hero h2 {
   font-size: 2rem;
   color: #68748b;
-  margin-bottom: 15px;
+  margin-bottom: 1.5rem;
 }
 
 .hero p {
@@ -109,9 +108,24 @@ nav div a:hover {
 }
 
 .profile-form form {
-  display: flex;           
-  flex-direction: column;  
-  gap: 15px;               
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.profile-form form button {
+  grid-column: span 2;
+  justify-self: center;
+}
+
+#illnesses {
+  color: #627e9e;
+}
+
+.main-biomed {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 #bioProfileForm input {
@@ -135,7 +149,7 @@ nav div a:hover {
 #bioProfileForm select {
   width: 100%;
   padding: 12px 15px;
-  margin: 10px 0 20px 0;     
+  margin: 10px 0 20px 0;
   border: none;
   border-radius: 8px;
   font-size: 16px;
@@ -146,7 +160,7 @@ nav div a:hover {
 }
 
 #bioProfileForm select[multiple] {
-  height: 120px;  
+  height: 120px;
 }
 
 #bioProfileForm .btn {
@@ -166,19 +180,40 @@ nav div a:hover {
   background-color: #b71c1c;
 }
 
+#profileContainer {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2rem;
+}
+
+#profileContainer form {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  align-items: stretch; 
+  gap: 5rem;
+}
+
+#profileContainer form div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
 #profileContainer p {
   background-color: #fafafa;
-  padding: 12px 15px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  border-left: 4px solid #1976d2;
+  padding: 1rem 1.5rem;
+  border-top: 5px solid #627e9e;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+  rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .features-grid {
   display: flex;
   flex-direction: row;
   gap: 3rem;
-  margin: 5rem;
+  padding-top: 3rem;
 }
 
 .feature {
@@ -187,13 +222,13 @@ nav div a:hover {
   min-width: 250px;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .feature:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .feature h3 {
@@ -216,62 +251,92 @@ footer {
   margin-top: 3rem;
 }
 
-.protocol-section {
-  padding: 3rem;
-  display: flex;
-  justify-content: center; 
-  align-items: center;     
-  flex-direction: column;
-  text-align: center;      
+.sub-biomed-section {
+  display: grid;
+  grid-template-columns: 1fr 40%;
 }
 
-.protocol-article {
+.protocol-section {
+  padding: 5rem;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  flex-direction: column;
 }
 
-.protocol-article h2 {
-  text-align: center;
-  color: #d32f2f;
-  font-size: 1.5rem;
+.protocol-section p {
+  margin-bottom: 2rem;
 }
 
 .protocol-heading {
-  color: #d32f2f; 
-  font-size: 1.5rem;
+  color: #d32f2f;
   font-weight: 700;
-  text-align: center;
-  margin-bottom: 15px;
+  font-size: 1.5rem;
+  text-align: left;
+  margin-bottom: 2rem;
 }
 
 .protocol-disease-name {
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-weight: 700;
-  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 1.25rem;
+  color: #627e9e;
+  border-bottom: 3px solid rgb(130, 157, 187);
+  margin-bottom: 1rem;
 }
 
+.protocol-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  gap: 1rem;
+  background-color: #f3f6f7;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  text-align: left;
+}
+
+.protocol-section {
+  padding: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  height: 100%;
+}
 
 .protocol-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   width: 100%;
   background-color: #f3f6f7;
   border-radius: 12px;
   padding: 20px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-              rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  text-align: left; 
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  text-align: left;
+  overflow-y: auto;
+  flex-grow: 1;
+  align-content: start;
 }
 
 .protocol-box p {
   margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 0.95rem;
   line-height: 1.6;
+  color: #627e9e;
 }
 
+.individual-protocol {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
 
 .chatbot-section {
   padding: 5rem;
@@ -281,21 +346,18 @@ footer {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   gap: 2rem;
+  width: 100%;
 }
 
 .biomedical-chatbot-article h1 {
   color: #d32f2f;
-  font-size: 1.35rem;
-}
-
-.biomedical-chatbot-article p {
-  color: #2d2d2d;
+  font-size: 1.5rem;
+  text-align: left;
 }
 
 #chatLog {
-  height: 300px;
+  height: 400px;
   width: 100%;
   overflow-y: auto;
   border: 1px solid #f3f6f7;
@@ -309,12 +371,12 @@ footer {
 
 .chatbot-input-div {
   display: flex;
-  flex-direction: row;
   gap: 2rem;
+  width: 100%;
 }
 
 #chatInput {
-  width: 45vw;
+  flex-grow: 1;
   padding: 12px 15px;
   border: none;
   background-color: #f3f6f7;
@@ -329,7 +391,6 @@ footer {
   background-color: #d32f2f;
   color: #fff;
   border: none;
-  width: 200px;
   padding: 12px 20px;
   font-size: 16px;
   border-radius: 8px;
