@@ -2,6 +2,7 @@ from flask import Flask
 from backend.routes.chat_routes import chat_routes
 from backend.routes.bio_profile_routes import bio_profile_routes
 from backend.routes.illnesses_routes import illness_routes
+from backend.routes.map_apartamentos_routes import map_apartamentos_routes
 from backend.routes.map_clinics_routes import map_clinics_routes
 from backend.routes.map_universities_routes import map_universities_routes
 from backend.routes.login_routes import login_routes
@@ -21,7 +22,7 @@ app.register_blueprint(map_clinics_routes)
 app.register_blueprint(map_universities_routes)
 app.register_blueprint(login_routes)
 app.register_blueprint(university_search_routes)
-
+app.register_blueprint(map_apartamentos_routes)
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000)
