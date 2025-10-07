@@ -294,7 +294,6 @@ function renderUniversities(list) {
         const marker = L.marker([parseFloat(u.latitude), parseFloat(u.longitude)], { icon: redIcon })
           .addTo(map)
           .bindPopup(`<b>${u.name}</b>`);
-          print("Added marker for:", u.name);
         universityMarkers.push(marker);
       });
       const allCoords = list.map(u => [parseFloat(u.latitude), parseFloat(u.longitude)]);
