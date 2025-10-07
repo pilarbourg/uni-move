@@ -25,6 +25,7 @@ def test_results_sorted_by_ranking():
     results = University.search_by_degree("Economics")  # asegúrate de que exista en tu BBDD
     rankings = [u.ranking for u in results]
     assert rankings == sorted(rankings)
+
 #      REQUISITO 2
 # Comprueba que existe el método para obtener detalles de universidades
 def test_detail_method_exists():
