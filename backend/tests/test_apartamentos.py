@@ -2,7 +2,7 @@ import unittest
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from backend.apartamentos import listar_apartamentos, buscar_precio, buscar_barrio_precio, buscar_resultado_vacio
+from backend.apartamentos_info.apartamentos import listar_apartamentos, buscar_precio, buscar_barrio_precio, buscar_resultado_vacio
 
 
 class test_apartamentos(unittest.TestCase):
