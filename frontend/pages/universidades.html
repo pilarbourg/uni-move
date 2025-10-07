@@ -323,9 +323,20 @@ filterBtn.addEventListener("click", async () => {
 
       // Caso 1: usuario eligió una universidad
       if (selectedUniId) {
+        try{
         const uni = universities.find(u => u.id == selectedUniId);
-        if (uni) renderUniversities([uni]);
+        console.log("selectedUniId:", selectedUniId);
+      if (universityMarkers) {
+        universityMarkers.forEach(marker => map.removeLayer(marker));
+      }
+      const marker = L.marker([parseFloat(uni.latitude), parseFloat(uni.longitude)], { icon: redIcon })
+          .addTo(map)
+          .bindPopup(`<b>${uni.name}</b>`);
+        universityMarkers.push(marker);
+        map.setView([parseFloat(uni.latitude), parseFloat(uni.longitude)], 15);
         return;
+        } catch (err) {
+          console.error("Error filtering by university:", err);
       }
 
       // Caso 2: usuario eligió un degree
@@ -333,6 +344,7 @@ filterBtn.addEventListener("click", async () => {
         try {
           const res = await fetch(`http://127.0.0.1:5000/get_universities_by_degree/${selectedDegree}`);
           const filtered = await res.json();
+          console.log("filtered by degree:", filtered);
           renderUniversities(filtered);
         } catch (err) {
           console.error("Error filtering by degree:", err);
@@ -341,8 +353,9 @@ filterBtn.addEventListener("click", async () => {
       }
 
       // Caso 3: no se seleccionó nada
-      alert("Por favor selecciona una universidad o un degree.");
-    });
+      renderUniversities(universities);
+    }
+  });
 
 // Llamar a la función
 
