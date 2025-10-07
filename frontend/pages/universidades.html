@@ -68,7 +68,8 @@
       <select id="degreeSelect">
         <option>Loading degrees...</option>
       </select>
-        <a href="#" id="showUniversitiesBtn" class="btn">Show Universities</a>
+
+      <a href="#" id="showUniversitiesBtn" class="btn">Show Universities</a>
     </section>
 
     <!-- Map Section -->
@@ -96,11 +97,14 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
 }).addTo(map);
 
-// Globals
-let universitySelect = document.getElementById("universitySelect");
-let radiusSelect = document.getElementById("radiusSelect");
-let universityMarker = null;
-let clinicMarkers = [];
+ // Variables globales
+    let universities = [];
+    let universityMarkers = [];
+    let degrees = [];
+
+    const degreeSelect = document.getElementById("degreeSelect");
+    const universitySelect = document.getElementById("universitySelect");
+    const filterBtn = document.getElementById("showUniversitiesBtn");
 
 
 // Step 1: Define GitHub icons
@@ -110,46 +114,89 @@ var redIcon = new L.Icon({
     iconAnchor: [12, 41],
     popupAnchor: [1, -34]
 });
+
 async function fetchUniversities() {
-  
-    try {
-    const res = await fetch("http://127.0.0.1:5000/get_universities");
-    const universities = await res.json();
+      try {
+        const res = await fetch("http://127.0.0.1:5000/get_universities");
+        universities = await res.json();
 
-    universitySelect.innerHTML = "";
-     if (universityMarker) map.removeLayer(universityMarker);
-    clinicMarkers.forEach(m => map.removeLayer(m));
-    clinicMarkers = [];
+         // Rellenar select de universidades
+        universities.forEach(u => {
+          const option = document.createElement("option");
+          option.value = JSON.stringify({lat: u.latitude,lng: u.longitude,id: u.id,name: u.name,});
+          option.textContent = u.name;
+          universitySelect.appendChild(option);
+          });
+        renderUniversities(universities);
+      } catch (err) {
+        console.error("Error fetching universities:", err);
+      }
+    }
+function renderUniversities(list) {
+      // Limpiar marcadores previos
+      if (universityMarkers) {
+        universityMarkers.forEach(marker => map.removeLayer(marker));
+      }
+      // Dibujar cada universidad
+      list.forEach(u => {
+        const marker = L.marker([parseFloat(u.latitude), parseFloat(u.longitude)], { icon: redIcon })
+          .addTo(map)
+          .bindPopup(`<b>${u.name}</b>`);
+          print("Added marker for:", u.name);
+        universityMarkers.push(marker);
+      });
+      const allCoords = list.map(u => [parseFloat(u.latitude), parseFloat(u.longitude)]);
+      if (allCoords.length > 0) map.fitBounds(allCoords, { padding: [50, 50] });
+    }
 
-    universities.forEach(u => {
+async function fetchDegrees() {
+  try {
+    const res = await fetch("http://127.0.0.1:5000/get_degrees");
+    degrees = await res.json();
+    
+    degrees.forEach(d => {
       const option = document.createElement("option");
-      option.value = JSON.stringify({ lat: u.latitude, lng: u.longitude, id: u.id, name: u.name });
-      option.textContent = u.name;
-      universitySelect.appendChild(option);
-   
+      option.value = d.id;
+      option.textContent = d.name;
+      degreeSelect.appendChild(option);
     });
-      
-    if (universityMarker) map.removeLayer(universityMarker);
-    clinicMarkers.forEach(m => map.removeLayer(m));
-    clinicMarkers = [];
-
-    universities.forEach(u => {
-      const marker = L.marker([parseFloat(u.latitude), parseFloat(u.longitude)], { icon: redIcon })
-        .addTo(map)
-        .bindPopup(`<b>${u.name}</b>`);
-      clinicMarkers.push(marker);
-    });
-     const allCoords = universities.map(u => [parseFloat(u.latitude), parseFloat(u.longitude)]);
-    if (allCoords.length > 0) map.fitBounds(allCoords, { padding: [50,50] });
-
   } catch (err) {
-    console.error("Error fetching universities:", err);
+    console.error("Error fetching degrees:", err);
   }
-
 }
-// Llamar a la función
-fetchUniversities();
+;
 
+filterBtn.addEventListener("click", async () => {
+      const selectedUniId = universitySelect.value;
+      const selectedDegree = degreeSelect.value;
+
+      // Caso 1: usuario eligió una universidad
+      if (selectedUniId) {
+        const uni = universities.find(u => u.id == selectedUniId);
+        if (uni) renderUniversities([uni]);
+        return;
+      }
+
+      // Caso 2: usuario eligió un degree
+      if (selectedDegree) {
+        try {
+          const res = await fetch(`http://127.0.0.1:5000/get_universities_by_degree/${selectedDegree}`);
+          const filtered = await res.json();
+          renderUniversities(filtered);
+        } catch (err) {
+          console.error("Error filtering by degree:", err);
+        }
+        return;
+      }
+
+      // Caso 3: no se seleccionó nada
+      alert("Por favor selecciona una universidad o un degree.");
+    });
+
+// Llamar a la función
+
+fetchUniversities();
+fetchDegrees();
 
   </script>
 </body>

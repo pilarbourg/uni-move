@@ -34,5 +34,33 @@ def get_universities():
 
     return jsonify(universities)
 
+@map_universities_routes.route("/get_degrees", methods=["GET"])
+def get_degrees():
+    response = supabase.table("degrees").select("*").execute()
 
-print("Mapa generado: mapa_universidades_madrid.html")
+    degrees = [
+        {
+            "id": d.get("id"),
+            "name": d.get("name"),
+
+        }
+        for d in response.data
+    ]
+
+    if degrees is None:
+        # Something went wrong
+        return jsonify({"error": "Could not fetch degrees"}), 500
+
+    return jsonify(degrees)
+
+@map_universities_routes.route("/get_universities_by_degree/<int:degree_id>", methods=["GET"])
+def get_universities_by_degree(degree):
+    query = f"""
+        SELECT u.id, u.name, u.latitude, u.longitude, d.name as degree
+        FROM universities u
+        JOIN university_degrees ud ON u.id = ud.university_id
+        JOIN degrees d ON d.id = ud.degree_id
+        WHERE d.name = '{degree}'
+    """
+    data = supabase.rpc("execute_sql", {"sql": query}).execute()
+    return jsonify(data.data)
