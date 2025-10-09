@@ -371,9 +371,23 @@ UniMove simplifica la reubicación estudiantil conectando a los usuarios con:
 
 ---
 
-### R33: Recordatorios para los estudiantes del mismo piso
+### R33: Gestión de contactos para recordatorios médicos
 **Criterio de Validación:**
-1. Entrar en el perfil biomédico.  
-2. Cuando el usuario pulsa **“notificar”**, el sistema pide un mensaje y números de teléfono.  
-3. Cuando el usuario confirma, el sistema manda el mensaje.  
-4. Cuando el usuario no confirma, el sistema cierra el panel.  
+1. Entrar en la pantalla donde se muestra el perfil biomédico del usuario.
+2. Mostrar botón donde se permita añadir o editar un contacto. 
+3. En caso de añadir un usuario, mostrar el form para añadir los datos del contacto.
+4. En caso de elegir editar un contacto, permitir modificar los datos del contacto guardado. 
+5. Validar datos.
+6. Mostrar mensaje en caso de que haya funcionado correctamente o en caso de error.
+7. Permitir ver los contactos añadidos.
+  
+
+---
+
+### R34: Enviar recordatorios médicos a los contactos definidos
+**Criterio de Validación:**
+1. Entrar en la pantalla donde se muestra el perfil biomédico del usuario.
+2. Botón para enviar los recordatorios médicos o información médica importante.
+3. Elegir el contacto o los contactos a quien mandamos el recordatorio médico.
+4. Elegir el mensaje del recordatorio como por ejemplo: "Soy alérgico a frutos secos".
+5. Mensaje de confirmación en caso de que el mensaje se haya enviado o de error en caso de que no haya funcionado.
