@@ -326,34 +326,24 @@ filterBtn.addEventListener("click", async () => {
         try{
         const uni = universities.find(u => u.id == selectedUniId);
         console.log("selectedUniId:", selectedUniId);
-      if (universityMarkers) {
-        universityMarkers.forEach(marker => map.removeLayer(marker));
-      }
-      const marker = L.marker([parseFloat(uni.latitude), parseFloat(uni.longitude)], { icon: redIcon })
+          if (universityMarkers) {
+            universityMarkers.forEach(marker => map.removeLayer(marker));
+          }
+        const marker = L.marker([parseFloat(uni.latitude), parseFloat(uni.longitude)], { icon: redIcon })
           .addTo(map)
           .bindPopup(`<b>${uni.name}</b>`);
         universityMarkers.push(marker);
-        map.setView([parseFloat(uni.latitude), parseFloat(uni.longitude)], 15);
+        map.setView([parseFloat(uni.lat), parseFloat(uni.lng)], 15);
         return;
         } catch (err) {
           console.error("Error filtering by university:", err);
       }
 
       // Caso 2: usuario eligió un degree
-      if (selectedDegree) {
-        try {
-          const res = await fetch(`http://127.0.0.1:5000/get_universities_by_degree/${selectedDegree}`);
-          const filtered = await res.json();
-          console.log("filtered by degree:", filtered);
-          renderUniversities(filtered);
-        } catch (err) {
-          console.error("Error filtering by degree:", err);
-        }
-        return;
-      }
+     
 
       // Caso 3: no se seleccionó nada
-      renderUniversities(universities);
+      
     }
   });
 
