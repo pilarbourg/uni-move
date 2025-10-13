@@ -44,6 +44,7 @@
         align-items: center;
         gap: 10px;
         flex-wrap: wrap;
+        margin-bottom: 15px;
       }
 
       .search-box input {
@@ -67,6 +68,12 @@
 
       .search-box button:hover {
         background-color: #153a6c;
+      }
+
+      .checkbox-container {
+        margin-top: 10px;
+        font-size: 0.95rem;
+        color: #444;
       }
 
       .results-card {
@@ -119,8 +126,9 @@
     <main>
       <section class="search-section">
         <div class="search-card">
-          <h2> Find Universities by Degree</h2>
+          <h2>Find Universities by Degree</h2>
           <p>Enter the degree name to discover which universities offer it :)</p>
+
           <div class="search-box">
             <input
               type="text"
@@ -128,6 +136,14 @@
               placeholder="Example: Law, Medicine, Computer Engineering..."
             />
             <button id="searchBtn">Search</button>
+          </div>
+
+          <!--  Checkbox para mostrar grados similares -->
+          <div class="checkbox-container">
+            <label>
+              <input type="checkbox" id="includeSimilar" />
+              <span>Also include similar degrees</span>
+            </label>
           </div>
         </div>
       </section>
@@ -146,6 +162,7 @@
       const degreeInput = document.getElementById("degreeInput");
       const resultsList = document.getElementById("resultsList");
       const resultsCard = document.getElementById("resultsCard");
+      const includeSimilar = document.getElementById("includeSimilar");
 
       async function searchUniversities() {
         const selectedDegree = degreeInput.value.trim();
@@ -159,51 +176,68 @@
         }
 
         try {
-          const res = await fetch(
-            `http://127.0.0.1:5000/search_universities_by_degree?degree=${encodeURIComponent(
-              selectedDegree
-            )}`
-          );
-          const data = await res.json();
+          //  Si el checkbox está marcado, pedimos también los grados similares
+          let degreesToSearch = [selectedDegree];
+
+          if (includeSimilar.checked) {
+            const relatedRes = await fetch(
+              `http://127.0.0.1:5000/get_related_degrees?degree=${encodeURIComponent(
+                selectedDegree
+              )}`
+            );
+            const relatedData = await relatedRes.json();
+
+            if (relatedData.related_degrees?.length > 0) {
+              degreesToSearch = degreesToSearch.concat(relatedData.related_degrees);
+            }
+          }
+
+          //  Buscar universidades para todos los grados
+          const allResults = [];
+
+          for (const degree of degreesToSearch) {
+            const res = await fetch(
+              `http://127.0.0.1:5000/search_universities_by_degree?degree=${encodeURIComponent(
+                degree
+              )}`
+            );
+            const data = await res.json();
+            if (Array.isArray(data)) {
+              allResults.push({ degree, universities: data });
+            }
+          }
 
           resultsCard.style.display = "block";
 
-          if (!res.ok || data.error) {
-            resultsList.innerHTML = `<p style="color:red;">${
-              data.error || "No universities found for this degree."
-            }</p>`;
-            return;
-          }
-
-          if (data.length === 0) {
+          if (allResults.length === 0) {
             resultsList.innerHTML =
               "<p>No universities found for this degree.</p>";
             return;
           }
 
-          const title = document.createElement("h3");
-          title.textContent = `🎓 Results for: ${selectedDegree}`;
-          title.style.gridColumn = "1 / -1";
-          title.style.fontSize = "1.5rem";
-          title.style.color = "#1a4d8f";
-          title.style.marginBottom = "10px";
-          resultsList.appendChild(title);
+          allResults.forEach((block) => {
+            const title = document.createElement("h3");
+            title.textContent = `🎓 Results for: ${block.degree}`;
+            title.style.gridColumn = "1 / -1";
+            title.style.fontSize = "1.4rem";
+            title.style.color = "#1a4d8f";
+            title.style.margin = "15px 0 10px";
+            resultsList.appendChild(title);
 
-          data.forEach((u) => {
-            const card = document.createElement("div");
-            card.className = "university-card";
-            card.innerHTML = `
-              <h3 style="color:#1a4d8f; margin-bottom:10px; font-size:1.2rem;">
-                🏫 ${u.name}
-              </h3>
-              <p><strong>⭐ Ranking:</strong> ${u.ranking ?? "N/A"}</p>
-              <p><strong>🚇 Public Transport:</strong> ${
-                u.publicTransport ?? "N/A"
-              }</p>
-              <p><strong>📍 Zip Code:</strong> ${u.zipCode ?? "N/A"}</p>
-              <p><strong>📞 Phone:</strong> ${u.phoneNumber ?? "N/A"}</p>
-            `;
-            resultsList.appendChild(card);
+            block.universities.forEach((u) => {
+              const card = document.createElement("div");
+              card.className = "university-card";
+              card.innerHTML = `
+                <h3 style="color:#1a4d8f; margin-bottom:10px; font-size:1.2rem;">
+                  🏫 ${u.name}
+                </h3>
+                <p><strong>⭐ Ranking:</strong> ${u.ranking ?? "N/A"}</p>
+                <p><strong>🚇 Public Transport:</strong> ${u.publicTransport ?? "N/A"}</p>
+                <p><strong>📍 Zip Code:</strong> ${u.zipCode ?? "N/A"}</p>
+                <p><strong>📞 Phone:</strong> ${u.phoneNumber ?? "N/A"}</p>
+              `;
+              resultsList.appendChild(card);
+            });
           });
         } catch (err) {
           console.error("Error fetching universities:", err);
