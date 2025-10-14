@@ -81,15 +81,20 @@ def update_medical_contact(contact_id):
 @medical_contacts_routes.route("/api/medical_contacts/<int:contact_id>", methods=["DELETE"])
 def delete_medical_contact(contact_id):
     try:
-        response = supabase.table("medical_contacts") \
-            .delete() \
-            .eq("id", contact_id) \
-            .eq("biomedical_profile_id", BIOMEDICAL_ID) \
+        response = (
+            supabase.table("medical_contacts")
+            .delete()
+            .eq("id", contact_id)
+            .eq("biomedical_profile_id", BIOMEDICAL_ID)
             .execute()
+        )
 
-        if response.error:
-            return jsonify({"error": response.error.message}), 400
+        if not response.data:
+            return jsonify({"error": "Contact not found or already deleted"}), 404
 
         return jsonify({"message": "Contact deleted"}), 200
-    except Exception:
+
+    except Exception as e:
+        print("Delete error:", e)
         return jsonify({"error": "Server error while deleting contact"}), 500
+
