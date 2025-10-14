@@ -16,12 +16,14 @@
       </div>
       <h1>UniMove</h1>
       <div>
+        <span id="user-name"></span>
+        <a href="pages/login.html">Login</a>
         <a href="pages/biomedical.html">Health</a>
         <a href="pages/mapclinics.html">Clinical Maps</a>
         <a href="index.html">Home</a>
       </div>
     </nav>
-
+    <div id="mainContent" style="display:none;"></div>
     <div class="hero">
       <div class="hero-overlay">
         <h1>Welcome to <span class="highlight">UniMove</span></h1>
@@ -323,4 +325,14 @@
       updateCarousel(false);
     </script>
   </body>
+  <script>
+    const username = localStorage.getItem("username");
+    const userName = document.getElementById("user-name");
+    const loginLink = document.getElementById("login-link");
+
+    if (username) {
+      userName.textContent = username;
+      loginLink.style.display = "none";
+    }
+  </script>
 </html>

@@ -1,105 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login y Registro</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    input {
+      display: block;
+      margin-bottom: 10px;
+      padding: 8px;
+      width: 250px;
+    }
+    button {
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+    .box {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      width: 300px;
+    }
+  </style>
 </head>
 <body>
-    <form id="signupForm">
-        <input type="text" id="user_name" placeholder="Name">
-        <input type="email" id="user_email" placeholder="Email">
-        <input type="password" id="user_password" placeholder="Password">
-        <button type="submit" id="formSubmitBtn">Sign up</button>
-    </form>
 
-    <form id="loginForm">
-        <input type="email" id="login_email" placeholder="Email">
-        <input type="password" id="login_password" placeholder="Password">
-        <button type="submit" id="loginBtn">Login</button>
-    </form>
+  <h1>Login y Registro</h1>
 
-    <script>
-    const signupForm = document.getElementById("signupForm");
-    const formSubmitBtn = document.getElementById("formSubmitBtn");
+  <div class="box">
+    <h3>Registro</h3>
+    <input id="regName" type="text" placeholder="Nombre" />
+    <input id="regEmail" type="email" placeholder="Correo" />
+    <input id="regPassword" type="password" placeholder="Contraseña" />
+    <button onclick="register()">Registrarse</button>
+  </div>
 
-    signupForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+  <div class="box">
+    <h3>Login</h3>
+    <input id="logEmail" type="email" placeholder="Correo" />
+    <input id="logPassword" type="password" placeholder="Contraseña" />
+    <button onclick="login()">Iniciar sesión</button>
+  </div>
 
-        const username = document.getElementById("user_name").value.trim();
-        const password = document.getElementById("user_password").value;
-        const email = document.getElementById("user_email").value.trim();
+  <p id="message"></p>
 
-        if (!username || !password || !email) {
-            alert("Please complete all fields.");
-            return;
-        }
+  <script>
+    const API_URL = "http://localhost:5000/api";
 
-        formSubmitBtn.disabled = true;
-        formSubmitBtn.textContent = "Creating account...";
+    async function register() {
+      const name = document.getElementById("regName").value;
+      const email = document.getElementById("regEmail").value;
+      const password_hash = document.getElementById("regPassword").value;
 
-        try {
-            const res = await fetch("http://localhost:5000/users", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password, email }),
-            });
+      const res = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password_hash })
+      });
 
-            const data = await res.json();
+      const data = await res.json();
+      document.getElementById("message").innerText = data.message;
+    }
 
-            if (res.ok) {
-                alert("User created successfully");
-                signupForm.reset();
-            } else {
-                alert("Error: " + (data.error || data.message || "Unknown error"));
-            }
-        } catch (err) {
-            console.error(err);
-            alert("Request failed. Please try again.");
-        } finally {
-            formSubmitBtn.disabled = false;
-            formSubmitBtn.textContent = "Sign up";
-        }
-    });
+    async function login() {
+      const email = document.getElementById("logEmail").value;
+      const password = document.getElementById("logPassword").value;
 
-    const loginForm = document.getElementById("loginForm");
-    const loginBtn = document.getElementById("loginBtn");
+      const res = await fetch(`${API_URL}/login?email=${email}&password=${password}`);
+      const data = await res.json();
+      document.getElementById("message").innerText = data.message;
 
-    loginForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const email = document.getElementById("login_email").value.trim();
-        const password = document.getElementById("login_password").value;
-
-        if (!email || !password) {
-            alert("Please complete all fields.");
-            return;
-        }
-
-        loginBtn.disabled = true;
-        loginBtn.textContent = "Logging in...";
-
-        try {
-            const res = await fetch(`http://localhost:5000/api/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, {
-                method: "GET"
-            });
-
-            const data = await res.json();
-
-            if (res.ok) {
-                alert("Login successful");
-                loginForm.reset();
-            } else {
-                alert("Error: " + (data.error || data.message || "Unknown error"));
-            }
-        } catch (err) {
-            console.error(err);
-            alert("Request failed. Please try again.");
-        } finally {
-            loginBtn.disabled = false;
-            loginBtn.textContent = "Login";
-        }
-    });
-    </script>
+      if (res.ok) {
+        const userName = email.split('@')[0];
+        localStorage.setItem("username", userName);
+        window.location.href = "../index.html";
+      }
+    }
+  </script>
 </body>
 </html>
+
