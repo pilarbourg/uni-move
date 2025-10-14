@@ -1,89 +1,51 @@
-from flask import Blueprint, jsonify, request
-from supabase import create_client, Client
-import os
-from dotenv import load_dotenv
+# backend/routes/map_apartamentos_routes.py
+from flask import Blueprint, request, jsonify
+from backend.apartamentos_info.apartamentos import (
+    listar_apartamentos,
+    buscar_precio,
+    buscar_barrio_precio,
+)
 
-load_dotenv()
-
+# MISMA IDEA QUE EN UNIVERSITIES: blueprint sin url_prefix
 map_apartamentos_routes = Blueprint("map_apartamentos_routes", __name__)
 
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+@map_apartamentos_routes.route("/get_apartamentos", methods=["GET"])
+def get_apartamentos():
+    """Devuelve todos los apartamentos"""
+    data = listar_apartamentos()
+    return jsonify(_normalize(data)), 200
 
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+@map_apartamentos_routes.route("/get_apartamentos_by_price/<int:presupuesto>", methods=["GET"])
+def get_apartamentos_by_price(presupuesto: int):
+    """Filtra por presupuesto máximo (≤)"""
+    data = buscar_precio(float(presupuesto))
+    return jsonify(_normalize(data)), 200
 
-
-@map_apartamentos_routes.route("/apartments", methods=["GET"])
-def get_apartments():
+@map_apartamentos_routes.route("/get_apartamentos_by_neighborhood_and_price", methods=["GET"])
+def get_apartamentos_by_neighborhood_and_price():
     """
-    Devuelve todos los apartamentos con coordenadas, si existen.
+    Filtra por barrio (ilike) y presupuesto (≤)
+    Ejemplo:
+      /get_apartamentos_by_neighborhood_and_price?barrio=Centro&presupuesto=1200
     """
-    try:
-        response = supabase.table("apartamentos").select("*").execute()
-        data = response.data or []
-
-        # Filtrar solo los que tienen latitud y longitud
-        apartments = [
-            {
-                "id": a["id"],
-                "titulo": a["titulo"],
-                "barrio": a.get("barrio"),
-                "precio": a.get("precio"),
-                "direccion": a.get("direccion"),
-                "descripcion": a.get("descripcion"),
-                "tamaño_m2": a.get("tamaño_m2"),
-                "amueblado": a.get("amueblado"),
-                "disponible": a.get("disponible"),
-                "latitud": a.get("latitud"),
-                "longitud": a.get("longitud")
-            }
-            for a in data if a.get("latitud") and a.get("longitud")
-        ]
-
-        return jsonify(apartments), 200
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    barrio = (request.args.get("barrio") or "").strip()
+    presupuesto = request.args.get("presupuesto", type=float)
+    if not barrio or presupuesto is None:
+        return jsonify({"error": "barrio y presupuesto son requeridos"}), 400
+    data = buscar_barrio_precio(barrio, float(presupuesto))
+    return jsonify(_normalize(data)), 200
 
 
-@map_apartamentos_routes.route("/apartments/search", methods=["GET"])
-def search_apartments():
-    """
-    Busca apartamentos filtrando por barrio y presupuesto.
-    /apartments/search?barrio=Centro&presupuesto=900
-    """
-    try:
-        barrio = request.args.get("barrio", type=str)
-        presupuesto = request.args.get("presupuesto", type=float)
-
-        query = supabase.table("apartamentos").select("*")
-
-        if barrio:
-            query = query.ilike("barrio", f"%{barrio}%")
-        if presupuesto:
-            query = query.lte("precio", presupuesto)
-
-        response = query.execute()
-        data = response.data or []
-
-        apartments = [
-            {
-                "id": a["id"],
-                "titulo": a["titulo"],
-                "barrio": a.get("barrio"),
-                "precio": a.get("precio"),
-                "direccion": a.get("direccion"),
-                "descripcion": a.get("descripcion"),
-                "tamaño_m2": a.get("tamaño_m2"),
-                "amueblado": a.get("amueblado"),
-                "disponible": a.get("disponible"),
-                "latitud": a.get("latitud"),
-                "longitud": a.get("longitud")
-            }
-            for a in data if a.get("latitud") and a.get("longitud")
-        ]
-
-        return jsonify(apartments), 200
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+# ---- util: normaliza tipos a number para el front (lat/lon/precio/metros) ----
+def _normalize(rows):
+    out = []
+    for a in rows or []:
+        d = dict(a)
+        for k in ("latitude", "longitude", "precio", "tamano_m2"):
+            if k in d and d[k] is not None and isinstance(d[k], str):
+                try:
+                    d[k] = float(d[k])
+                except Exception:
+                    pass
+        out.append(d)
+    return out
