@@ -9,6 +9,7 @@ from backend.routes.login_routes import login_routes
 from backend.routes.university_search_routes import university_search_routes
 from backend.routes.medical_contacts_routes import medical_contacts_routes
 from backend.routes.related_degrees_routes import related_degrees_routes
+from backend.routes.uni_contact_routes import contact_routes
 from flask_cors import CORS
 import logging
 
@@ -25,6 +26,7 @@ app.register_blueprint(map_universities_routes)
 app.register_blueprint(login_routes)
 app.register_blueprint(university_search_routes)
 app.register_blueprint(related_degrees_routes)
+app.register_blueprint(contact_routes)
 app.register_blueprint(map_apartamentos_routes)
 app.register_blueprint(medical_contacts_routes)
 
