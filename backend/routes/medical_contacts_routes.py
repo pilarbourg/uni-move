@@ -51,7 +51,6 @@ def add_medical_contact():
         return jsonify(response.data[0]), 201
 
     except Exception:
-        print("Error adding contact:", e)
         return jsonify({"error": "Server error while adding contact"}), 500
 
 
