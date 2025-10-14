@@ -1,64 +1,56 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>UniMove | Apartamentos</title>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UniMove | Apartamentos</title>
 
-    <!-- Estilos -->
-    <link rel="stylesheet" href="../css/mapaapartamentos.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  </head>
-  <body>
-    <nav>
-      <div>
-        <a href="../index.html">Home</a>
-        <a href="universidades.html">Universities</a>
-        <a href="mapclinics.html">Clinical Maps</a>
-        <strong>Apartamentos</strong>
-      </div>
-      <h1>UniMove</h1>
-    </nav>
+  <link rel="stylesheet" href="../css/mapclinics.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>#map{min-height:520px;width:100%}</style>
+</head>
+<body>
+<nav>
+  <div>
+    <a href="../index.html">Home</a>
+    <a href="universidades.html">Universities</a>
+    <a href="mapclinics.html">Clinical Maps</a>
+    <strong>Apartamentos</strong>
+  </div>
+  <h1>UniMove</h1>
+</nav>
 
-    <main class="container">
-      <!-- Hero (igual estilo que universidades) -->
-      <section class="hero">
-        <h2>Find Apartments in Madrid</h2>
-        <p>Filter by neighborhood and budget. See results on the map and in the list.</p>
-      </section>
+<main class="container">
+  <section class="hero">
+    <h2>Find Apartments in Madrid</h2>
+    <p>Filter by neighborhood and budget. See results on the map and in the list.</p>
+  </section>
 
-      <!-- Controles (parecido a universidades: input + botón) -->
-      <section class="controls-card">
-        <label for="barrioInput">Neighborhood</label>
-        <input type="text" id="barrioInput" placeholder="e.g. Centro, Lavapiés..." />
+  <section class="controls-card">
+    <label for="barrioInput">Neighborhood</label>
+    <input type="text" id="barrioInput" placeholder="e.g. Centro, Lavapiés..." />
 
-        <label for="presupuestoInput">Maximum Price (€)</label>
-        <input type="number" id="presupuestoInput" placeholder="e.g. 1200" />
+    <label for="presupuestoInput">Maximum Price (€)</label>
+    <input type="number" id="presupuestoInput" placeholder="e.g. 1200" />
 
-        <a href="#" id="showApartmentsBtn" class="btn">Show Apartments</a>
-      </section>
+    <a href="#" id="showApartmentsBtn" class="btn">Show Apartments</a>
+  </section>
 
-      <!-- Mapa -->
-      <section class="map-container">
-        <div id="map"></div>
-      </section>
+  <section class="map-container">
+    <div id="map"></div>
+  </section>
 
-      <!-- Lista de resultados (como universidades) -->
-      <section class="search">
-        <h2>Results</h2>
-        <ul id="results"></ul>
-      </section>
-    </main>
+  <section class="search">
+    <h2>Results</h2>
+    <ul id="results"></ul>
+  </section>
+</main>
 
-    <footer>
-      <div class="container">
-        <p>© 2025 UniMove | Student Housing Portal</p>
-      </div>
-    </footer>
+<footer>
+  <div class="container"><p>© 2025 UniMove | Student Housing Portal</p></div>
+</footer>
 
-    <!-- Scripts -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="../js/mapaapartamentos.js"></script>
-  </body>
+<script defer src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script defer src="../js/mapaapartamentos.js"></script>
+</body>
 </html>
-

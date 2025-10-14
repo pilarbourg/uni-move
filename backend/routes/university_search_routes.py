@@ -13,7 +13,7 @@ SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
-@university_search_routes.route("/search_universities_by_degree", methods=["GET"])
+@university_search_routes.route("/api/search_universities_by_degree", methods=["GET"])
 def search_universities_by_degree():
     degree = request.args.get("degree")
 
@@ -53,3 +53,5 @@ def search_universities_by_degree():
     except Exception as e:
         print("Error:", e)
         return jsonify({"Error: Internal server error"}), 500
+
+

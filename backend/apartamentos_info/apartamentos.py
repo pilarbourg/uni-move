@@ -10,21 +10,27 @@ SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 def listar_apartamentos():
-    result = supabase.table("apartamentos").select("*").execute()
+    result = (
+        supabase.table("apartamentos")
+        .select("id, titulo, barrio, precio, latitude, longitude, tamano_m2")
+        .execute()
+    )
     return result.data
 
 def buscar_precio(presupuesto: float):
-    result = (supabase.table("apartamentos")
-              .select("id, titulo, barrio, precio")
-              .lte("precio", presupuesto)
-              .execute())
+    result = (
+        supabase.table("apartamentos")
+        .select("id, titulo, barrio, precio, latitude, longitude, tamano_m2")
+        .lte("precio", presupuesto)
+        .execute()
+    )
     return result.data
 
 
 def buscar_barrio_precio(barrio: str, presupuesto: float):
     result = (
         supabase.table("apartamentos")
-        .select("id, titulo, barrio, precio")
+        .select("id, titulo, barrio, precio, latitude, longitude, tamano_m2")
         .ilike("barrio", f"%{barrio}%")
         .lte("precio", presupuesto)
         .execute()
@@ -35,3 +41,4 @@ def buscar_barrio_precio(barrio: str, presupuesto: float):
 def buscar_resultado_vacio(presupuesto: float):
     result = supabase.table("apartamentos").select("*").lte("precio", presupuesto).execute()
     return result.data
+
