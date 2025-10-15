@@ -12,7 +12,7 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 def listar_apartamentos():
     result = (
         supabase.table("apartamentos")
-        .select("id, titulo, barrio, precio, latitude, longitude, tamano_m2")
+        .select("id, titulo, barrio, precio, latitud, longitud, tamano_m2")
         .execute()
     )
     return result.data
