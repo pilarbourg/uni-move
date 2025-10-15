@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="../css/studentLife.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   </head>
   <body>
     <nav>
@@ -54,7 +56,7 @@
         <h3>Libraries</h3>
         <div class="libraries-container">
           <ul id="library-list"></ul>
-          <div class="libraries-map"></div>
+          <div class="libraries-map" id="librariesMap"></div>
         </div>
       </div>
 
@@ -122,5 +124,7 @@
         })
         .catch((err) => console.error("Error fetching libraries:", err));
     </script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="../js/mapLibraries.js"></script>
   </body>
 </html>
