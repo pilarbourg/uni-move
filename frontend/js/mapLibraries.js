@@ -49,3 +49,7 @@ fetch("http://localhost:8080/api/libraries")
     }
   })
   .catch((err) => console.error("Error fetching libraries:", err));
+
+  document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => map.invalidateSize(), 500);
+});
