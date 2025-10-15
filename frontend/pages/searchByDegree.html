@@ -98,7 +98,6 @@
         background-color: #153a6c;
       }
 
-      /* Modal */
       .modal {
         display: none;
         position: fixed;
@@ -179,7 +178,6 @@
             <button id="searchBtn">Search</button>
           </div>
 
-          <!-- Filtros -->
           <div class="filters">
             <select id="typeFilter">
               <option value="">All Types</option>
@@ -195,7 +193,6 @@
             </select>
           </div>
 
-          <!-- Checkbox -->
           <div class="checkbox-container">
             <label>
               <input type="checkbox" id="includeSimilar" />
@@ -210,7 +207,6 @@
       </section>
     </main>
 
-    <!-- Modal Contact -->
     <div id="contactModal" class="modal">
       <div class="modal-content">
         <h3 id="modalTitle">Contact University</h3>
@@ -256,7 +252,7 @@
 
           if (includeSimilar.checked) {
             const relatedRes = await fetch(
-              `http://127.0.0.1:5000/get_related_degrees?degree=${encodeURIComponent(
+              `http://127.0.0.1:8080/get_related_degrees?degree=${encodeURIComponent(
                 selectedDegree
               )}`
             );
@@ -273,7 +269,7 @@
 
           for (const degree of degreesToSearch) {
             const res = await fetch(
-              `http://127.0.0.1:5000/api/search_universities_by_degree?degree=${encodeURIComponent(
+              `http://127.0.0.1:8080/api/search_universities_by_degree?degree=${encodeURIComponent(
                 degree
               )}&type=${encodeURIComponent(selectedType)}`
             );
@@ -340,7 +336,7 @@
           const msg = document.getElementById("contactMessage").value.trim();
           if (!msg) return alert("Please enter your message first.");
 
-          const res = await fetch("http://127.0.0.1:5000/api/contact_university", {
+          const res = await fetch("http://127.0.0.1:8080/api/contact_university", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ university: selectedUniversity, message: msg }),
