@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UniMove | Search Universities by Degree</title>
+    <link rel="stylesheet" href="../css/mapclinics.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+    <div>
+      <a href="../index.html">Moving</a>
+      <a href="mapuniversities.html">Universities</a>
+      <a href="../index.html">Internships</a>
+      <a href="searchByDegree.html">Search by Degree</a>
+    </div>
+
+    <h1>UniMove</h1>
+
+    <div>
+      <a href="biomedical.html">Health</a>
+      <a href="mapclinics.html">Clinical Maps</a>
+      <a href="../index.html">Home</a>
+    </div>
+  </nav>
+
+    <main class="container">
+      <section class="hero">
+        <h2>Find Universities by Degree</h2>
+        <p>Enter the degree name to discover which universities offer it.</p>
+      </section>
+
+      <!-- Search Input -->
+      <section class="controls-card">
+        <label for="degreeInput">Degree</label>
+        <input
+          type="text"
+          id="degreeInput"
+          placeholder="Example: Computer Engineering, Law, Medicine..."
+        />
+        <button id="searchBtn" class="btn">Search</button>
+      </section>
+
+      <section class="results-card" id="resultsCard">
+        <h3>Universities Found</h3>
+        <div id="resultsList" class="results-list">
+          <p class="placeholder">Enter a degree and press "Search".</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2025 UniMove. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      const searchBtn = document.getElementById("searchBtn");
+      const degreeInput = document.getElementById("degreeInput");
+      const resultsList = document.getElementById("resultsList");
+
+      async function searchUniversities() {
+        const selectedDegree = degreeInput.value.trim();
+        resultsList.innerHTML = "";
+
+        if (!selectedDegree) {
+          resultsList.innerHTML =
+            "<p style='color:red;'>Please enter a degree name.</p>";
+          return;
+        }
+
+        try {
+          const res = await fetch(
+            `http://127.0.0.1:5000/search_universities_by_degree?degree=${encodeURIComponent(
+              selectedDegree
+            )}`
+          );
+          const data = await res.json();
+
+          // Error handling
+          if (!res.ok || data.error) {
+            resultsList.innerHTML = `<p style="color:red;">${
+              data.error || "No universities found for this degree."
+            }</p>`;
+            return;
+          }
+
+          // No results
+          if (data.length === 0) {
+            resultsList.innerHTML =
+              "<p>No universities found for this degree.</p>";
+            return;
+          }
+
+          // Show results
+          data.forEach((u) => {
+            const card = document.createElement("div");
+            card.className = "university-card";
+            card.innerHTML = `
+              <h4>${u.name}</h4>
+              <ul>
+                <li><strong>Ranking:</strong> ${u.ranking ?? "N/A"}</li>
+                <li><strong>Public Transport:</strong> ${u.publicTransport ?? "N/A"}</li>
+                <li><strong>Zip Code:</strong> ${u.zipCode ?? "N/A"}</li>
+                <li><strong>Phone:</strong> ${u.phoneNumber ?? "N/A"}</li>
+              </ul>
+            `;
+            resultsList.appendChild(card);
+          });
+        } catch (err) {
+          console.error("Error fetching universities:", err);
+          resultsList.innerHTML =
+            "<p style='color:red;'>Error connecting to the server.</p>";
+        }
+      }
+
+      searchBtn.addEventListener("click", searchUniversities);
+      degreeInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") searchUniversities();
+      });
+    </script>
+  </body>
+</html>

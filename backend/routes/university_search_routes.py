@@ -16,18 +16,23 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 @university_search_routes.route("/api/search_universities_by_degree", methods=["GET"])
 def search_universities_by_degree():
     degree = request.args.get("degree")
+    uni_type = request.args.get("type")
 
     if not degree:
-        return jsonify({"error: Missing parameter 'degree"}), 400
+        return jsonify({"error": "Missing parameter 'degree'"}), 400
 
     try:
-        response = (
+        # Base query
+        query = (
             supabase.table("universities")
-            .select("id, name, ranking, publicTransport, zipCode, phoneNumber")
+            .select("id, name, ranking, publicTransport, zipCode, phoneNumber, type")
             .ilike("faculty_type", f"%{degree}%")
-            .execute()
         )
 
+        if uni_type:
+            query = query.eq("type", uni_type.lower())
+
+        response = query.execute()
         results = response.data
 
         if not results:
@@ -41,6 +46,7 @@ def search_universities_by_degree():
                 "publicTransport": u.get("publicTransport"),
                 "zipCode": u.get("zipCode"),
                 "phoneNumber": u.get("phoneNumber"),
+                "type": u.get("type"),
             }
             for u in results
         ]
@@ -52,6 +58,4 @@ def search_universities_by_degree():
 
     except Exception as e:
         print("Error:", e)
-        return jsonify({"Error: Internal server error"}), 500
-
-
+        return jsonify({"error": "Internal server error"}), 500

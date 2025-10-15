@@ -29,6 +29,7 @@ app.register_blueprint(university_search_routes)
 app.register_blueprint(related_degrees_routes)
 app.register_blueprint(contact_routes)
 app.register_blueprint(map_apartamentos_routes)
+
 app.register_blueprint(medical_contacts_routes)
 app.register_blueprint(libraries_routes)
 

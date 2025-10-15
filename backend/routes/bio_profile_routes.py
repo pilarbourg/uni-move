@@ -54,6 +54,16 @@ def get_biomedical_profile():
     profile["illnesses"] = illnesses
     profile["protocols"] = protocols
 
+    contacts_res = (
+        supabase.table("medical_contacts")
+        .select("id, name, phone, email")
+        .eq("biomedical_profile_id", profile["id"])
+        .order("id", desc=True)
+        .execute()
+    )
+
+    profile["contacts"] = contacts_res.data or []
+
     return jsonify(profile)
 
 
