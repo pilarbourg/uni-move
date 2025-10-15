@@ -52,14 +52,58 @@ def get_degrees():
 
     return jsonify(degrees)
 
-@map_universities_routes.route("/get_universities_by_degree/<int:degree_id>", methods=["GET"])
+@map_universities_routes.route("/get_locations", methods=["GET"])
+def get_locations():
+    response = supabase.table("localities").select("*").execute()
+
+    locations = [
+        {
+            "id": l.get("id"),
+            "name": l.get("name"),
+
+        }
+        for l in response.data
+    ]
+
+    if locations is None:
+        # Something went wrong
+        return jsonify({"error": "Could not fetch locations"}), 500
+
+    return jsonify(locations)
+
+@map_universities_routes.route("/get_universities_by_degree/<int:degree>", methods=["GET"])
 def get_universities_by_degree(degree):
     query = f"""
-        SELECT u.id, u.name, u.latitude, u.longitude, d.name as degree
+        SELECT u.id, u.name, u.latitude, u.longitude, u.ranking, u."publicTransport", u."zipCode", u."phoneNumber"
         FROM universities u
         JOIN university_degrees ud ON u.id = ud.university_id
         JOIN degrees d ON d.id = ud.degree_id
-        WHERE d.name = '{degree}'
+        WHERE d.id = '{degree}'
     """
-    data = supabase.rpc("execute_sql", {"sql": query}).execute()
+    data = supabase.rpc("exec_sql", {"sql": query}).execute()
+    return jsonify(data.data)
+
+@map_universities_routes.route("/get_universities_by_degree_and_locality/<int:degree>/<int:location>", methods=["GET"])
+def get_universities_by_degree_and_location(degree, location):
+    query = f"""
+        SELECT u.id, u.name, u.latitude, u.longitude, u.ranking, u."publicTransport", u."zipCode", u."phoneNumber"
+        FROM universities u
+        JOIN university_degrees ud ON u.id = ud.university_id
+        JOIN degrees d ON d.id = ud.degree_id
+        JOIN localities l ON u.locality_id = l.id
+        WHERE d.id = '{degree}'
+            AND l.id = '{location}'
+    """
+    data = supabase.rpc("exec_sql", {"sql": query}).execute()
+    return jsonify(data.data)
+
+@map_universities_routes.route("/get_universities_by_locality/<int:locality>", methods=["GET"])
+def get_universities_by_locality(locality):
+    query = f"""
+        SELECT u.id, u.name, u.latitude, u.longitude, u.ranking, u."publicTransport", u."zipCode", u."phoneNumber"
+        FROM universities u
+        JOIN localities l ON u.locality_id = l.id
+        WHERE l.id = '{locality}'
+    """
+    data = supabase.rpc("exec_sql", {"sql": query}).execute()
     return jsonify(data.data)

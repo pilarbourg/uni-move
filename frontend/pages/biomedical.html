@@ -118,6 +118,53 @@
         </div>
       </section>
 
+      <section id="contactsSection" class="contacts-section">
+        <h2>Medical Contacts</h2>
+        <p>
+          Add your medical contacts to share any medical conditions!
+        </p>
+
+        <button id="addContactBtn" class="btn">+ Add Contact</button>
+
+        <form id="contactForm" style="display: none; margin-top: 1rem;">
+          <input type="hidden" id="contactId" />
+
+          <label for="contactName">Name</label>
+          <input
+            type="text"
+            id="contactName"
+            name="name"
+            placeholder="Full Name"
+            required
+          />
+
+          <label for="contactPhone">Phone</label>
+          <input
+            type="tel"
+            id="contactPhone"
+            name="phone"
+            placeholder="+1 234 567 890"
+          />
+
+          <label for="contactEmail">Email</label>
+          <input
+            type="email"
+            id="contactEmail"
+            name="email"
+            placeholder="example@email.com"
+          />
+
+          <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <button type="submit" class="btn">Save Contact</button>
+            <button type="button" id="cancelContactBtn" class="btn">Cancel</button>
+          </div>
+        </form>
+
+        <div id="contactsList" class="contacts-list" style="margin-top: 2rem;">
+          <p class="no-contacts">Loading contacts...</p>
+        </div>
+      </section>
+
       <section class="sub-biomed-section">
         <section id="protocolSection" class="protocol-section">
           <div class="protocol-container">
@@ -403,5 +450,130 @@
         if (e.key === "Enter") sendChatMessage();
       });
     </script>
+
+    <script>
+      const addContactBtn = document.getElementById("addContactBtn");
+      const contactForm = document.getElementById("contactForm");
+      const cancelContactBtn = document.getElementById("cancelContactBtn");
+      const contactsList = document.getElementById("contactsList");
+
+      const contactIdField = document.getElementById("contactId");
+      const contactName = document.getElementById("contactName");
+      const contactPhone = document.getElementById("contactPhone");
+      const contactEmail = document.getElementById("contactEmail");
+
+      const token = "fake-jwt-token"; // Replace with real authentication token
+
+      async function loadContacts() {
+        try {
+          const res = await fetch("http://127.0.0.1:5000/api/medical_contacts", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (!res.ok) throw new Error("Failed to fetch contacts");
+          const contacts = await res.json();
+
+          if (contacts.length === 0) {
+            contactsList.innerHTML = "<p>No contacts yet.</p>";
+            return;
+          }
+
+          contactsList.innerHTML = contacts
+            .map(
+              (c) => `
+            <div class="contact-item" style="margin-bottom: 1rem;">
+              <p><strong>${c.name}</strong><br>
+              📞 ${c.phone}<br>
+              ✉️ ${c.email || "N/A"}</p>
+              <div style="display: flex; gap: 10px; margin-top: 5px;">
+                <button class="btn editBtn" data-id="${c.id}" data-name="${c.name}" data-phone="${c.phone}" data-email="${c.email || ""}">✏️ Edit</button>
+                <button class="btn deleteBtn" data-id="${c.id}">🗑️ Delete</button>
+              </div>
+            </div>
+          `
+            )
+            .join("");
+
+          document.querySelectorAll(".deleteBtn").forEach((btn) =>
+            btn.addEventListener("click", async (e) => {
+              const id = e.target.dataset.id;
+              if (confirm("Are you sure you want to delete this contact?")) {
+                await fetch(`http://127.0.0.1:5000/api/medical_contacts/${id}`, {
+                  method: "DELETE",
+                  headers: { Authorization: `Bearer ${token}` },
+                });
+                loadContacts();
+              }
+            })
+          );
+
+          document.querySelectorAll(".editBtn").forEach((btn) =>
+            btn.addEventListener("click", (e) => {
+              const contact = e.target.dataset;
+              contactIdField.value = contact.id;
+              contactName.value = contact.name;
+              contactPhone.value = contact.phone;
+              contactEmail.value = contact.email;
+              contactForm.style.display = "block";
+              addContactBtn.style.display = "none";
+            })
+          );
+        } catch (err) {
+          console.error("Error loading contacts:", err);
+          contactsList.innerHTML = "<p>Error loading contacts.</p>";
+        }
+      }
+
+      addContactBtn.addEventListener("click", () => {
+        contactForm.style.display = "block";
+        addContactBtn.style.display = "none";
+        contactIdField.value = "";
+        contactName.value = "";
+        contactPhone.value = "";
+        contactEmail.value = "";
+      });
+
+      cancelContactBtn.addEventListener("click", () => {
+        contactForm.style.display = "none";
+        addContactBtn.style.display = "block";
+      });
+
+      contactForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const contactData = {
+          name: contactName.value,
+          phone: contactPhone.value,
+          email: contactEmail.value,
+        };
+
+        const id = contactIdField.value;
+        const method = id ? "PUT" : "POST";
+        const url = id
+          ? `http://127.0.0.1:5000/api/medical_contacts/${id}`
+          : "http://127.0.0.1:5000/api/medical_contacts";
+
+        try {
+          const res = await fetch(url, {
+            method,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(contactData),
+          });
+
+          if (!res.ok) throw new Error("Failed to save contact");
+          await loadContacts();
+
+          contactForm.style.display = "none";
+          addContactBtn.style.display = "block";
+        } catch (err) {
+          console.error("Error saving contact:", err);
+        }
+      });
+
+      loadContacts();
+    </script>
+
   </body>
 </html>
