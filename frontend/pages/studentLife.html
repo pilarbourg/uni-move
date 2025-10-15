@@ -97,33 +97,6 @@
         document.querySelector(".tablinks").click();
       });
     </script>
-
-    <script>
-      fetch("http://localhost:8080/api/libraries")
-        .then((response) => response.json())
-        .then((data) => {
-          const list = document.getElementById("library-list");
-          data.forEach((lib) => {
-            const li = document.createElement("li");
-            li.className = "library-card";
-            li.innerHTML = `
-          <h4>${lib.name}</h4>
-          <p><i> ${lib.address["street"] || ""}, ${lib.address.locality || ""} </i></p>
-          <p><strong>Services:</strong> ${lib.services || "Not available"}</p>
-          <p><strong>Description:</strong> ${
-            lib.description || "No description"
-          }</p>
-          ${
-            lib.link
-              ? `<a href="${lib.link}" target="_blank">Visit Website</a>`
-              : ""
-          }
-        `;
-            list.appendChild(li);
-          });
-        })
-        .catch((err) => console.error("Error fetching libraries:", err));
-    </script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="../js/mapLibraries.js"></script>
   </body>

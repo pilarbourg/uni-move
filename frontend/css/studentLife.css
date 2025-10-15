@@ -256,3 +256,8 @@ footer {
   font-size: 0.9rem;
   margin-top: 3rem;
 }
+
+.highlight-marker span:hover {
+  background: darkred;
+}
+
