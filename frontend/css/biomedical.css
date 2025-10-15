@@ -402,15 +402,15 @@ footer {
 
 .contacts-section {
   background-color: #f3f6f7; 
-  padding: 4rem 6rem;
-  padding-top: 2rem;
+  padding: 6rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  border-top: none;
   margin-top: 0;
-  border-top: none; 
 }
 
-
 .contacts-section h2 {
-  color: #d32f2f; 
+  color: #d32f2f;
   font-size: 1.8rem;
   margin-bottom: 1rem;
   font-weight: 700;
@@ -421,6 +421,7 @@ footer {
   margin-bottom: 2rem;
   font-size: 1rem;
 }
+
 
 #addContactBtn {
   background-color: #d32f2f;
@@ -533,12 +534,6 @@ footer {
 
 .contact-card .actions button:hover {
   background-color: #364a61;
-}
-
-.contacts-section {
-  padding: 3rem 5rem;
-  background-color: #fff;
-  border-top: 2px solid #e0e0e0;
 }
 
 .contacts-list {
