@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/studentLife.css" />
+  </head>
+  <body>
+    <nav>
+      <div>
+        <a href="index.html">Moving</a>
+        <a href="pages/universidades.html">Student Life</a>
+        <a href="index.html">Internships</a>
+      </div>
+      <h1>UniMove</h1>
+      <div>
+        <a href="pages/biomedical.html">Health</a>
+        <a href="pages/mapclinics.html">Clinical Maps</a>
+        <a href="index.html">Home</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <div class="hero-overlay">
+        <!-- <h1>🎓 / Student Life</h1> -->
+      </div>
+    </div>
+
+    <main>
+      <section>
+        <h2>Welcome to your Student Life Dashboard</h2>
+        <p>
+          Discover everything you need to know about student life at your
+          university. From campus activities to local hangouts, we've got you
+          covered. Whether you're already in Madrid are just looking for a
+          university, this section is for you!
+        </p>
+      </section>
+
+      <div class="tab">
+        <button class="tablinks" onclick="openSubpage(event, 'Universities')">
+          Find Local Libraries
+        </button>
+        <button class="tablinks" onclick="openSubpage(event, 'Degrees')">
+          Search Degrees
+        </button>
+        <button class="tablinks" onclick="openSubpage(event, 'Libraries')">
+          Explore Libraries
+        </button>
+      </div>
+
+      <div id="Universities" class="tabcontent">
+        <h3>Libraries</h3>
+        <div class="libraries-container">
+          <ul id="library-list"></ul>
+          <div class="libraries-map"></div>
+        </div>
+      </div>
+
+      <div id="Degrees" class="tabcontent">
+        <h3>Paris</h3>
+        <p>Paris is the capital of France.</p>
+      </div>
+
+      <div id="Libraries" class="tabcontent">
+        <h3>s</h3>
+        <p>s is the capital of Japan.</p>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 UniMove | Built with ❤️ for students around the world</p>
+    </footer>
+
+    <script>
+      function openSubpage(evt, title) {
+        var i, tabcontent, tablinks;
+
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        document.getElementById(title).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelector(".tablinks").click();
+      });
+    </script>
+
+    <script>
+      fetch("http://localhost:8080/api/libraries")
+        .then((response) => response.json())
+        .then((data) => {
+          const list = document.getElementById("library-list");
+          data.forEach((lib) => {
+            const li = document.createElement("li");
+            li.className = "library-card";
+            li.innerHTML = `
+          <h4>${lib.name}</h4>
+          <p><i> ${lib.address["street"] || ""}, ${lib.address.locality || ""} </i></p>
+          <p><strong>Services:</strong> ${lib.services || "Not available"}</p>
+          <p><strong>Description:</strong> ${
+            lib.description || "No description"
+          }</p>
+          ${
+            lib.link
+              ? `<a href="${lib.link}" target="_blank">Visit Website</a>`
+              : ""
+          }
+        `;
+            list.appendChild(li);
+          });
+        })
+        .catch((err) => console.error("Error fetching libraries:", err));
+    </script>
+  </body>
+</html>

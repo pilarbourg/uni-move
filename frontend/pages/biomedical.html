@@ -212,7 +212,7 @@
 
         try {
           const res = await fetch(
-            "http://127.0.0.1:5000/api/get_biomedical_profile",
+            "http://127.0.0.1:8080/api/get_biomedical_profile",
             {
               method: "GET",
               headers: { Authorization: `Bearer ${token}` },
@@ -332,7 +332,7 @@
 
         try {
           const res = await fetch(
-            "http://127.0.0.1:5000/api/post_biomedical_profile",
+            "http://127.0.0.1:8080/api/post_biomedical_profile",
             {
               method: "POST",
               headers: {
@@ -372,7 +372,7 @@
         loading.style.display = "block";
 
         try {
-          const res = await fetch("http://127.0.0.1:5000/api/chat", {
+          const res = await fetch("http://127.0.0.1:8080/api/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt }),
