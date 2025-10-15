@@ -137,6 +137,7 @@
             placeholder="Full Name"
             required
           />
+          <div id="errorName" class="error-message">Please enter first and last name (letters only).</div>
 
           <label for="contactPhone">Phone</label>
           <input
@@ -145,6 +146,7 @@
             name="phone"
             placeholder="+1 234 567 890"
           />
+          <div id="errorPhone" class="error-message">Must start with +country code and contain 9 digits (e.g. +34600123456)</div>
 
           <label for="contactEmail">Email</label>
           <input
@@ -153,6 +155,7 @@
             name="email"
             placeholder="example@email.com"
           />
+           <div id="errorEmail" class="error-message">Please enter a valid email (example@email.com)</div>
 
           <div style="display: flex; gap: 10px; margin-top: 10px;">
             <button type="submit" class="btn">Save Contact</button>
@@ -451,102 +454,165 @@
       });
     </script>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-      const addContactBtn = document.getElementById("addContactBtn");
-      const contactForm = document.getElementById("contactForm");
-      const cancelContactBtn = document.getElementById("cancelContactBtn");
-      const contactsList = document.getElementById("contactsList");
+    $(document).ready(function () {
+      const token = "fake-jwt-token";
 
-      const contactIdField = document.getElementById("contactId");
-      const contactName = document.getElementById("contactName");
-      const contactPhone = document.getElementById("contactPhone");
-      const contactEmail = document.getElementById("contactEmail");
+      const $contactForm = $("#contactForm");
+      const $addBtn = $("#addContactBtn");
+      const $cancelBtn = $("#cancelContactBtn");
+      const $contactsList = $("#contactsList");
 
-      const token = "fake-jwt-token"; // Replace with real authentication token
+      const $name = $("#contactName");
+      const $phone = $("#contactPhone");
+      const $email = $("#contactEmail");
+      const $id = $("#contactId");
+
+      function showError($element, message) {
+        $element.fadeIn(200).text(message);
+      }
+
+      function hideError($element) {
+        $element.fadeOut(150).text("");
+      }
+
+      function validateName() {
+        const value = $name.val().trim();
+        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ'-]+(\s+[A-Za-zÁÉÍÓÚáéíóúÑñ'-]+)+$/;
+        if (!regex.test(value)) {
+          showError($("#errorName"), "Please enter your first and last name");
+          $name.addClass("invalid");
+          return false;
+        }
+        hideError($("#errorName"));
+        $name.removeClass("invalid");
+        return true;
+      }
+
+      function validatePhone() {
+        const value = $phone.val().trim();
+        const regex = /^\+\d{1,3}\s\d{9}$/;
+        if (!regex.test(value)) {
+          showError($("#errorPhone"), "Phone must start with +country code and then 9 digits");
+          $phone.addClass("invalid");
+          return false;
+        }
+        hideError($("#errorPhone"));
+        $phone.removeClass("invalid");
+        return true;
+      }
+
+      function validateEmail() {
+        const value = $email.val().trim();
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!regex.test(value)) {
+          showError($("#errorEmail"), "Please enter a valid email address 📧");
+          $email.addClass("invalid");
+          return false;
+        }
+        hideError($("#errorEmail"));
+        $email.removeClass("invalid");
+        return true;
+      }
+
+      $name.on("input", validateName);
+      $phone.on("input", validatePhone);
+      $email.on("input", validateEmail);
+
+      function resetForm() {
+        $contactForm[0].reset();
+        hideError($("#errorName"));
+        hideError($("#errorPhone"));
+        hideError($("#errorEmail"));
+        $name.removeClass("invalid");
+        $phone.removeClass("invalid");
+        $email.removeClass("invalid");
+      }
 
       async function loadContacts() {
         try {
           const res = await fetch("http://127.0.0.1:5000/api/medical_contacts", {
             headers: { Authorization: `Bearer ${token}` },
           });
-          if (!res.ok) throw new Error("Failed to fetch contacts");
           const contacts = await res.json();
 
-          if (contacts.length === 0) {
-            contactsList.innerHTML = "<p>No contacts yet.</p>";
+          if (!contacts.length) {
+            $contactsList.html("<p>No contacts yet</p>");
             return;
           }
 
-          contactsList.innerHTML = contacts
-            .map(
-              (c) => `
-            <div class="contact-item" style="margin-bottom: 1rem;">
-              <p><strong>${c.name}</strong><br>
-              📞 ${c.phone}<br>
-              ✉️ ${c.email || "N/A"}</p>
-              <div style="display: flex; gap: 10px; margin-top: 5px;">
-                <button class="btn editBtn" data-id="${c.id}" data-name="${c.name}" data-phone="${c.phone}" data-email="${c.email || ""}">✏️ Edit</button>
-                <button class="btn deleteBtn" data-id="${c.id}">🗑️ Delete</button>
-              </div>
-            </div>
-          `
-            )
-            .join("");
-
-          document.querySelectorAll(".deleteBtn").forEach((btn) =>
-            btn.addEventListener("click", async (e) => {
-              const id = e.target.dataset.id;
-              if (confirm("Are you sure you want to delete this contact?")) {
-                await fetch(`http://127.0.0.1:5000/api/medical_contacts/${id}`, {
-                  method: "DELETE",
-                  headers: { Authorization: `Bearer ${token}` },
-                });
-                loadContacts();
-              }
-            })
+          $contactsList.html(
+            contacts
+              .map(
+                (c) => `
+              <div class="contact-item" style="margin-bottom: 1rem;">
+                <p><strong>${c.name}</strong><br>📞 ${c.phone}<br>✉️ ${c.email || "N/A"}</p>
+                <div style="display: flex; gap: 6px; margin-top: 6px;">
+                  <button class="btn editBtn" data-id="${c.id}" data-name="${c.name}" data-phone="${c.phone}" data-email="${c.email || ""}">✏️ Edit</button>
+                  <button class="btn deleteBtn" data-id="${c.id}">🗑️ Delete</button>
+                </div>
+              </div>`
+              )
+              .join("")
           );
 
-          document.querySelectorAll(".editBtn").forEach((btn) =>
-            btn.addEventListener("click", (e) => {
-              const contact = e.target.dataset;
-              contactIdField.value = contact.id;
-              contactName.value = contact.name;
-              contactPhone.value = contact.phone;
-              contactEmail.value = contact.email;
-              contactForm.style.display = "block";
-              addContactBtn.style.display = "none";
-            })
-          );
+          $(".deleteBtn").on("click", async function () {
+            const id = $(this).data("id");
+            if (confirm("Are you sure you want to delete this contact?")) {
+              await fetch(`http://127.0.0.1:5000/api/medical_contacts/${id}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${token}` },
+              });
+              loadContacts();
+            }
+          });
+
+          $(".editBtn").on("click", function () {
+            const contact = $(this).data();
+            $id.val(contact.id);
+            $name.val(contact.name);
+            $phone.val(contact.phone);
+            $email.val(contact.email);
+            $contactForm.fadeIn(300);
+            $addBtn.hide();
+          });
         } catch (err) {
-          console.error("Error loading contacts:", err);
-          contactsList.innerHTML = "<p>Error loading contacts.</p>";
+          console.error(err);
+          $contactsList.html("<p>Error loading contacts ⚠️</p>");
         }
       }
 
-      addContactBtn.addEventListener("click", () => {
-        contactForm.style.display = "block";
-        addContactBtn.style.display = "none";
-        contactIdField.value = "";
-        contactName.value = "";
-        contactPhone.value = "";
-        contactEmail.value = "";
+      $addBtn.on("click", function () {
+        resetForm();
+        $id.val("");
+        $addBtn.hide();
+        $contactForm.fadeIn(300);
       });
 
-      cancelContactBtn.addEventListener("click", () => {
-        contactForm.style.display = "none";
-        addContactBtn.style.display = "block";
+      $cancelBtn.on("click", function () {
+        resetForm();
+        $contactForm.fadeOut(300, function () {
+          $addBtn.fadeIn(200);
+        });
       });
 
-      contactForm.addEventListener("submit", async (e) => {
+      $contactForm.on("submit", async function (e) {
         e.preventDefault();
 
+        const validName = validateName();
+        const validPhone = validatePhone();
+        const validEmail = validateEmail();
+
+        if (!validName || !validPhone || !validEmail) return;
+
         const contactData = {
-          name: contactName.value,
-          phone: contactPhone.value,
-          email: contactEmail.value,
+          name: $name.val().trim(),
+          phone: $phone.val().trim(),
+          email: $email.val().trim(),
         };
 
-        const id = contactIdField.value;
+        const id = $id.val();
         const method = id ? "PUT" : "POST";
         const url = id
           ? `http://127.0.0.1:5000/api/medical_contacts/${id}`
@@ -563,16 +629,32 @@
           });
 
           if (!res.ok) throw new Error("Failed to save contact");
-          await loadContacts();
 
-          contactForm.style.display = "none";
-          addContactBtn.style.display = "block";
+          resetForm();
+          $contactForm.fadeOut(300, function () {
+            $addBtn.fadeIn(200);
+            loadContacts();
+          });
         } catch (err) {
           console.error("Error saving contact:", err);
+          alert("Something went wrong while saving this contact");
         }
       });
 
       loadContacts();
+    });
+    </script>
+
+
+    <script>
+      function showPopup(message, type = "error") {
+        const popup = document.createElement("div");
+        popup.classList.add("popup-message", type);
+        popup.textContent = message;
+        document.body.appendChild(popup);
+
+        setTimeout(() => popup.remove(), 2500);
+      }
     </script>
 
   </body>

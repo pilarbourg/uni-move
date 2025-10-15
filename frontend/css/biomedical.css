@@ -593,3 +593,25 @@ footer {
   background-color: #8b0000;
   transform: translateY(-1px);
 }
+
+.error-message {
+  color: #b71c1c;
+  font-size: 0.9rem;
+  margin-top: -8px;
+  margin-bottom: 10px;
+  display: none;
+}
+
+.error-message {
+  display: none;
+  color: #b91c1c;
+  font-size: 13px;
+  margin-top: 2px;
+  transition: opacity 0.3s ease;
+}
+
+.invalid {
+  border-color: #dc2626;
+  background-color: #fef2f2;
+}
+
