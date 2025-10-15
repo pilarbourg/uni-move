@@ -507,7 +507,7 @@
         const value = $email.val().trim();
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!regex.test(value)) {
-          showError($("#errorEmail"), "Please enter a valid email address 📧");
+          showError($("#errorEmail"), "Please enter a valid email address");
           $email.addClass("invalid");
           return false;
         }
