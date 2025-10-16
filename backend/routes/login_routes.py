@@ -9,14 +9,12 @@ SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 class User:
-    def __init__(self, name, email, password):
-        self.name = name
+    def __init__(self, email, password):
         self.email = email
         self.password = password
 
     def to_dict(self):
         return {
-            "name": self.name,
             "email": self.email,
             "password_hash": self.password
         }
@@ -46,11 +44,10 @@ def user_login():
 @login_routes.route("/api/register", methods=["POST"])
 def user_register():
     data = request.json
-    name = data.get("name")
     email = data.get("email")
     password = data.get("password_hash")
 
-    if not all([name, email, password]):
+    if not all([email, password]):
         return jsonify({"message": "Missing required fields"}), 400
 
     existing_users = supabase.table("users").select("*").eq("email", email).execute()
@@ -58,7 +55,7 @@ def user_register():
     if existing_users.data:
         return jsonify({"message": "User already registered."}), 400
 
-    new_user = User(name, email, password)
+    new_user = User(email, password)
     supabase.table("users").insert(new_user.to_dict()).execute()
 
     return jsonify({"message": "User registered successfully."}), 201
