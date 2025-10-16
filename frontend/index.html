@@ -17,7 +17,6 @@
       <h1>UniMove</h1>
       <div>
         <a href="pages/mapaapartamentos.html">Apartments</a>
-        <a href="pages/login.html">Login</a>
         <a href="pages/biomedical.html">Health</a>
         <a href="pages/mapclinics.html">Clinical Maps</a>
         <a href="index.html">Home</a>
@@ -358,4 +357,9 @@
       estado=false;
     };
   </script>
+  <script>
+  if (!username) {
+    window.location.href = "pages/login.html";
+  }
+</script>
 </html>
