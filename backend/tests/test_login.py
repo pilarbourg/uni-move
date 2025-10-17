@@ -21,7 +21,6 @@ usuarios = supabase.table("users").select("*").execute()
 
 def test_user_register_new_user(client):
     response = client.post("/api/register", json={
-        "name": "sofia",
         "email": "sofia@gmail.com",
         "password_hash": "1234"})
     assert response.status_code == 201
@@ -30,7 +29,6 @@ def test_user_register_new_user(client):
     
 def test_user_register_existing_user(client):
     response = client.post("/api/register", json={
-        "name": "Alice Johnson",
         "email": "alice@example.com",
         "password_hash": "hashed_password_123"})
     assert response.status_code == 400
