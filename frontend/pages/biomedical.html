@@ -656,6 +656,10 @@
         setTimeout(() => popup.remove(), 2500);
       }
     </script>
-
+    <script>
+    if (!username) {
+      window.location.href = "pages/login.html";
+    }
+    </script>
   </body>
 </html>
