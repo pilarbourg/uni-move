@@ -203,22 +203,22 @@
       // Si hay barrio y precio, usamos el endpoint combinado
       if (barrio && precio) {
         // includeSimilar ya lo cubre ilike del backend; opcionalmente podríamos ampliar aquí
-        return `http://127.0.0.1:5000/get_apartments_by_barrio_price?barrio=${encodeURIComponent(
+        return `http://127.0.0.1:8080/get_apartments_by_barrio_price?barrio=${encodeURIComponent(
           barrio
         )}&presupuesto=${precio}`;
       }
       // Solo barrio
       if (barrio) {
-        return `http://127.0.0.1:5000/get_apartments_by_barrio/${encodeURIComponent(
+        return `http://127.0.0.1:8080/get_apartments_by_barrio/${encodeURIComponent(
           barrio
         )}`;
       }
       // Solo precio
       if (precio) {
-        return `http://127.0.0.1:5000/get_apartments_by_price/${precio}`;
+        return `http://127.0.0.1:8080/get_apartments_by_price/${precio}`;
       }
       // Sin filtros → todos
-      return "http://127.0.0.1:5000/get_apartments";
+      return "http://127.0.0.1:8080/get_apartments";
     }
 
     async function searchApartments() {
@@ -246,7 +246,7 @@
           const barrioShort = barrio.split(",")[0].split(" ").slice(0, 1).join(" ");
           if (barrioShort && barrioShort.toLowerCase() !== barrio.toLowerCase()) {
             const res2 = await fetch(
-              `http://127.0.0.1:5000/get_apartments_by_barrio/${encodeURIComponent(
+              `http://127.0.0.1:8080/get_apartments_by_barrio/${encodeURIComponent(
                 barrioShort
               )}`
             );
