@@ -51,6 +51,7 @@
 
       <a href="#" id="showUniversitiesBtn" class="btn">Show Universities</a>
     </section>
+    <div id="cardContainer"></div>
     <section class="results-card" id="resultsCard">
          <div id="resultsList" class="results-list"></div>
     </section>
@@ -160,6 +161,29 @@ async function fetchLocations() {
   }
 }
 
+function createCard() {
+  cardCount++;
+
+  // Crear elementos
+  const section = document.createElement("section");
+  section.classList.add("info-card");
+
+  const title = document.createElement("h3");
+  title.textContent = `Filter universities by:`;
+  const searchBtn = document.getElementById("searchBtn");
+  const typeFilter = document.getElementById("typeFilter");
+  const rankingFilter = document.getElementById("rankingFilter");
+  const includeSimilar = document.getElementById("includeSimilar");
+  // Agregar el título a la sección
+  section.appendChild(title);
+  section.appendChild(searchBtn);
+  section.appendChild(typeFilter);
+  section.appendChild(rankingFilter); 
+  section.appendChild(includeSimilar);
+  
+  // Agregar la tarjeta al contenedor
+  cardContainer.appendChild(section);
+}
 
 filterBtn.addEventListener("click", async () => {
   const selectedUniId = universitySelect.value;
@@ -249,6 +273,9 @@ filterBtn.addEventListener("click", async () => {
   else if ((selectedDegree!== "Loading degrees..." && selectedDegree) &&
            (selectedLocation !== "Loading locations..." && selectedLocation)) {
     const resultsList = document.getElementById("resultsList");
+    const cardContainer = document.getElementById("cardContainer");
+    let cardCount = 0;
+createCard();
     console.log("Filtering by degree and location:", selectedDegree, selectedLocation);
    try {
       if (universityMarkers) {
@@ -366,7 +393,7 @@ filterBtn.addEventListener("click", async () => {
     degreeSelect.selectedIndex = "";
 });
 
-
+    
 // Llamar a la función
 
 fetchUniversities();
