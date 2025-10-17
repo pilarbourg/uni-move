@@ -3,11 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login y Registro</title>
+  <title>UniMove</title>
+  <link rel="stylesheet" href="../css/biomedical.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 40px;
+      width: 250px;
+      margin: 50px auto 0 auto;
+      background-image: url('../assets/images/madrid.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: white; 
     }
     input {
       display: block;
@@ -20,21 +28,24 @@
       cursor: pointer;
     }
     .box {
-      border: 1px solid #ccc;
-      padding: 20px;
-      margin-bottom: 20px;
+      border: 1px solid navy;
       border-radius: 8px;
+      padding: 20px;
       width: 300px;
+      background-color: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: navy;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     }
   </style>
 </head>
 <body>
 
-  <h1>Login y Registro</h1>
+  <h1>UniMove</h1>
 
   <div class="box">
     <h3>Registro</h3>
-    <input id="regName" type="text" placeholder="Nombre" />
     <input id="regEmail" type="email" placeholder="Correo" />
     <input id="regPassword" type="password" placeholder="Contraseña" />
     <button onclick="register()">Registrarse</button>
@@ -50,17 +61,16 @@
   <p id="message"></p>
 
   <script>
-    const API_URL = "http://localhost:5000/api";
+    const API_URL = "http://localhost:8080/api";
 
     async function register() {
-      const name = document.getElementById("regName").value;
       const email = document.getElementById("regEmail").value;
       const password_hash = document.getElementById("regPassword").value;
 
       const res = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password_hash })
+        body: JSON.stringify({ email, password_hash })
       });
 
       const data = await res.json();
