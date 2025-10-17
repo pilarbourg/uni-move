@@ -358,6 +358,16 @@
     };
   </script>
   <script>
+    document.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function(e) {
+    if (!username) {
+      e.preventDefault();
+      window.location.href = 'pages/login.html';
+    }
+  });
+  });
+  </script>
+  <script>
   if (!username) {
     window.location.href = "pages/login.html";
   }
