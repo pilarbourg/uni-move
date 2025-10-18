@@ -560,38 +560,76 @@ footer {
   background-color: #8b0000;
 }
 
-.contact-item div {
+.contact-item {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 3px 8px -1px,
+              rgba(0, 0, 0, 0.15) 0px 1px 4px -1px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.contact-item:hover {
+  transform: translateY(-3px);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+              rgba(0, 0, 0, 0.2) 0px 3px 7px -3px;
+}
+
+.contact-item p {
+  color: #364a61;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.contact-item .contact-actions {
+  display: flex;
+  gap: 10px;       
+  margin-top: 20px;
 }
 
 .contact-item .btn {
-  padding: 6px 10px;   
-  font-size: 13px;  
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-  box-shadow: rgba(50, 50, 93, 0.2) 0px 1px 3px -1px,
-              rgba(0, 0, 0, 0.2) 0px 1px 2px -1px;
+  transition: all 0.25s ease;
+  box-shadow: rgba(50, 50, 93, 0.2) 0px 2px 5px -1px,
+              rgba(0, 0, 0, 0.2) 0px 1px 3px -1px;
 }
 
-.contact-item .editBtn {
-  background-color: #364a61;
-  color: #fff;
-}
-.contact-item .editBtn:hover {
+.editBtn {
   background-color: #627e9e;
+  color: #fff;
+}
+.editBtn:hover {
+  background-color: #364a61;
   transform: translateY(-1px);
 }
 
-.contact-item .deleteBtn {
-  background-color: #b71c1c;
+.deleteBtn {
+  background-color: #d32f2f;
   color: #fff;
 }
-.contact-item .deleteBtn:hover {
-  background-color: #8b0000;
+.deleteBtn:hover {
+  background-color: #b71c1c;
   transform: translateY(-1px);
+}
+
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 2rem;
 }
 
 .error-message {
@@ -615,3 +653,236 @@ footer {
   background-color: #fef2f2;
 }
 
+#reminder-section {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-top: 3rem;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 4px 10px -2px,
+              rgba(0, 0, 0, 0.1) 0px 3px 7px -3px;
+}
+
+
+#reminder-section h5 {
+  font-size: 1.4rem;
+  color: #d32f2f;
+  margin-bottom: 0.5rem;
+}
+
+#reminder-section p {
+  color: #627e9e;
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+#contact-list-reminders {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+#contact-list-reminders::-webkit-scrollbar {
+  width: 6px;
+}
+#contact-list-reminders::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 3px;
+}
+
+.contact-checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: #f8fbfd;
+  border: 1px solid #e0e6ed;
+  padding: 0.8rem 1rem 0.8rem 2.8rem;
+  border-radius: 12px;
+  box-shadow: rgba(50, 50, 93, 0.1) 0px 1px 4px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+
+.contact-checkbox:hover {
+  transform: translateY(-2px);
+  background-color: #f1f4f8;
+}
+
+.contact-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.contact-checkbox .checkmark {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  border: 2px solid #d32f2f;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.contact-checkbox input[type="checkbox"]:checked ~ .checkmark {
+  background-color: #d32f2f;
+  transform: scale(1.15) translateY(-50%);
+}
+
+.contact-checkbox label {
+  margin: 0;
+  color: #364a61;
+  font-size: 0.95rem;
+}
+
+#reminder-message {
+  width: 100%;
+  min-height: 90px;
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #364a61;
+  background-color: #f8fbfd;
+  border: 1px solid #e0e6ed;
+  box-shadow: rgba(50, 50, 93, 0.1) 0px 2px 5px -1px;
+  margin-bottom: 1rem;
+  resize: vertical;
+  gap: 0.8rem;
+}
+
+#send-reminder-btn {
+  background-color: #d32f2f;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+              rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+#send-reminder-btn:hover {
+  background-color: #b71c1c;
+  transform: translateY(-1px);
+}
+
+#contact-list-reminders {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#contact-list-reminders::-webkit-scrollbar {
+  width: 6px;
+}
+
+#contact-list-reminders::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 3px;
+}
+
+#contact-list-reminders::-webkit-scrollbar-track {
+  background-color: #f8fbfd;
+}
+
+.contact-checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f8fbfd;
+  padding: 0.5rem 1rem 0.5rem 2.5rem;
+  border-radius: 50px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 4px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.contact-checkbox:hover {
+  transform: translateY(-2px);
+}
+
+.contact-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.contact-checkbox .checkmark {
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 2px solid #d32f2f;
+  transition: background-color 0.3s, transform 0.2s, border-color 0.3s;
+}
+
+.contact-checkbox input[type="checkbox"]:checked ~ .checkmark {
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+  transform: scale(1.1);
+}
+
+.contact-checkbox label {
+  margin: 0;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #364a61;
+  user-select: none;
+}
+
+#toast-container {
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+.toast {
+  min-width: 460px;
+  max-width: 560px;
+  background-color: #ffffff;
+  color: #2f4461;
+  border-left: 6px solid #d32f2f;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 10px 25px -2px,
+              rgba(0, 0, 0, 0.15) 0px 6px 12px -3px;
+  
+  font-size: 1.05rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  opacity: 0;
+  transform: translateX(100%);
+  animation: slideIn 0.5s forwards, fadeOut 0.5s 4.5s forwards;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(100%); }
+}
