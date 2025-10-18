@@ -585,10 +585,10 @@ footer {
   margin: 0;
 }
 
-.contact-item div {
+.contact-item .contact-actions {
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 10px;       
+  margin-top: 20px;
 }
 
 .contact-item .btn {
@@ -682,6 +682,7 @@ footer {
   max-height: 200px;
   overflow-y: auto;
   padding-right: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 #contact-list-reminders::-webkit-scrollbar {
@@ -751,8 +752,9 @@ footer {
   background-color: #f8fbfd;
   border: 1px solid #e0e6ed;
   box-shadow: rgba(50, 50, 93, 0.1) 0px 2px 5px -1px;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   resize: vertical;
+  gap: 0.8rem;
 }
 
 #send-reminder-btn {
@@ -839,4 +841,48 @@ footer {
   font-size: 0.95rem;
   color: #364a61;
   user-select: none;
+}
+
+#toast-container {
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+.toast {
+  min-width: 460px;
+  max-width: 560px;
+  background-color: #ffffff;
+  color: #2f4461;
+  border-left: 6px solid #d32f2f;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 10px 25px -2px,
+              rgba(0, 0, 0, 0.15) 0px 6px 12px -3px;
+  
+  font-size: 1.05rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  opacity: 0;
+  transform: translateX(100%);
+  animation: slideIn 0.5s forwards, fadeOut 0.5s 4.5s forwards;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(100%); }
 }

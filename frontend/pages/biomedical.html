@@ -163,11 +163,11 @@
           </div>
         </form>
 
-        <div id="contactsList" class="contacts-list" style="margin-top: 2rem;">
+        <div id="contactsList" class="contacts-list" style="margin-top: 1rem;">
           <p class="no-contacts">Loading contacts...</p>
         </div>
 
-        <div id="reminder-section" class="p-3 mt-4 border rounded">
+        <div id="reminder-section" class="p-3 mt-2 border rounded">
           <h5>Send medical reminders</h5>
           <p>Select the contact(s) and write your reminder.</p>
 
@@ -179,7 +179,7 @@
           <button id="send-reminder-btn" class="btn btn-primary">Send reminder</button>
         </div>
 
-      </section>z
+      </section>
 
       <section class="sub-biomed-section">
         <section id="protocolSection" class="protocol-section">
@@ -561,7 +561,7 @@
                 (c) => `
               <div class="contact-item" style="margin-bottom: 1rem;">
                 <p><strong>${c.name}</strong><br>📞 ${c.phone}<br>✉️ ${c.email || "N/A"}</p>
-                <div style="display: flex; gap: 6px; margin-top: 6px;">
+                <div class="contact-actions">
                   <button class="btn editBtn" data-id="${c.id}" data-name="${c.name}" data-phone="${c.phone}" data-email="${c.email || ""}">✏️ Edit</button>
                   <button class="btn deleteBtn" data-id="${c.id}">🗑️ Delete</button>
                 </div>
@@ -633,7 +633,7 @@
           .get();
 
         if (!message || contact_ids.length === 0) {
-          alert("Selecciona al menos un contacto y escribe un mensaje.");
+          showToast("Select at least a contact and write the reminder.", "info");
           return;
         }
 
@@ -649,18 +649,29 @@
           const result = await res.json();
 
           if (res.ok) {
-            alert("Recordatorio enviado con éxito.");
+            showToast("Medical reminder sent successfully!", "success");
             $("#reminder-message").val("");
             $("#contact-list-reminders input:checked").prop("checked", false);
           } else {
-            alert("Error enviando el recordatorio: " + (result.error || "Unknown error"));
+            showToast("Error sending the reminder. Please try again.", "error");
           }
         } catch (err) {
           console.error(err);
-          alert("Error al conectar con el servidor.");
+          showToast("Couldn't connect to the server.", "error");
         }
       });
 
+      function showToast(message) {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.textContent = message;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.remove();
+        }, 4000);
+      }
 
       $addBtn.on("click", function () {
         resetForm();
@@ -716,7 +727,7 @@
           });
         } catch (err) {
           console.error("Error saving contact:", err);
-          alert("Something went wrong while saving this contact");
+          showToast("Something went wrong while saving this contact", "error");
         }
       });
 
@@ -735,5 +746,6 @@
         setTimeout(() => popup.remove(), 2500);
       }
     </script>
+    <div id="toast-container"></div>
   </body>
 </html>
