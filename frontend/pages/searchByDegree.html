@@ -291,7 +291,7 @@
 
           allResults.forEach((block) => {
             const title = document.createElement("h3");
-            title.textContent = `🎓 Results for: ${block.degree}`;
+            title.textContent = ` Results for: ${block.degree}`;
             title.style.gridColumn = "1 / -1";
             title.style.fontSize = "1.4rem";
             title.style.color = "#1a4d8f";
@@ -307,7 +307,7 @@
               const card = document.createElement("div");
               card.className = "university-card";
               card.innerHTML = `
-                <h3 style="color:#1a4d8f;">🏫 ${u.name}</h3>
+                <h3 style="color:#1a4d8f;"> ${u.name}</h3>
                 <p><strong>⭐ Ranking:</strong> ${u.ranking ?? "N/A"}</p>
                 <p><strong>🏛️ Type:</strong> ${displayType}</p>
                 <p><strong>📍 Zip Code:</strong> ${u.zipCode ?? "N/A"}</p>
