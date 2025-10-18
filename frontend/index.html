@@ -10,15 +10,15 @@
     <nav>
       <div>
         <a href="index.html">Moving</a>
-        <a href="pages/universidades.html">Universities</a>
-        <a href="pages/searchByDegree.html">Search by Degree</a>
+        <a id="universitiesLink">Universities</a>
+        <a id="degreesLink">Search by Degree</a>
         <a href="index.html">Internships</a>
       </div>
       <h1>UniMove</h1>
       <div>
-        <a href="pages/mapaapartamentos.html">Apartments</a>
-        <a href="pages/biomedical.html">Health</a>
-        <a href="pages/mapclinics.html">Clinical Maps</a>
+        <a id="apartmentsLink">Apartments</a>
+        <a id="healthLink">Health</a>
+        <a id="clinicalmapsLink">Clinical Maps</a>
         <a href="index.html">Home</a>
         <span id="user-name" style="font-weight: bold; color:#5A7C99"></span>
         <button id="logout" class="boton" style="display:none;">Logout</button>
@@ -328,48 +328,54 @@
     </script>
   </body>
   <script>
-    const username = localStorage.getItem("username");
-    const userName = document.getElementById("user-name");
-    const loginLink = document.getElementById("login-link");
+  const username = localStorage.getItem("username")
+  const userName = document.getElementById("user-name")
+  const loginLink = document.getElementById("login-link")
+  const logout = document.getElementById("logout")
+  const universities = document.getElementById("universitiesLink")
+  const degrees = document.getElementById("degreesLink")
+  const apartments = document.getElementById("apartmentsLink")
+  const health = document.getElementById("healthLink")
+  const clinicalmaps = document.getElementById("clinicalmapsLink")
 
-    if (username) {
-      estado = true;
-      userName.textContent = username;
-      loginLink.style.display = "none";
-    }
-  </script>
-  <script>
-    var estado;
-    var logout = document.getElementById("logout");
-
-    if (estado) {
-      logout.style.display = "inline";
-    } else {
-      logout.style.display = "none";
-    }
-
-    logout.onclick = function() {
-      localStorage.removeItem("username");
-      userName.textContent="";
-      userName.style.display="none";
-      logout.style.display="none";
-      loginLink.style.display="block";
-      estado=false;
-    };
-  </script>
-  <script>
-    document.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', function(e) {
-    if (!username) {
-      e.preventDefault();
-      window.location.href = 'pages/login.html';
-    }
-  });
-  });
-  </script>
-  <script>
-  if (!username) {
-    window.location.href = "pages/login.html";
+  let estado = false
+  if (username) {
+    estado = true
+    userName.textContent = username
+    userName.style.display = "inline"
+    logout.style.display = "inline"
+    if (loginLink) loginLink.style.display = "none"
+  } else {
+    logout.style.display = "none"
+    if (loginLink) loginLink.style.display = "block"
   }
-  </script>
+
+  if (estado) {
+    universities.href = "pages/universidades.html"
+    degrees.href = "pages/searchByDegree.html"
+    apartments.href = "pages/mapaapartamentos.html"
+    health.href = "pages/biomedical.html"
+    clinicalmaps.href = "pages/mapclinics.html"
+  } else {
+    universities.href = "pages/login.html"
+    degrees.href = "pages/login.html"
+    apartments.href = "pages/login.html"
+    health.href = "pages/login.html"
+    clinicalmaps.href = "pages/login.html"
+  }
+
+  logout.onclick = function() {
+    localStorage.removeItem("username")
+    userName.textContent = ""
+    userName.style.display = "none"
+    logout.style.display = "none"
+    estado = false
+    universities.href = "pages/login.html"
+    degrees.href = "pages/login.html"
+    apartments.href = "pages/login.html"
+    health.href = "pages/login.html"
+    clinicalmaps.href = "pages/login.html"
+  }
+</script>
+
 </html>
