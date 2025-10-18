@@ -560,6 +560,31 @@ footer {
   background-color: #8b0000;
 }
 
+.contact-item {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 3px 8px -1px,
+              rgba(0, 0, 0, 0.15) 0px 1px 4px -1px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.contact-item:hover {
+  transform: translateY(-3px);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+              rgba(0, 0, 0, 0.2) 0px 3px 7px -3px;
+}
+
+.contact-item p {
+  color: #364a61;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
 .contact-item div {
   display: flex;
   gap: 8px;
@@ -567,31 +592,44 @@ footer {
 }
 
 .contact-item .btn {
-  padding: 6px 10px;   
-  font-size: 13px;  
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-  box-shadow: rgba(50, 50, 93, 0.2) 0px 1px 3px -1px,
-              rgba(0, 0, 0, 0.2) 0px 1px 2px -1px;
+  transition: all 0.25s ease;
+  box-shadow: rgba(50, 50, 93, 0.2) 0px 2px 5px -1px,
+              rgba(0, 0, 0, 0.2) 0px 1px 3px -1px;
 }
 
-.contact-item .editBtn {
-  background-color: #364a61;
-  color: #fff;
-}
-.contact-item .editBtn:hover {
+.editBtn {
   background-color: #627e9e;
+  color: #fff;
+}
+.editBtn:hover {
+  background-color: #364a61;
   transform: translateY(-1px);
 }
 
-.contact-item .deleteBtn {
-  background-color: #b71c1c;
+.deleteBtn {
+  background-color: #d32f2f;
   color: #fff;
 }
-.contact-item .deleteBtn:hover {
-  background-color: #8b0000;
+.deleteBtn:hover {
+  background-color: #b71c1c;
   transform: translateY(-1px);
+}
+
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 2rem;
 }
 
 .error-message {
@@ -619,55 +657,100 @@ footer {
   background-color: #ffffff;
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-              rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  margin-top: 2rem;
+  margin-top: 3rem;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 4px 10px -2px,
+              rgba(0, 0, 0, 0.1) 0px 3px 7px -3px;
 }
 
-#reminder-section h2 {
+
+#reminder-section h5 {
+  font-size: 1.4rem;
   color: #d32f2f;
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 #reminder-section p {
   color: #627e9e;
-  font-size: 0.95rem;
-  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 #contact-list-reminders {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+#contact-list-reminders::-webkit-scrollbar {
+  width: 6px;
+}
+#contact-list-reminders::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 3px;
 }
 
 .contact-checkbox {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   background-color: #f8fbfd;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 4px;
+  border: 1px solid #e0e6ed;
+  padding: 0.8rem 1rem 0.8rem 2.8rem;
+  border-radius: 12px;
+  box-shadow: rgba(50, 50, 93, 0.1) 0px 1px 4px;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s, background-color 0.3s;
 }
+
 
 .contact-checkbox:hover {
   transform: translateY(-2px);
+  background-color: #f1f4f8;
+}
+
+.contact-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.contact-checkbox .checkmark {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  border: 2px solid #d32f2f;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.contact-checkbox input[type="checkbox"]:checked ~ .checkmark {
+  background-color: #d32f2f;
+  transform: scale(1.15) translateY(-50%);
+}
+
+.contact-checkbox label {
+  margin: 0;
+  color: #364a61;
+  font-size: 0.95rem;
 }
 
 #reminder-message {
   width: 100%;
-  min-height: 80px;
-  padding: 12px 15px;
-  border-radius: 8px;
-  border: none;
-  font-size: 16px;
-  box-shadow: rgba(50, 50, 93, 0.2) 0px 1px 3px -1px,
-              rgba(0, 0, 0, 0.2) 0px 1px 2px -1px;
+  min-height: 90px;
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #364a61;
+  background-color: #f8fbfd;
+  border: 1px solid #e0e6ed;
+  box-shadow: rgba(50, 50, 93, 0.1) 0px 2px 5px -1px;
   margin-bottom: 1.2rem;
   resize: vertical;
 }
