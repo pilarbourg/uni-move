@@ -328,54 +328,53 @@
     </script>
   </body>
   <script>
-  const username = localStorage.getItem("username")
-  const userName = document.getElementById("user-name")
-  const loginLink = document.getElementById("login-link")
-  const logout = document.getElementById("logout")
-  const universities = document.getElementById("universitiesLink")
-  const degrees = document.getElementById("degreesLink")
-  const apartments = document.getElementById("apartmentsLink")
-  const health = document.getElementById("healthLink")
-  const clinicalmaps = document.getElementById("clinicalmapsLink")
+    const username = localStorage.getItem("username")
+    const userName = document.getElementById("user-name")
+    const loginLink = document.getElementById("login-link")
+    const logout = document.getElementById("logout")
+    const universities = document.getElementById("universitiesLink")
+    const degrees = document.getElementById("degreesLink")
+    const apartments = document.getElementById("apartmentsLink")
+    const health = document.getElementById("healthLink")
+    const clinicalmaps = document.getElementById("clinicalmapsLink")
 
-  let estado = false
-  if (username) {
-    estado = true
-    userName.textContent = username
-    userName.style.display = "inline"
-    logout.style.display = "inline"
-    if (loginLink) loginLink.style.display = "none"
-  } else {
-    logout.style.display = "none"
-    if (loginLink) loginLink.style.display = "block"
-  }
+    let estado = false
+    if (username) {
+      estado = true
+      userName.textContent = username
+      userName.style.display = "inline"
+      logout.style.display = "inline"
+      if (loginLink) loginLink.style.display = "none"
+    } else {
+      logout.style.display = "none"
+      if (loginLink) loginLink.style.display = "block"
+    }
 
-  if (estado) {
-    universities.href = "pages/universidades.html"
-    degrees.href = "pages/searchByDegree.html"
-    apartments.href = "pages/mapaapartamentos.html"
-    health.href = "pages/biomedical.html"
-    clinicalmaps.href = "pages/mapclinics.html"
-  } else {
-    universities.href = "pages/login.html"
-    degrees.href = "pages/login.html"
-    apartments.href = "pages/login.html"
-    health.href = "pages/login.html"
-    clinicalmaps.href = "pages/login.html"
-  }
+    if (estado) {
+      universities.href = "pages/universidades.html"
+      degrees.href = "pages/searchByDegree.html"
+      apartments.href = "pages/mapaapartamentos.html"
+      health.href = "pages/biomedical.html"
+      clinicalmaps.href = "pages/mapclinics.html"
+    } else {
+      universities.href = "pages/login.html"
+      degrees.href = "pages/login.html"
+      apartments.href = "pages/login.html"
+      health.href = "pages/login.html"
+      clinicalmaps.href = "pages/login.html"
+    }
 
-  logout.onclick = function() {
-    localStorage.removeItem("username")
-    userName.textContent = ""
-    userName.style.display = "none"
-    logout.style.display = "none"
-    estado = false
-    universities.href = "pages/login.html"
-    degrees.href = "pages/login.html"
-    apartments.href = "pages/login.html"
-    health.href = "pages/login.html"
-    clinicalmaps.href = "pages/login.html"
-  }
-</script>
-
+    logout.onclick = function() {
+      localStorage.removeItem("username")
+      userName.textContent = ""
+      userName.style.display = "none"
+      logout.style.display = "none"
+      estado = false
+      universities.href = "pages/login.html"
+      degrees.href = "pages/login.html"
+      apartments.href = "pages/login.html"
+      health.href = "pages/login.html"
+      clinicalmaps.href = "pages/login.html"
+    }
+  </script>
 </html>

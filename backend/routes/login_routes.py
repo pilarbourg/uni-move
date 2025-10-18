@@ -39,7 +39,7 @@ def user_login():
     if user["password_hash"] == password:
         return jsonify({"message": "Login successful."}), 200
 
-    return jsonify({"message": "Invalid password or username"}), 401
+    return jsonify({"message": "Invalid password"}), 401
 
 @login_routes.route("/api/register", methods=["POST"])
 def user_register():
