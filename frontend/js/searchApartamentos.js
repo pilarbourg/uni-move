@@ -21,13 +21,13 @@ async function searchApartments() {
   let url = "";
 
   if (barrio && precio) {
-    url = `http://127.0.0.1:5000/get_apartments_by_barrio_price?barrio=${encodeURIComponent(
+    url = `http://127.0.0.1:8080/get_apartments_by_barrio_price?barrio=${encodeURIComponent(
       barrio
     )}&presupuesto=${precio}`;
   } else if (barrio) {
-    url = `http://127.0.0.1:5000/get_apartments_by_barrio/${encodeURIComponent(barrio)}`;
+    url = `http://127.0.0.1:8080/get_apartments_by_barrio/${encodeURIComponent(barrio)}`;
   } else if (precio) {
-    url = `http://127.0.0.1:5000/get_apartments_by_price/${precio}`;
+    url = `http://127.0.0.1:8080/get_apartments_by_price/${precio}`;
   }
 
   try {

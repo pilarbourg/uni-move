@@ -12,17 +12,58 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   </head>
   <body>
-    <nav>
-      <div>
-        <a href="../index.html">Moving</a>
-        <a href="../index.html">Universities</a>
-        <a href="../index.html">Internships</a>
-      </div>
-      <h1>UniMove</h1>
-      <div>
-        <a href="biomedical.html">Health</a>
-        <a href="mapclinics.html">Clinical Maps</a>
-        <a href="../index.html">Home</a>
+    <nav class="navbar">
+      <h1 class="logo">
+        <img
+          src="../assets/svgs/logo.svg"
+          style="width: 36px; height: 36px"
+        />UniMove
+      </h1>
+
+      <ul class="menu">
+        <li class="dropdown">
+          <a href="#">Universities</a>
+          <ul class="dropdown-content">
+            <li><a href="universidades.html">Search on Map</a></li>
+            <li><a href="searchByDegree.html">Search by Degree</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Moving</a>
+          <ul class="dropdown-content">
+            <li><a href="mapaapartamentos.html">Apartments</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Students</a>
+          <ul class="dropdown-content">
+            <li><a href="../index.html">Internships</a></li>
+            <li><a href="studentLife.html">Study Section</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Health</a>
+          <ul class="dropdown-content">
+            <li><a href="biomedical.html">Health</a></li>
+            <li><a href="mapclinics.html">Clinical Maps</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="nav-right">
+        <a href="../index.html">
+          <img src="../assets/svgs/home.svg" class="home-button"
+        /></a>
+
+        <li class="user-section">
+          <span id="user-name" style="font-weight: bold; color: #5a7c99"></span>
+          <button id="logout" class="boton" style="display: none">
+            <img src="../assets/svgs/logout.svg" />
+          </button>
+        </li>
       </div>
     </nav>
 
@@ -40,21 +81,20 @@
 
         <label for="localitySelect">Locality</label>
         <select id="localitySelect" size="5">
-      <option>Loading locations...</option>
+          <option>Loading locations...</option>
         </select>
 
-      <!-- Carreras -->
-      <label for="degreeSelect">Degree</label>
-      <select id="degreeSelect" size="5">
-        <option>Loading degrees...</option>
-      </select>
+        <!-- Carreras -->
+        <label for="degreeSelect">Degree</label>
+        <select id="degreeSelect" size="5">
+          <option>Loading degrees...</option>
+        </select>
 
-      <a href="#" id="showUniversitiesBtn" class="btn">Show Universities</a>
-    </section>
-    <div id="cardContainer"></div>
-    <section class="results-card" id="resultsCard">
-         <div id="resultsList" class="results-list"></div>
-    </section>
+        <a href="#" id="showUniversitiesBtn" class="btn">Show Universities</a>
+      </section>
+      <section class="results-card" id="resultsCard">
+        <div id="resultsList" class="results-list"></div>
+      </section>
 
       <section class="map-container">
         <div id="map"></div>
@@ -76,329 +116,341 @@
         maxZoom: 19,
       }).addTo(map);
 
- // Variables globales
-    let universities = [];
-    let universityMarkers = [];
-    let degrees = [];
-    let locations = [];
+      // Variables globales
+      let universities = [];
+      let universityMarkers = [];
+      let degrees = [];
+      let locations = [];
 
-    const degreeSelect = document.getElementById("degreeSelect");
-    const localitySelect = document.getElementById("localitySelect");
-    const universitySelect = document.getElementById("universitySelect");
-    const filterBtn = document.getElementById("showUniversitiesBtn");
+      const degreeSelect = document.getElementById("degreeSelect");
+      const localitySelect = document.getElementById("localitySelect");
+      const universitySelect = document.getElementById("universitySelect");
+      const filterBtn = document.getElementById("showUniversitiesBtn");
 
+      // Step 1: Define GitHub icons
+      var redIcon = new L.Icon({
+        iconUrl: "../assets/images/marker-icon-2x-red.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+      });
 
-// Step 1: Define GitHub icons
-var redIcon = new L.Icon({
-    iconUrl: '/assets/images/marker-icon-2x-red.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34]
-});
+      async function fetchUniversities() {
+        try {
+          const res = await fetch("http://127.0.0.1:8080/api/get_universities");
+          universities = await res.json();
 
-async function fetchUniversities() {
-      try {
-        const res = await fetch("http://127.0.0.1:5000/get_universities");
-        universities = await res.json();
-
-         // Rellenar select de universidades
-        universities.forEach(u => {
-          const option = document.createElement("option");
-          option.value =  u.id;
-          option.textContent = u.name;
-          universitySelect.appendChild(option);
+          // Rellenar select de universidades
+          universities.forEach((u) => {
+            const option = document.createElement("option");
+            option.value = u.id;
+            option.textContent = u.name;
+            universitySelect.appendChild(option);
           });
-        renderUniversities(universities);
-      } catch (err) {
-        console.error("Error fetching universities:", err);
+          renderUniversities(universities);
+        } catch (err) {
+          console.error("Error fetching universities:", err);
+        }
       }
-    }
-function renderUniversities(list) {
-      // Limpiar marcadores previos
-      if (universityMarkers) {
-        universityMarkers.forEach(marker => map.removeLayer(marker));
-      }
-      // Dibujar cada universidad
-      list.forEach(u => {
-        const marker = L.marker([parseFloat(u.latitude), parseFloat(u.longitude)], { icon: redIcon })
-          .addTo(map)
-          .bindPopup(`<b>${u.name}</b>`);
-        universityMarkers.push(marker);
-      });
-      const allCoords = list.map(u => [parseFloat(u.latitude), parseFloat(u.longitude)]);
-      if (allCoords.length > 0) map.fitBounds(allCoords, { padding: [50, 50] });
-    }
-
-async function fetchDegrees() {
-  try {
-    const res = await fetch("http://127.0.0.1:5000/get_degrees");
-    degrees = await res.json();
-    
-    degrees.forEach(d => {
-      const option = document.createElement("option");
-      option.value = d.id;
-      option.textContent = d.name;
-      degreeSelect.appendChild(option);
-    });
-  } catch (err) {
-    console.error("Error fetching degrees:", err);
-  }
-}
-;
-async function fetchLocations() {
-  try {
-    const res = await fetch("http://127.0.0.1:5000/get_locations");
-    locations = await res.json();
-    locations.forEach(l => {
-      const option = document.createElement("option");
-      option.value = l.id;
-      option.textContent = l.name;
-      localitySelect.appendChild(option);
-    });
-    console.log("Fetched locations:", locations);
-  } catch (err) {
-    console.error("Error fetching locations:", err);
-  }
-}
-
-function createCard() {
-  cardCount++;
-
-  // Crear elementos
-  const section = document.createElement("section");
-  section.classList.add("info-card");
-
-  const title = document.createElement("h3");
-  title.textContent = `Filter universities by:`;
-  const searchBtn = document.getElementById("searchBtn");
-  const typeFilter = document.getElementById("typeFilter");
-  const rankingFilter = document.getElementById("rankingFilter");
-  const includeSimilar = document.getElementById("includeSimilar");
-  // Agregar el título a la sección
-  section.appendChild(title);
-  section.appendChild(searchBtn);
-  section.appendChild(typeFilter);
-  section.appendChild(rankingFilter); 
-  section.appendChild(includeSimilar);
-  
-  // Agregar la tarjeta al contenedor
-  cardContainer.appendChild(section);
-}
-
-filterBtn.addEventListener("click", async () => {
-  const selectedUniId = universitySelect.value;
-  const selectedDegree = degreeSelect.value;
-  const selectedLocation = localitySelect.value;
-
-  // Caso 1: usuario eligió una universidad
-  if (selectedUniId && selectedUniId !== "Loading universities...") {
-    console.log("Filtering by university:", selectedUniId);
-    try {
-      const uni = universities.find(u => u.id == selectedUniId);
-
-      if (universityMarkers) {
-        universityMarkers.forEach(marker => map.removeLayer(marker));
-        universityMarkers = [];
+      function renderUniversities(list) {
+        // Limpiar marcadores previos
+        if (universityMarkers) {
+          universityMarkers.forEach((marker) => map.removeLayer(marker));
+        }
+        // Dibujar cada universidad
+        list.forEach((u) => {
+          const marker = L.marker(
+            [parseFloat(u.latitude), parseFloat(u.longitude)],
+            { icon: redIcon }
+          )
+            .addTo(map)
+            .bindPopup(`<b>${u.name}</b>`);
+          universityMarkers.push(marker);
+        });
+        const allCoords = list.map((u) => [
+          parseFloat(u.latitude),
+          parseFloat(u.longitude),
+        ]);
+        if (allCoords.length > 0)
+          map.fitBounds(allCoords, { padding: [50, 50] });
       }
 
-      const marker = L.marker(
-        [parseFloat(uni.latitude), parseFloat(uni.longitude)],
-        { icon: redIcon }
-      )
-        .addTo(map)
-        .bindPopup(`<b>${uni.name}</b>`);
+      async function fetchDegrees() {
+        try {
+          const res = await fetch("http://127.0.0.1:8080/api/get_degrees");
+          degrees = await res.json();
 
-      universityMarkers.push(marker);
-      map.setView([parseFloat(uni.latitude), parseFloat(uni.longitude)], 15);
-    } catch (err) {
-      console.error("Error filtering by university:", err);
-    }
-  }
-
-  // Caso 2: usuario eligió un degree
-  else if (selectedDegree && selectedDegree !== "Loading degrees...") {
-     const resultsList = document.getElementById("resultsList");
-    console.log("Filtering by degree:", selectedDegree);
-    try {
-      if (universityMarkers) {
-        universityMarkers.forEach(marker => map.removeLayer(marker));
-        universityMarkers = [];
+          degrees.forEach((d) => {
+            const option = document.createElement("option");
+            option.value = d.id;
+            option.textContent = d.name;
+            degreeSelect.appendChild(option);
+          });
+        } catch (err) {
+          console.error("Error fetching degrees:", err);
+        }
       }
-      if (resultsList) {
-        resultsList.innerHTML = "";
-      }
-
-      // Petición al backend
-      const res = await fetch(`http://127.0.0.1:5000/get_universities_by_degree/${selectedDegree}`);
-      const filteredUnis = await res.json();
-
-      if (!filteredUnis || filteredUnis.length === 0) {
-        alert("No universities found for the selected degree.");
-        return;
+      async function fetchLocations() {
+        try {
+          const res = await fetch("http://127.0.0.1:8080/api/get_locations");
+          locations = await res.json();
+          locations.forEach((l) => {
+            const option = document.createElement("option");
+            option.value = l.id;
+            option.textContent = l.name;
+            localitySelect.appendChild(option);
+          });
+          console.log("Fetched locations:", locations);
+        } catch (err) {
+          console.error("Error fetching locations:", err);
+        }
       }
 
-      filteredUnis.forEach(uni => {
-        // Añadir marcador
-        const marker = L.marker(
-          [parseFloat(uni.latitude), parseFloat(uni.longitude)],
-          { icon: redIcon }
-        )
-          .addTo(map)
-          .bindPopup(`<b>${uni.name}</b><br>${selectedDegree}`);
-        universityMarkers.push(marker);
+      filterBtn.addEventListener("click", async () => {
+        const selectedUniId = universitySelect.value;
+        const selectedDegree = degreeSelect.value;
+        const selectedLocation = localitySelect.value;
 
-        // Crear tarjeta
-        const card = document.createElement("div");
-        card.classList.add("university-card");
-        card.innerHTML = `
+        // Caso 1: usuario eligió una universidad
+        if (selectedUniId && selectedUniId !== "Loading universities...") {
+          console.log("Filtering by university:", selectedUniId);
+          try {
+            const uni = universities.find((u) => u.id == selectedUniId);
+
+            if (universityMarkers) {
+              universityMarkers.forEach((marker) => map.removeLayer(marker));
+              universityMarkers = [];
+            }
+
+            const marker = L.marker(
+              [parseFloat(uni.latitude), parseFloat(uni.longitude)],
+              { icon: redIcon }
+            )
+              .addTo(map)
+              .bindPopup(`<b>${uni.name}</b>`);
+
+            universityMarkers.push(marker);
+            map.setView(
+              [parseFloat(uni.latitude), parseFloat(uni.longitude)],
+              15
+            );
+          } catch (err) {
+            console.error("Error filtering by university:", err);
+          }
+        }
+
+        // Caso 2: usuario eligió un degree
+        else if (selectedDegree && selectedDegree !== "Loading degrees...") {
+          const resultsList = document.getElementById("resultsList");
+          console.log("Filtering by degree:", selectedDegree);
+          try {
+            if (universityMarkers) {
+              universityMarkers.forEach((marker) => map.removeLayer(marker));
+              universityMarkers = [];
+            }
+            if (resultsList) {
+              resultsList.innerHTML = "";
+            }
+
+            // Petición al backend
+            const res = await fetch(
+              `http://127.0.0.1:8080/api/get_universities_by_degree/${selectedDegree}`
+            );
+            const filteredUnis = await res.json();
+
+            if (!filteredUnis || filteredUnis.length === 0) {
+              alert("No universities found for the selected degree.");
+              return;
+            }
+
+            filteredUnis.forEach((uni) => {
+              // Añadir marcador
+              const marker = L.marker(
+                [parseFloat(uni.latitude), parseFloat(uni.longitude)],
+                { icon: redIcon }
+              )
+                .addTo(map)
+                .bindPopup(`<b>${uni.name}</b><br>${selectedDegree}`);
+              universityMarkers.push(marker);
+
+              // Crear tarjeta
+              const card = document.createElement("div");
+              card.classList.add("university-card");
+              card.innerHTML = `
           <h3 style="color:#1a4d8f; margin-bottom:12px; font-size:1.2rem;">
             🏫 ${uni.name}
           </h3>
           <p><strong>⭐ Ranking:</strong> ${uni.ranking ?? "N/A"}</p>
-          <p><strong>🚇 Public Transport:</strong> ${uni.publicTransport ?? "N/A"}</p>
+          <p><strong>🚇 Public Transport:</strong> ${
+            uni.publicTransport ?? "N/A"
+          }</p>
           <p><strong>📍 Zip Code:</strong> ${uni.zipCode ?? "N/A"}</p>
           <p><strong>📞 Phone:</strong> ${uni.phoneNumber ?? "N/A"}</p>
         `;
-        resultsList.appendChild(card);
-      });
+              resultsList.appendChild(card);
+            });
 
-      const firstUni = filteredUnis[0];
-      map.setView([parseFloat(firstUni.latitude), parseFloat(firstUni.longitude)], 15);
-    } catch (err) {
-      console.error("Error filtering by degree:", err);
-    }
-  }
+            const firstUni = filteredUnis[0];
+            map.setView(
+              [parseFloat(firstUni.latitude), parseFloat(firstUni.longitude)],
+              15
+            );
+          } catch (err) {
+            console.error("Error filtering by degree:", err);
+          }
+        }
 
-  // Caso 3: usuario eligió un degree y una location
-  else if ((selectedDegree!== "Loading degrees..." && selectedDegree) &&
-           (selectedLocation !== "Loading locations..." && selectedLocation)) {
-    const resultsList = document.getElementById("resultsList");
-    const cardContainer = document.getElementById("cardContainer");
-    let cardCount = 0;
-createCard();
-    console.log("Filtering by degree and location:", selectedDegree, selectedLocation);
-   try {
-      if (universityMarkers) {
-        universityMarkers.forEach(marker => map.removeLayer(marker));
-        universityMarkers = [];
-      }
+        // Caso 3: usuario eligió un degree y una location
+        else if (
+          selectedDegree !== "Loading degrees..." &&
+          selectedDegree &&
+          selectedLocation !== "Loading locations..." &&
+          selectedLocation
+        ) {
+          const resultsList = document.getElementById("resultsList");
+          console.log(
+            "Filtering by degree and location:",
+            selectedDegree,
+            selectedLocation
+          );
+          try {
+            if (universityMarkers) {
+              universityMarkers.forEach((marker) => map.removeLayer(marker));
+              universityMarkers = [];
+            }
 
-      // Petición al backend
-      const res = await fetch(`http://127.0.0.1:5000/get_universities_by_degree_and_locality/${selectedDegree}${selectedLocation}`);
-      const filteredUnis = await res.json();
+            // Petición al backend
+            const res = await fetch(
+              `http://127.0.0.1:8080/api/get_universities_by_degree_and_locality/${selectedDegree}${selectedLocation}`
+            );
+            const filteredUnis = await res.json();
 
-      // Limpia lista anterior
-      resultsList.innerHTML = "";
+            // Limpia lista anterior
+            resultsList.innerHTML = "";
 
-      if (!filteredUnis || filteredUnis.length === 0) {
-        alert("No universities found for the selected degree.");
-        return;
-      }
+            if (!filteredUnis || filteredUnis.length === 0) {
+              alert("No universities found for the selected degree.");
+              return;
+            }
 
-      filteredUnis.forEach(uni => {
-        // Añadir marcador
-        const marker = L.marker(
-          [parseFloat(uni.latitude), parseFloat(uni.longitude)],
-          { icon: redIcon }
-        )
-          .addTo(map)
-          .bindPopup(`<b>${uni.name}</b><br>${selectedDegree}`);
-        universityMarkers.push(marker);
+            filteredUnis.forEach((uni) => {
+              // Añadir marcador
+              const marker = L.marker(
+                [parseFloat(uni.latitude), parseFloat(uni.longitude)],
+                { icon: redIcon }
+              )
+                .addTo(map)
+                .bindPopup(`<b>${uni.name}</b><br>${selectedDegree}`);
+              universityMarkers.push(marker);
 
-        // Crear tarjeta
-        const card = document.createElement("div");
-        card.classList.add("university-card");
-        card.innerHTML = `
+              // Crear tarjeta
+              const card = document.createElement("div");
+              card.classList.add("university-card");
+              card.innerHTML = `
           <h3 style="color:#1a4d8f; margin-bottom:12px; font-size:1.2rem;">
             🏫 ${uni.name}
           </h3>
           <p><strong>⭐ Ranking:</strong> ${uni.ranking ?? "N/A"}</p>
-          <p><strong>🚇 Public Transport:</strong> ${uni.publicTransport ?? "N/A"}</p>
+          <p><strong>🚇 Public Transport:</strong> ${
+            uni.publicTransport ?? "N/A"
+          }</p>
           <p><strong>📍 Zip Code:</strong> ${uni.zipCode ?? "N/A"}</p>
           <p><strong>📞 Phone:</strong> ${uni.phoneNumber ?? "N/A"}</p>
         `;
-        resultsList.appendChild(card);
-      });
+              resultsList.appendChild(card);
+            });
 
-      const firstUni = filteredUnis[0];
-      map.setView([parseFloat(firstUni.latitude), parseFloat(firstUni.longitude)], 15);
-    } catch (err) {
-      console.error("Error showing all universities:", err);
-    }
-    
-  }
-  // Caso 4: usuario eligió una location
-  else if (selectedLocation && selectedLocation !== "Loading locations...") {
-    const resultsList = document.getElementById("resultsList");
-    console.log("Filtering by location:", selectedLocation);;
-    try {
-      if (universityMarkers) {
-        universityMarkers.forEach(marker => map.removeLayer(marker));
-        universityMarkers = [];
-      }
+            const firstUni = filteredUnis[0];
+            map.setView(
+              [parseFloat(firstUni.latitude), parseFloat(firstUni.longitude)],
+              15
+            );
+          } catch (err) {
+            console.error("Error showing all universities:", err);
+          }
+        }
+        // Caso 4: usuario eligió una location
+        else if (
+          selectedLocation &&
+          selectedLocation !== "Loading locations..."
+        ) {
+          const resultsList = document.getElementById("resultsList");
+          console.log("Filtering by location:", selectedLocation);
+          try {
+            if (universityMarkers) {
+              universityMarkers.forEach((marker) => map.removeLayer(marker));
+              universityMarkers = [];
+            }
 
-      // Petición al backend
-      const res = await fetch(`http://127.0.0.1:5000/get_universities_by_locality/${selectedLocation}`);
-      const filteredUnis = await res.json();
+            // Petición al backend
+            const res = await fetch(
+              `http://127.0.0.1:8080/api/get_universities_by_locality/${selectedLocation}`
+            );
+            const filteredUnis = await res.json();
 
-      // Limpia lista anterior
-      resultsList.innerHTML = "";
+            // Limpia lista anterior
+            resultsList.innerHTML = "";
 
-      if (!filteredUnis || filteredUnis.length === 0) {
-        alert("No universities found for the selected degree.");
-        return;
-      }
+            if (!filteredUnis || filteredUnis.length === 0) {
+              alert("No universities found for the selected degree.");
+              return;
+            }
 
-      filteredUnis.forEach(uni => {
-        // Añadir marcador
-        const marker = L.marker(
-          [parseFloat(uni.latitude), parseFloat(uni.longitude)],
-          { icon: redIcon }
-        )
-          .addTo(map)
-          .bindPopup(`<b>${uni.name}</b><br>${selectedDegree}`);
-        universityMarkers.push(marker);
+            filteredUnis.forEach((uni) => {
+              // Añadir marcador
+              const marker = L.marker(
+                [parseFloat(uni.latitude), parseFloat(uni.longitude)],
+                { icon: redIcon }
+              )
+                .addTo(map)
+                .bindPopup(`<b>${uni.name}</b><br>${selectedDegree}`);
+              universityMarkers.push(marker);
 
-        // Crear tarjeta
-        const card = document.createElement("div");
-        card.classList.add("university-card");
-        card.innerHTML = `
+              // Crear tarjeta
+              const card = document.createElement("div");
+              card.classList.add("university-card");
+              card.innerHTML = `
           <h3 style="color:#1a4d8f; margin-bottom:12px; font-size:1.2rem;">
             🏫 ${uni.name}
           </h3>
           <p><strong>⭐ Ranking:</strong> ${uni.ranking ?? "N/A"}</p>
-          <p><strong>🚇 Public Transport:</strong> ${uni.publicTransport ?? "N/A"}</p>
+          <p><strong>🚇 Public Transport:</strong> ${
+            uni.publicTransport ?? "N/A"
+          }</p>
           <p><strong>📍 Zip Code:</strong> ${uni.zipCode ?? "N/A"}</p>
           <p><strong>📞 Phone:</strong> ${uni.phoneNumber ?? "N/A"}</p>
         `;
-        resultsList.appendChild(card);
+              resultsList.appendChild(card);
+            });
+
+            const firstUni = filteredUnis[0];
+            map.setView(
+              [parseFloat(firstUni.latitude), parseFloat(firstUni.longitude)],
+              15
+            );
+          } catch (err) {
+            console.error("Error filtering by location:", err);
+          }
+        } else {
+          // Mostrar todas las universidades
+          console.log("Showing all universities");
+          window.alert(
+            "Showing all universities,please select valid data to filter."
+          );
+          renderUniversities(universities);
+          const resultsList = document.getElementById("resultsList");
+          resultsList.innerHTML = "";
+        }
+        universitySelect.selectedIndex = "";
+        localitySelect.selectedIndex = "";
+        degreeSelect.selectedIndex = "";
       });
 
-      const firstUni = filteredUnis[0];
-      map.setView([parseFloat(firstUni.latitude), parseFloat(firstUni.longitude)], 15);
-    } catch (err) {
-      console.error("Error filtering by location:", err);
-    }
-  }
-  else {
-    // Mostrar todas las universidades
-    console.log("Showing all universities");
-    window.alert("Showing all universities,please select valid data to filter.");
-    renderUniversities(universities);
-    const resultsList = document.getElementById("resultsList");
-    resultsList.innerHTML = "";
-  }
-  universitySelect.selectedIndex = "";
-    localitySelect.selectedIndex = "";
-    degreeSelect.selectedIndex = "";
-});
+      // Llamar a la función
 
-    
-// Llamar a la función
-
-fetchUniversities();
-fetchDegrees();
-fetchLocations();
-  </script>
-</body>
+      fetchUniversities();
+      fetchDegrees();
+      fetchLocations();
+    </script>
+  </body>
 </html>

@@ -12,7 +12,7 @@ SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
-@related_degrees_routes.route("/get_related_degrees", methods=["GET"])
+@related_degrees_routes.route("/api/get_related_degrees", methods=["GET"])
 def get_related_degrees():
     degree = request.args.get("degree")
 

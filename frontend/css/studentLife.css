@@ -22,33 +22,115 @@ body {
   --muted: #777;
 }
 
-nav {
+.user-section {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 1rem 3rem;
-  background: var(--bg-light);
-  border-bottom: 1px solid #eee;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  gap: 0.5rem;
+  border-radius: 10px;
+  padding: 5px 10px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
-nav h1 {
-  font-size: 1.8rem;
-  color: #627e9e;
+.home-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-nav div a {
+.home-button {
+  width: 30px;
+}
+
+.nav-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f5f5f5;
+  padding: 10px 30px;
+  position: relative;
+}
+
+.boton {
+  background: none;
+  border: none;
+  padding-left: 5px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: #5A7C99;
+  text-align: center;
+  margin: 0;
+}
+
+.logo img {
+  margin-right: 1rem;
+  background-color: #5a7c992b;
+  border-radius: 50%;
+  padding: 2%;
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.menu > li {
+  position: relative;
+}
+
+.menu a {
   text-decoration: none;
-  color: var(--secondary);
-  margin: 0 1rem;
-  font-weight: 500;
-  transition: color 0.25s ease;
+  color: #5A7C99;
+  padding: 8px 12px;
+  display: block;
 }
 
-nav div a:hover {
-  color: var(--accent);
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 10px;
+}
+
+.dropdown-content li a {
+  padding: 10px;
+  color: #5A7C99;
+  border-radius: 10px;
+}
+
+.dropdown-content li a:hover {
+  background-color: #e6f0fa;
+  border-radius: 10px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  border-radius: 10px;
 }
 
 .hero {
@@ -261,3 +343,203 @@ footer {
   background: darkred;
 }
 
+.leave-review-btn, .toggle-reviews-btn {
+  background-color: #e1ecf4;
+  border-radius: 20px;
+  border: 1px solid #7aa7c7;
+  box-shadow: rgba(255, 255, 255, .7) 0 1px 0 0 inset;
+  box-sizing: border-box;
+  color: #39739d;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system,system-ui,"Segoe UI","Liberation Sans",sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.15385;
+  margin: 0;
+  outline: none;
+  padding: 8px .8em;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  white-space: nowrap;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+  margin-right: 1rem;
+}
+
+.leave-review-btn:hover,
+.leave-review-btn:focus {
+  background-color: #b3d3ea;
+  color: #2c5777;
+}
+
+.toggle-reviews-btn:hover,
+.toggle-reviews-btn:focus {
+  background-color: #b3d3ea;
+  color: #2c5777;
+}
+
+.leave-review-btn:focus {
+  box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
+}
+
+.toggle-reviews-btn:focus {
+  box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
+}
+
+.review-form {
+  background-color: #e1ecf4;
+  color: #2c5777;
+  padding: 1.5rem;
+  border-radius: 20px;
+}
+
+.submit-review-btn {
+  background-color: #5a7c99;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 5px 20px;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  transition: background-color 0.3s ease;
+}
+
+.submit-review-btn:hover {
+  background-color: #2c5777;
+}
+
+.review-label {
+  font-weight: 600;
+  color: #355c7d;
+  font-size: 0.95rem;
+  margin-top: 2rem;
+}
+
+.review-rating {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 30px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #355c7d;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, #5a7c99 50%),
+                    linear-gradient(135deg, #5a7c99 50%, transparent 50%);
+  background-position: calc(100% - 20px) calc(50% - 3px),
+                       calc(100% - 15px) calc(50% - 3px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  transition: all 0.2s ease-in-out;
+}
+
+.review-rating:hover {
+  border-color: #5a7c99;
+  box-shadow: 0 0 0 3px rgba(90, 124, 153, 0.1);
+}
+
+.review-rating:focus {
+  outline: none;
+  border-color: #5a7c99;
+  box-shadow: 0 0 0 3px rgba(90, 124, 153, 0.25);
+}
+
+.review-rating option {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  color: #355c7d;
+  background-color: #fff;
+}
+
+.review-rating:hover {
+  border-color: #5a7c99;
+}
+
+.review-rating-text {
+  background-color: pink;
+}
+
+.review-comment {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: "Roboto", sans-serif;
+  color: #5A7C99;
+  resize: none;
+  width: 100%;
+  transition: border-color 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.review-comment:focus {
+  border-color: #5a7c99;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(90, 124, 153, 0.2);
+}
+
+.reviews-list {
+  margin-top: 8px;
+  padding-left: 10px;
+  border-left: 3px solid #dce3eb;
+  animation: fadeIn 0.3s ease;
+  overflow-y: scroll;
+  height: 20vh;
+}
+
+.review-item {
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #f0f3f7;
+}
+
+.review-item-display {
+  display: flex;
+  justify-content: space-between;
+  background-color: #e1ecf4;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin: 0.5rem;
+}
+
+.review-comment-display {
+  max-width: 55%;
+}
+
+.review-rating {
+  font-weight: 600;
+  color: #ffb400;
+}
+
+.review-comment {
+  margin: 4px 0;
+  font-style: italic;
+  color: #555;
+}
+
+.review-date {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

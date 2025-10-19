@@ -12,13 +12,14 @@ from backend.routes.related_degrees_routes import related_degrees_routes
 from backend.routes.uni_contact_routes import contact_routes
 from backend.routes.universities.libraries_external import libraries_routes
 from backend.routes.medical_reminders_routes import medical_reminders_routes
+from backend.routes.universities.libraries_review import libraries_reviews_routes
 from flask_cors import CORS
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app)
 
 app.register_blueprint(chat_routes)
 app.register_blueprint(bio_profile_routes)
@@ -33,6 +34,13 @@ app.register_blueprint(map_apartamentos_routes)
 app.register_blueprint(medical_contacts_routes)
 app.register_blueprint(medical_reminders_routes)
 app.register_blueprint(libraries_routes)
+app.register_blueprint(libraries_reviews_routes)
+
+
+print("\n=== ROUTES ===")
+for rule in app.url_map.iter_rules():
+    print(rule)
+print("================\n")
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8080)

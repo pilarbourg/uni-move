@@ -146,20 +146,58 @@
   </head>
 
   <body>
-    <nav>
-      <div>
-        <a href="../index.html">Moving</a>
-        <a href="universidades.html">Universities</a>
-        <a href="searchByDegree.html" style="font-weight: 600; color: #1a4d8f">
-          Search by Degree
-        </a>
-        <a href="../index.html">Internships</a>
-      </div>
-      <h1>UniMove</h1>
-      <div>
-        <a href="biomedical.html">Health</a>
-        <a href="mapclinics.html">Clinical Maps</a>
-        <a href="../index.html">Home</a>
+    <nav class="navbar">
+      <h1 class="logo">
+        <img
+          src="../assets/svgs/logo.svg"
+          style="width: 36px; height: 36px"
+        />UniMove
+      </h1>
+
+      <ul class="menu">
+        <li class="dropdown">
+          <a href="#">Universities</a>
+          <ul class="dropdown-content">
+            <li><a href="universidades.html">Search on Map</a></li>
+            <li><a href="searchByDegree.html">Search by Degree</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Moving</a>
+          <ul class="dropdown-content">
+            <li><a href="mapaapartamentos.html">Apartments</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Students</a>
+          <ul class="dropdown-content">
+            <li><a href="../index.html">Internships</a></li>
+            <li><a href="studentLife.html">Study Section</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Health</a>
+          <ul class="dropdown-content">
+            <li><a href="biomedical.html">Health</a></li>
+            <li><a href="mapclinics.html">Clinical Maps</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="nav-right">
+        <a href="../index.html">
+          <img src="../assets/svgs/home.svg" class="home-button"
+        /></a>
+
+        <li class="user-section">
+          <span id="user-name" style="font-weight: bold; color: #5a7c99"></span>
+          <button id="logout" class="boton" style="display: none">
+            <img src="../assets/svgs/logout.svg" />
+          </button>
+        </li>
       </div>
     </nav>
 
@@ -252,11 +290,16 @@
 
           if (includeSimilar.checked) {
             const relatedRes = await fetch(
-              `http://127.0.0.1:8080/get_related_degrees?degree=${encodeURIComponent(
+              `http://127.0.0.1:8080/api/get_related_degrees?degree=${encodeURIComponent(
                 selectedDegree
               )}`
             );
+
+            console.log("Fetching related degrees from URL:", relatedRes); // <-- ADD THIS
+
             const relatedData = await relatedRes.json();
+
+            console.log("Related degrees response:", relatedData); // <-- optional, see the returned JSON
 
             if (relatedData.related_degrees?.length > 0) {
               degreesToSearch = degreesToSearch.concat(

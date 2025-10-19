@@ -6,7 +6,7 @@ from supabase import create_client
 
 load_dotenv()
 
-map_universities_routes = Blueprint("map_universities_routes", __name__)
+map_universities_routes = Blueprint("map_universities_routes", __name__, url_prefix="/api")
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")

@@ -5,21 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="../css/studentLife.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   </head>
   <body>
-    <nav>
-      <div>
-        <a href="index.html">Moving</a>
-        <a href="pages/universidades.html">Student Life</a>
-        <a href="index.html">Internships</a>
-      </div>
-      <h1>UniMove</h1>
-      <div>
-        <a href="pages/biomedical.html">Health</a>
-        <a href="pages/mapclinics.html">Clinical Maps</a>
-        <a href="index.html">Home</a>
+    <nav class="navbar">
+      <h1 class="logo">
+        <img
+          src="../assets/svgs/logo.svg"
+          style="width: 36px; height: 36px"
+        />UniMove
+      </h1>
+
+      <ul class="menu">
+        <li class="dropdown">
+          <a href="#">Universities</a>
+          <ul class="dropdown-content">
+            <li><a href="universidades.html">Search on Map</a></li>
+            <li><a href="searchByDegree.html">Search by Degree</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Moving</a>
+          <ul class="dropdown-content">
+            <li><a href="mapaapartamentos.html">Apartments</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Students</a>
+          <ul class="dropdown-content">
+            <li><a href="../index.html">Internships</a></li>
+            <li><a href="studentLife.html">Study Section</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Health</a>
+          <ul class="dropdown-content">
+            <li><a href="biomedical.html">Health</a></li>
+            <li><a href="mapclinics.html">Clinical Maps</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="nav-right">
+        <a href="../index.html">
+          <img src="../assets/svgs/home.svg" class="home-button"
+        /></a>
+
+        <li class="user-section">
+          <span id="user-name" style="font-weight: bold; color: #5a7c99"></span>
+          <button id="logout" class="boton" style="display: none">
+            <img src="../assets/svgs/logout.svg" />
+          </button>
+        </li>
       </div>
     </nav>
 
@@ -31,12 +75,10 @@
 
     <main>
       <section>
-        <h2>Welcome to your Student Life Dashboard</h2>
+        <h2>Welcome to your Study Section</h2>
         <p>
-          Discover everything you need to know about student life at your
-          university. From campus activities to local hangouts, we've got you
-          covered. Whether you're already in Madrid are just looking for a
-          university, this section is for you!
+          Explore resources and tools to enhance your academic journey and make
+          the most of your student life.
         </p>
       </section>
 
@@ -75,6 +117,8 @@
       <p>&copy; 2025 UniMove | Built with ❤️ for students around the world</p>
     </footer>
 
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="../js/mapLibraries.js"></script>
     <script>
       function openSubpage(evt, title) {
         var i, tabcontent, tablinks;
@@ -97,7 +141,5 @@
         document.querySelector(".tablinks").click();
       });
     </script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="../js/mapLibraries.js"></script>
   </body>
 </html>
