@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 import sys, os
 
-# Permitir import desde backend/
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
 
 from backend.apartamentos_info.apartamentos import (
@@ -15,7 +15,7 @@ from backend.apartamentos_info.apartamentos import (
 
 class TestApartamentos(unittest.TestCase):
 
-    # --- 1. LISTAR ---
+
     @patch("backend.apartamentos_info.apartamentos.supabase")
     def test_listar_apartamentos(self, mock_supabase):
         # Simula .execute() devolviendo un objeto con .data
@@ -31,7 +31,7 @@ class TestApartamentos(unittest.TestCase):
         self.assertIn("titulo", data[0])
         self.assertIn("precio", data[0])
 
-    # --- 2. PRECIO ---
+
     @patch("backend.apartamentos_info.apartamentos.supabase")
     def test_busqueda_precio(self, mock_supabase):
         mock_execute = MagicMock()
@@ -47,7 +47,7 @@ class TestApartamentos(unittest.TestCase):
         for row in data:
             self.assertLessEqual(row["precio"], presupuesto)
 
-    # --- 3. BARRIO + PRECIO ---
+
     @patch("backend.apartamentos_info.apartamentos.supabase")
     def test_buscar_barrio_precio(self, mock_supabase):
         mock_execute = MagicMock()
@@ -62,7 +62,7 @@ class TestApartamentos(unittest.TestCase):
             self.assertIn("moncloa", apt["barrio"].lower())
             self.assertLessEqual(float(apt["precio"]), 2000)
 
-    # --- 4. RESULTADO VACÍO ---
+
     @patch("backend.apartamentos_info.apartamentos.supabase")
     def test_resultado_vacio(self, mock_supabase):
         mock_execute = MagicMock()

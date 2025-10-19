@@ -1,4 +1,4 @@
-import os
+
 from backend.apartamentos_info.apartamentos import listar_apartamentos, buscar_precio, buscar_barrio_precio
 from supabase import create_client, Client
 
