@@ -46,7 +46,7 @@ def test_user_login_wrong_password(client):
         "email": "alice@example.com",
         "password": "wrong"})
     assert response.status_code == 401
-    assert response.json["message"] == "Invalid salt"
+    assert response.json["message"] == "Invalid password"
 
 def test_user_login_nonexistent_user(client):
     response = client.get("/api/login", json={
