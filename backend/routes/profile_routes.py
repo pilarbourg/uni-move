@@ -1,3 +1,4 @@
+import re
 from supabase import create_client, Client
 from flask import Blueprint, jsonify, request
 
@@ -31,6 +32,9 @@ def user_register_profile():
     if not all([name, nationality, hobby]):
         return jsonify({"message": "Missing required fields"}), 400
     
+    if re.search(r'\d', name):
+        return jsonify({"message": "Invalid name format."}), 201
+
     new_profile = User(name, nationality, hobby)
     supabase.table("profile").insert(new_profile.to_dict()).execute()
 
