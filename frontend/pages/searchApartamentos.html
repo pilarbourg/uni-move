@@ -226,36 +226,36 @@
           <h3 style="color:#1a4d8f; margin-bottom:10px; font-size:1.2rem;">
             🏠 ${a.titulo ?? "Apartment"}
           </h3>
-          <p><strong>🏘️ Neighborhood:</strong> ${a.barrio ?? "N/A"}</p>
-          <p><strong>💰 Price:</strong> ${a.precio ?? "N/A"} €</p>
-          <p><strong>📏 Size:</strong> ${a.tamano_m2 ?? "N/A"} m²</p>
-          <p><strong>🛋️ Furnished:</strong> ${a.amueblado ? "Yes" : "No"}</p>
-          <p><strong>📍 Location:</strong> ${a.latitud ?? "?"}, ${a.longitud ?? "?"}</p>
+          <p><strong>Neighborhood:</strong> ${a.barrio ?? "N/A"}</p>
+          <p><strong>Price:</strong> ${a.precio ?? "N/A"} €</p>
+          <p><strong>Size:</strong> ${a.tamano_m2 ?? "N/A"} m²</p>
+          <p><strong>Furnished:</strong> ${a.amueblado ? "Yes" : "No"}</p>
+          <p><strong>Location:</strong> ${a.latitud ?? "?"}, ${a.longitud ?? "?"}</p>
         `;
         resultsList.appendChild(card);
       });
     }
 
-    // Construye la URL del backend según filtros
+
     function buildUrl(barrio, precio) {
-      // Si hay barrio y precio, usamos el endpoint combinado
+
       if (barrio && precio) {
-        // includeSimilar ya lo cubre ilike del backend; opcionalmente podríamos ampliar aquí
+
         return `http://127.0.0.1:8080/get_apartments_by_barrio_price?barrio=${encodeURIComponent(
           barrio
         )}&presupuesto=${precio}`;
       }
-      // Solo barrio
+
       if (barrio) {
         return `http://127.0.0.1:8080/get_apartments_by_barrio/${encodeURIComponent(
           barrio
         )}`;
       }
-      // Solo precio
+
       if (precio) {
         return `http://127.0.0.1:8080/get_apartments_by_price/${precio}`;
       }
-      // Sin filtros → todos
+
       return "http://127.0.0.1:8080/get_apartments";
     }
 
@@ -263,7 +263,7 @@
       const barrio = barrioInput.value.trim();
       const precio = precioInput.value.trim();
 
-      // Validación ligera
+
       if (!barrio && !precio) {
         resultsCard.style.display = "block";
         resultsList.innerHTML =
@@ -277,10 +277,9 @@
         const res = await fetch(url);
         const data = await res.json();
 
-        // Si “includeSimilar” está marcado y hay barrio, hacemos una segunda búsqueda
-        // más laxa (en la práctica ilike ya es amplio, pero duplicamos resultados si el usuario lo desea)
+
         if (includeSimilar.checked && barrio) {
-          // ejemplo: quitar tildes/variantes muy básicas
+
           const barrioShort = barrio.split(",")[0].split(" ").slice(0, 1).join(" ");
           if (barrioShort && barrioShort.toLowerCase() !== barrio.toLowerCase()) {
             const res2 = await fetch(
@@ -289,7 +288,7 @@
               )}`
             );
             const data2 = await res2.json();
-            // merge sin duplicados por id
+
             const seen = new Set((data || []).map((x) => x.id));
             data2.forEach((x) => { if (!seen.has(x.id)) data.push(x); });
           }

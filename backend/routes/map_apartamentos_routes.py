@@ -13,14 +13,10 @@ SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-# ---- Helpers ---------------------------------------------------------------
+
 def _normalize_apartment_row(a: dict) -> dict:
-    """
-    Normaliza nombres de campos para el frontend:
-    - tamaño_m2 (con ñ) -> tamano_m2 (sin ñ)
-    - garantiza latitud/longitud numéricas (o None)
-    """
-    # en Supabase puede venir "tamaño_m2" o "tamano_m2" según cómo creaste la columna
+
+
     tamano = a.get("tamano_m2", a.get("tamaño_m2"))
     return {
         "id": a.get("id"),
@@ -36,7 +32,6 @@ def _normalize_apartment_row(a: dict) -> dict:
         "longitud": a.get("longitud", a.get("longitude")),
     }
 
-# ---- Endpoints -------------------------------------------------------------
 
 @map_apartamentos_routes.route("/get_apartments", methods=["GET"])
 def get_apartments():
