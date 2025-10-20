@@ -17,8 +17,6 @@ def client():
     with app.test_client() as client:
         yield client
 
-usuarios = supabase.table("users").select("*").execute()
-
 def test_user_register_new_user(client):
     response = client.post("/api/register", json={
         "email": "sofia@gmail.com",

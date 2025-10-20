@@ -54,7 +54,7 @@
         /></a>
 
         <li class="user-section">
-          <span id="user-name" style="font-weight: bold; color: #5a7c99"></span>
+          <button id="user-name" style="font-weight:bold;color:#5a7c99;cursor:pointer;border:none;background:none;"></button>
           <button id="logout" class="boton" style="display: none">
             <img src="assets/svgs/logout.svg" />
           </button>
@@ -426,5 +426,11 @@
         });
       }
     });
+    </script>
+    <span id="user-name" style="font-weight:bold;color:#5a7c99;cursor:pointer;">JuanPerez</span>
+    <script>
+    const btn = document.getElementById('user-name');
+    btn.textContent = btn.dataset.username || "Usuario";
+    btn.onclick = () => window.location.href = "pages/profile.html";
     </script>
 </html>

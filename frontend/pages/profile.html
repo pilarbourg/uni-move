@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Perfil</title>
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(to right, #74ebd5, #ACB6E5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    padding: 30px;
+    width: 360px;
+    text-align: center;
+  }
+  h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  button {
+    background-color: #6C63FF;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+    font-size: 16px;
+  }
+  button:hover {
+    background-color: #574fd6;
+  }
+  .saved-data {
+    background: #f4f4f9;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 20px;
+    text-align: left;
+    color: #555;
+  }
+  .saved-data p {
+    margin: 6px 0;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>Mi Perfil</h2>
+  <form id="profileForm">
+    <input name="name" placeholder="Nombre">
+    <input name="nationality" placeholder="Nacionalidad">
+    <input name="hobby" placeholder="Hobby">
+    <button>Guardar</button>
+  </form>
+</body>
+</html>

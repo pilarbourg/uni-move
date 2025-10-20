@@ -1,4 +1,5 @@
 from flask import Flask
+from backend.routes.profile_routes import profile_routes
 from backend.routes.chat_routes import chat_routes
 from backend.routes.bio_profile_routes import bio_profile_routes
 from backend.routes.illnesses_routes import illness_routes
@@ -21,6 +22,7 @@ logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 CORS(app)
 
+app.register_blueprint(profile_routes)
 app.register_blueprint(chat_routes)
 app.register_blueprint(bio_profile_routes)
 app.register_blueprint(illness_routes)

@@ -18,19 +18,27 @@ def client():
         yield client
 
 def test_user_register_new_profile(client):
-    response = client.post("/api/registerprofile", json={
+    payload = {
         "name": "Test User",
         "nationality": "Testland",
-        "hobby": "Testing"})
-    assert response.status_code == 200
-    assert response.json["message"] == "User registered successfully."
-    supabase.table("profile").delete().eq("name","Test User").execute()
+        "hobby": "Testing"
+    }
 
-def test_user_register_new_profile_wrong_format(client):
-    response = client.post("/api/registerprofile", json={
-        "name": "Test User32",
+    response = client.post("/api/registerprofile", json=payload)
+
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["message"] == "User registered successfully."
+
+def test_user_register_new_profile(client):
+    payload = {
+        "name": "Test User",
         "nationality": "Testland",
-        "hobby": "Testing"})
-    assert response.status_code == 201
-    assert response.json["message"] == "Invalid name format."
-    supabase.table("profile").delete().eq("name","Test User32").execute()
+        "hobby": "Testing"
+    }
+
+    response = client.post("/api/registerprofile", json=payload)
+
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["message"] == "Invalid name format."
