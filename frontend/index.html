@@ -19,15 +19,15 @@
         <li class="dropdown">
           <a href="#">Universities</a>
           <ul class="dropdown-content">
-            <li><a href="pages/universidades.html">Search on Map</a></li>
-            <li><a href="pages/searchByDegree.html">Search by Degree</a></li>
+            <li><a id="universitiesLink">Search on Map</a></li>
+            <li><a id="degreesLink">Search by Degree</a></li>
           </ul>
         </li>
 
         <li class="dropdown">
           <a href="#">Moving</a>
           <ul class="dropdown-content">
-            <li><a href="pages/mapaapartamentos.html">Apartments</a></li>
+            <li><a id="apartmentsLink">Apartments</a></li>
           </ul>
         </li>
 
@@ -35,15 +35,15 @@
           <a href="#">Students</a>
           <ul class="dropdown-content">
             <li><a href="index.html">Internships</a></li>
-            <li><a href="pages/studentLife.html">Study Section</a></li>
+            <li><a id="studyLink">Study Section</a></li>
           </ul>
         </li>
 
         <li class="dropdown">
           <a href="#">Health</a>
           <ul class="dropdown-content">
-            <li><a href="pages/biomedical.html">Health</a></li>
-            <li><a href="pages/mapclinics.html">Clinical Maps</a></li>
+            <li><a id="healthLink">Health</a></li>
+            <li><a id="clinicalmapsLink">Clinical Maps</a></li>
           </ul>
         </li>
       </ul>
@@ -363,55 +363,68 @@
       updateCarousel(false);
     </script>
   </body>
-  <script>
-    const username = localStorage.getItem("username")
-    const userName = document.getElementById("user-name")
-    const loginLink = document.getElementById("login-link")
-    const logout = document.getElementById("logout")
-    const universities = document.getElementById("universitiesLink")
-    const degrees = document.getElementById("degreesLink")
-    const apartments = document.getElementById("apartmentsLink")
-    const health = document.getElementById("healthLink")
-    const clinicalmaps = document.getElementById("clinicalmapsLink")
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const username = localStorage.getItem("username");
+      const userNameEl = document.getElementById("user-name");
+      const loginLink = document.getElementById("login-link");
+      const logoutBtn = document.getElementById("logout");
+      const universities = document.getElementById("universitiesLink");
+      const degrees = document.getElementById("degreesLink");
+      const apartments = document.getElementById("apartmentsLink");
+      const health = document.getElementById("healthLink");
+      const clinicalmaps = document.getElementById("clinicalmapsLink");
+      const study = document.getElementById("studyLink");
+      let loggedIn = false;
 
-    let estado = false
-    if (username) {
-      estado = true
-      userName.textContent = username
-      userName.style.display = "inline"
-      logout.style.display = "inline"
-      if (loginLink) loginLink.style.display = "none"
-    } else {
-      logout.style.display = "none"
-      if (loginLink) loginLink.style.display = "block"
-    }
+      if (username) {
+        loggedIn = true;
+        if (userNameEl) {
+          userNameEl.textContent = username;
+          userNameEl.style.display = "inline";
+        }
+        if (logoutBtn) logoutBtn.style.display = "inline";
+        if (loginLink) loginLink.style.display = "none";
+      } else {
+        if (logoutBtn) logoutBtn.style.display = "none";
+        if (loginLink) loginLink.style.display = "inline";
+        if (userNameEl) userNameEl.style.display = "none";
+      }
 
-    if (estado) {
-      universities.href = "pages/universidades.html"
-      degrees.href = "pages/searchByDegree.html"
-      apartments.href = "pages/mapaapartamentos.html"
-      health.href = "pages/biomedical.html"
-      clinicalmaps.href = "pages/mapclinics.html"
-    } else {
-      universities.href = "pages/login.html"
-      degrees.href = "pages/login.html"
-      apartments.href = "pages/login.html"
-      health.href = "pages/login.html"
-      clinicalmaps.href = "pages/login.html"
-    }
+      if (loggedIn) {
+        if (universities) universities.href = "pages/universidades.html";
+        if (degrees) degrees.href = "pages/searchByDegree.html";
+        if (apartments) apartments.href = "pages/mapaapartamentos.html";
+        if (health) health.href = "pages/biomedical.html";
+        if (clinicalmaps) clinicalmaps.href = "pages/mapclinics.html";
+        if (study) study.href = "pages/studentLife.html";
+      } else {
+        if (universities) universities.href = "pages/login.html";
+        if (degrees) degrees.href = "pages/login.html";
+        if (apartments) apartments.href = "pages/login.html";
+        if (health) health.href = "pages/login.html";
+        if (clinicalmaps) clinicalmaps.href = "pages/login.html";
+        if (study) study.href = "pages/login.html";
+      }
 
-    logout.onclick = function () {
-      localStorage.removeItem("username");
-      userName.textContent = "";
-      userName.style.display = "none";
-      logout.style.display = "none";
-      loginLink.style.display = "block";
-      estado = false;
-    };
-  </script>
-  <script>
-    if (!username) {
-      window.location.href = "pages/login.html";
-    }
-  </script>
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          localStorage.removeItem("username");
+          if (userNameEl) {
+            userNameEl.textContent = "";
+            userNameEl.style.display = "none";
+          }
+          logoutBtn.style.display = "none";
+          if (loginLink) loginLink.style.display = "inline";
+          if (universities) universities.href = "pages/login.html";
+          if (degrees) degrees.href = "pages/login.html";
+          if (apartments) apartments.href = "pages/login.html";
+          if (health) health.href = "pages/login.html";
+          if (clinicalmaps) clinicalmaps.href = "pages/login.html";
+          if (study) study.href = "pages/login.html";
+        });
+      }
+    });
+    </script>
 </html>
