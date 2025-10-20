@@ -17,6 +17,7 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 def search_universities_by_degree():
     degree = request.args.get("degree")
     uni_type = request.args.get("type")
+    rank_filter = request.args.get("ranking")
 
     if not degree:
         return jsonify({"error": "Missing parameter 'degree'"}), 400
@@ -31,6 +32,15 @@ def search_universities_by_degree():
 
         if uni_type:
             query = query.eq("type", uni_type.lower())
+
+        if rank_filter == "1-10":
+            query = query.gte("ranking", 1).lte("ranking", 10)
+        elif rank_filter == "11-20":
+            query = query.gte("ranking", 11).lte("ranking", 20)
+        elif rank_filter == "21-50":
+            query = query.gte("ranking", 21).lte("ranking", 50)
+
+        query = query.neq("ranking", 0)
 
         response = query.execute()
         results = response.data

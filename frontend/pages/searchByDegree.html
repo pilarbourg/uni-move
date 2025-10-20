@@ -311,11 +311,12 @@
           const allResults = [];
 
           for (const degree of degreesToSearch) {
+            const selectedRanking = rankingFilter.value;
             const res = await fetch(
               `http://127.0.0.1:8080/api/search_universities_by_degree?degree=${encodeURIComponent(
                 degree
-              )}&type=${encodeURIComponent(selectedType)}`
-            );
+              )}&&type=${encodeURIComponent(selectedType)}&ranking=${encodeURIComponent(
+                selectedRanking)}` );
 
             const data = await res.json();
             if (Array.isArray(data)) {
