@@ -222,13 +222,6 @@
               <option value="publica">Public</option>
               <option value="privada">Private</option>
             </select>
-
-            <select id="rankingFilter">
-              <option value="">All Rankings</option>
-              <option value="1-10">Top 10</option>
-              <option value="11-20">Top 20</option>
-              <option value="21-50">Top 50</option>
-            </select>
           </div>
 
           <div class="checkbox-container">
@@ -266,7 +259,6 @@
       const resultsList = document.getElementById("resultsList");
       const resultsCard = document.getElementById("resultsCard");
       const typeFilter = document.getElementById("typeFilter");
-      const rankingFilter = document.getElementById("rankingFilter");
       const includeSimilar = document.getElementById("includeSimilar");
       const contactModal = document.getElementById("contactModal");
 
@@ -314,8 +306,7 @@
             const res = await fetch(
               `http://127.0.0.1:8080/api/search_universities_by_degree?degree=${encodeURIComponent(
                 degree
-              )}&type=${encodeURIComponent(selectedType)}`
-            );
+              )}&type=${encodeURIComponent(selectedType)}` );
 
             const data = await res.json();
             if (Array.isArray(data)) {
@@ -353,6 +344,7 @@
                 <h3 style="color:#1a4d8f;"> ${u.name}</h3>
                 <p><strong>⭐ Ranking:</strong> ${u.ranking ?? "N/A"}</p>
                 <p><strong>🏛️ Type:</strong> ${displayType}</p>
+                <p><strong>🚇 Public Transport:</strong> ${u.publicTransport ?? "N/A"}</p>
                 <p><strong>📍 Zip Code:</strong> ${u.zipCode ?? "N/A"}</p>
                 <p><strong>📞 Phone:</strong> ${u.phoneNumber ?? "N/A"}</p>
                 <button class="contact-btn" onclick="openContactModal('${u.name}')">💬 Contact</button>
@@ -400,7 +392,6 @@
         if (e.key === "Enter") searchUniversities();
       });
       typeFilter.addEventListener("change", searchUniversities);
-      rankingFilter.addEventListener("change", searchUniversities);
     </script>
   </body>
 </html>

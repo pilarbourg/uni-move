@@ -22,7 +22,6 @@ def search_universities_by_degree():
         return jsonify({"error": "Missing parameter 'degree'"}), 400
 
     try:
-        # Base query
         query = (
             supabase.table("universities")
             .select("id, name, ranking, publicTransport, zipCode, phoneNumber, type")

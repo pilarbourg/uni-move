@@ -110,4 +110,3 @@ def post_biomedical_profile():
     created_profile["illnesses"] = illness_names
 
     return jsonify({"profile": created_profile}), 201
-
