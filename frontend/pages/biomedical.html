@@ -161,11 +161,13 @@
 
       <section id="contactsSection" class="contacts-section">
         <h2>Medical Contacts</h2>
-        <p>Add your medical contacts to share any medical conditions!</p>
+        <p>
+          Add your medical contacts to share any medical conditions!
+        </p>
 
         <button id="addContactBtn" class="btn">+ Add Contact</button>
 
-        <form id="contactForm" style="display: none; margin-top: 1rem">
+        <form id="contactForm" style="display: none; margin-top: 1rem;">
           <input type="hidden" id="contactId" />
 
           <label for="contactName">Name</label>
@@ -176,9 +178,7 @@
             placeholder="Full Name"
             required
           />
-          <div id="errorName" class="error-message">
-            Please enter first and last name (letters only).
-          </div>
+          <div id="errorName" class="error-message">Please enter first and last name (letters only).</div>
 
           <label for="contactPhone">Phone</label>
           <input
@@ -187,10 +187,7 @@
             name="phone"
             placeholder="+1 234 567 890"
           />
-          <div id="errorPhone" class="error-message">
-            Must start with +country code and contain 9 digits (e.g.
-            +34600123456)
-          </div>
+          <div id="errorPhone" class="error-message">Must start with +country code and contain 9 digits (e.g. +34600123456)</div>
 
           <label for="contactEmail">Email</label>
           <input
@@ -199,19 +196,15 @@
             name="email"
             placeholder="example@email.com"
           />
-          <div id="errorEmail" class="error-message">
-            Please enter a valid email (example@email.com)
-          </div>
+           <div id="errorEmail" class="error-message">Please enter a valid email (example@email.com)</div>
 
-          <div style="display: flex; gap: 10px; margin-top: 10px">
+          <div style="display: flex; gap: 10px; margin-top: 10px;">
             <button type="submit" class="btn">Save Contact</button>
-            <button type="button" id="cancelContactBtn" class="btn">
-              Cancel
-            </button>
+            <button type="button" id="cancelContactBtn" class="btn">Cancel</button>
           </div>
         </form>
 
-        <div id="contactsList" class="contacts-list" style="margin-top: 2rem">
+        <div id="contactsList" class="contacts-list" style="margin-top: 1rem;">
           <p class="no-contacts">Loading contacts...</p>
         </div>
 
@@ -517,212 +510,272 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-      $(document).ready(function () {
-        const token = "fake-jwt-token";
+    $(document).ready(function () {
+      const token = "fake-jwt-token";
 
-        const $contactForm = $("#contactForm");
-        const $addBtn = $("#addContactBtn");
-        const $cancelBtn = $("#cancelContactBtn");
-        const $contactsList = $("#contactsList");
+      const $contactForm = $("#contactForm");
+      const $addBtn = $("#addContactBtn");
+      const $cancelBtn = $("#cancelContactBtn");
+      const $contactsList = $("#contactsList");
 
-        const $name = $("#contactName");
-        const $phone = $("#contactPhone");
-        const $email = $("#contactEmail");
-        const $id = $("#contactId");
+      const $name = $("#contactName");
+      const $phone = $("#contactPhone");
+      const $email = $("#contactEmail");
+      const $id = $("#contactId");
 
-        function showError($element, message) {
-          $element.fadeIn(200).text(message);
+      function showError($element, message) {
+        $element.fadeIn(200).text(message);
+      }
+
+      function hideError($element) {
+        $element.fadeOut(150).text("");
+      }
+
+      function validateName() {
+        const value = $name.val().trim();
+        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ'-]+(\s+[A-Za-zÁÉÍÓÚáéíóúÑñ'-]+)+$/;
+        if (!regex.test(value)) {
+          showError($("#errorName"), "Please enter your first and last name");
+          $name.addClass("invalid");
+          return false;
         }
+        hideError($("#errorName"));
+        $name.removeClass("invalid");
+        return true;
+      }
 
-        function hideError($element) {
-          $element.fadeOut(150).text("");
+      function validatePhone() {
+        const value = $phone.val().trim();
+        const regex = /^\+\d{1,3}\s\d{9}$/;
+        if (!regex.test(value)) {
+          showError($("#errorPhone"), "Phone must start with +country code and then 9 digits");
+          $phone.addClass("invalid");
+          return false;
         }
+        hideError($("#errorPhone"));
+        $phone.removeClass("invalid");
+        return true;
+      }
 
-        function validateName() {
-          const value = $name.val().trim();
-          const regex =
-            /^[A-Za-zÁÉÍÓÚáéíóúÑñ'-]+(\s+[A-Za-zÁÉÍÓÚáéíóúÑñ'-]+)+$/;
-          if (!regex.test(value)) {
-            showError($("#errorName"), "Please enter your first and last name");
-            $name.addClass("invalid");
-            return false;
+      function validateEmail() {
+        const value = $email.val().trim();
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!regex.test(value)) {
+          showError($("#errorEmail"), "Please enter a valid email address");
+          $email.addClass("invalid");
+          return false;
+        }
+        hideError($("#errorEmail"));
+        $email.removeClass("invalid");
+        return true;
+      }
+
+      $name.on("input", validateName);
+      $phone.on("input", validatePhone);
+      $email.on("input", validateEmail);
+
+      function resetForm() {
+        $contactForm[0].reset();
+        hideError($("#errorName"));
+        hideError($("#errorPhone"));
+        hideError($("#errorEmail"));
+        $name.removeClass("invalid");
+        $phone.removeClass("invalid");
+        $email.removeClass("invalid");
+      }
+
+      async function loadContacts() {
+        try {
+          const res = await fetch("http://127.0.0.1:8080/api/medical_contacts", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const contacts = await res.json();
+
+          if (!contacts.length) {
+            $contactsList.html("<p>No contacts yet</p>");
+            return;
           }
-          hideError($("#errorName"));
-          $name.removeClass("invalid");
-          return true;
-        }
 
-        function validatePhone() {
-          const value = $phone.val().trim();
-          const regex = /^\+\d{1,3}\s\d{9}$/;
-          if (!regex.test(value)) {
-            showError(
-              $("#errorPhone"),
-              "Phone must start with +country code and then 9 digits"
-            );
-            $phone.addClass("invalid");
-            return false;
-          }
-          hideError($("#errorPhone"));
-          $phone.removeClass("invalid");
-          return true;
-        }
-
-        function validateEmail() {
-          const value = $email.val().trim();
-          const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!regex.test(value)) {
-            showError($("#errorEmail"), "Please enter a valid email address");
-            $email.addClass("invalid");
-            return false;
-          }
-          hideError($("#errorEmail"));
-          $email.removeClass("invalid");
-          return true;
-        }
-
-        $name.on("input", validateName);
-        $phone.on("input", validatePhone);
-        $email.on("input", validateEmail);
-
-        function resetForm() {
-          $contactForm[0].reset();
-          hideError($("#errorName"));
-          hideError($("#errorPhone"));
-          hideError($("#errorEmail"));
-          $name.removeClass("invalid");
-          $phone.removeClass("invalid");
-          $email.removeClass("invalid");
-        }
-
-        async function loadContacts() {
-          try {
-            const res = await fetch(
-              "http://127.0.0.1:8080/api/medical_contacts",
-              {
-                headers: { Authorization: `Bearer ${token}` },
-              }
-            );
-            const contacts = await res.json();
-
-            if (!contacts.length) {
-              $contactsList.html("<p>No contacts yet</p>");
-              return;
-            }
-
-            $contactsList.html(
-              contacts
-                .map(
-                  (c) => `
+          $contactsList.html(
+            contacts
+              .map(
+                (c) => `
               <div class="contact-item" style="margin-bottom: 1rem;">
-                <p><strong>${c.name}</strong><br>📞 ${c.phone}<br>✉️ ${
-                    c.email || "N/A"
-                  }</p>
-                <div style="display: flex; gap: 6px; margin-top: 6px;">
-                  <button class="btn editBtn" data-id="${c.id}" data-name="${
-                    c.name
-                  }" data-phone="${c.phone}" data-email="${
-                    c.email || ""
-                  }">✏️ Edit</button>
-                  <button class="btn deleteBtn" data-id="${
-                    c.id
-                  }">🗑️ Delete</button>
+                <p><strong>${c.name}</strong><br>📞 ${c.phone}<br>✉️ ${c.email || "N/A"}</p>
+                <div class="contact-actions">
+                  <button class="btn editBtn" data-id="${c.id}" data-name="${c.name}" data-phone="${c.phone}" data-email="${c.email || ""}">✏️ Edit</button>
+                  <button class="btn deleteBtn" data-id="${c.id}">🗑️ Delete</button>
                 </div>
               </div>`
-                )
-                .join("")
-            );
+              )
+              .join("")
+          );
 
-            $(".deleteBtn").on("click", async function () {
-              const id = $(this).data("id");
-              if (confirm("Are you sure you want to delete this contact?")) {
-                await fetch(
-                  `http://127.0.0.1:8080/api/medical_contacts/${id}`,
-                  {
-                    method: "DELETE",
-                    headers: { Authorization: `Bearer ${token}` },
-                  }
-                );
-                loadContacts();
-              }
-            });
+          $(".deleteBtn").on("click", async function () {
+            const id = $(this).data("id");
+            if (confirm("Are you sure you want to delete this contact?")) {
+              await fetch(`http://127.0.0.1:8080/api/medical_contacts/${id}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${token}` },
+              });
+              loadContacts();
+            }
+          });
 
-            $(".editBtn").on("click", function () {
-              const contact = $(this).data();
-              $id.val(contact.id);
-              $name.val(contact.name);
-              $phone.val(contact.phone);
-              $email.val(contact.email);
-              $contactForm.fadeIn(300);
-              $addBtn.hide();
-            });
-          } catch (err) {
-            console.error(err);
-            $contactsList.html("<p>Error loading contacts ⚠️</p>");
-          }
+          $(".editBtn").on("click", function () {
+            const contact = $(this).data();
+            $id.val(contact.id);
+            $name.val(contact.name);
+            $phone.val(contact.phone);
+            $email.val(contact.email);
+            $contactForm.fadeIn(300);
+            $addBtn.hide();
+          });
+        } catch (err) {
+          console.error(err);
+          $contactsList.html("<p>Error loading contacts ⚠️</p>");
+        }
+      }
+
+      function loadContactsForReminders(contacts) {
+        const container = $("#contact-list-reminders");
+        container.empty();
+
+        contacts.forEach(c => {
+          const checkbox = $(`
+            <div>
+              <label>
+                <input type="checkbox" value="${c.id}"> ${c.name}
+              </label>
+            </div>
+          `);
+          container.append(checkbox);
+        });
+      }
+
+      async function refreshRemindersList() {
+        try {
+          const res = await fetch("http://127.0.0.1:8080/api/medical_contacts", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const contacts = await res.json();
+          loadContactsForReminders(contacts);
+        } catch (err) {
+          console.error("Error loading reminder contacts:", err);
+        }
+      }
+
+      refreshRemindersList();
+
+      $("#send-reminder-btn").on("click", async () => {
+        const message = $("#reminder-message").val().trim();
+        const contact_ids = $("#contact-list-reminders input:checked")
+          .map((_, el) => parseInt(el.value))
+          .get();
+
+        if (!message || contact_ids.length === 0) {
+          showToast("Select at least a contact and write the reminder.", "info");
+          return;
         }
 
-        $addBtn.on("click", function () {
-          resetForm();
-          $id.val("");
-          $addBtn.hide();
-          $contactForm.fadeIn(300);
-        });
+        try {
+          const biomedical_profile_id = window.currentProfileId || 1; // replace with real profile ID
 
-        $cancelBtn.on("click", function () {
+          const res = await fetch("http://127.0.0.1:8080/api/post_medical_reminder", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+            body: JSON.stringify({ biomedical_profile_id, contact_ids, message })
+          });
+
+          const result = await res.json();
+
+          if (res.ok) {
+            showToast("Medical reminder sent successfully!", "success");
+            $("#reminder-message").val("");
+            $("#contact-list-reminders input:checked").prop("checked", false);
+          } else {
+            showToast("Error sending the reminder. Please try again.", "error");
+          }
+        } catch (err) {
+          console.error(err);
+          showToast("Couldn't connect to the server.", "error");
+        }
+      });
+
+      function showToast(message) {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.textContent = message;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.remove();
+        }, 4000);
+      }
+
+      $addBtn.on("click", function () {
+        resetForm();
+        $id.val("");
+        $addBtn.hide();
+        $contactForm.fadeIn(300);
+      });
+
+      $cancelBtn.on("click", function () {
+        resetForm();
+        $contactForm.fadeOut(300, function () {
+          $addBtn.fadeIn(200);
+        });
+      });
+
+      $contactForm.on("submit", async function (e) {
+        e.preventDefault();
+
+        const validName = validateName();
+        const validPhone = validatePhone();
+        const validEmail = validateEmail();
+
+        if (!validName || !validPhone || !validEmail) return;
+
+        const contactData = {
+          name: $name.val().trim(),
+          phone: $phone.val().trim(),
+          email: $email.val().trim(),
+        };
+
+        const id = $id.val();
+        const method = id ? "PUT" : "POST";
+        const url = id
+          ? `http://127.0.0.1:8080/api/medical_contacts/${id}`
+          : "http://127.0.0.1:8080/api/medical_contacts";
+
+        try {
+          const res = await fetch(url, {
+            method,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(contactData),
+          });
+
+          if (!res.ok) throw new Error("Failed to save contact");
+
           resetForm();
           $contactForm.fadeOut(300, function () {
             $addBtn.fadeIn(200);
+            loadContacts();
           });
-        });
-
-        $contactForm.on("submit", async function (e) {
-          e.preventDefault();
-
-          const validName = validateName();
-          const validPhone = validatePhone();
-          const validEmail = validateEmail();
-
-          if (!validName || !validPhone || !validEmail) return;
-
-          const contactData = {
-            name: $name.val().trim(),
-            phone: $phone.val().trim(),
-            email: $email.val().trim(),
-          };
-
-          const id = $id.val();
-          const method = id ? "PUT" : "POST";
-          const url = id
-            ? `http://127.0.0.1:8080/api/medical_contacts/${id}`
-            : "http://127.0.0.1:8080/api/medical_contacts";
-
-          try {
-            const res = await fetch(url, {
-              method,
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify(contactData),
-            });
-
-            if (!res.ok) throw new Error("Failed to save contact");
-
-            resetForm();
-            $contactForm.fadeOut(300, function () {
-              $addBtn.fadeIn(200);
-              loadContacts();
-            });
-          } catch (err) {
-            console.error("Error saving contact:", err);
-            alert("Something went wrong while saving this contact");
-          }
-        });
-
-        loadContacts();
+        } catch (err) {
+          console.error("Error saving contact:", err);
+          showToast("Something went wrong while saving this contact", "error");
+        }
       });
+
+      loadContacts();
+    });
     </script>
+
 
     <script>
       function showPopup(message, type = "error") {
@@ -734,5 +787,6 @@
         setTimeout(() => popup.remove(), 2500);
       }
     </script>
+    <div id="toast-container"></div>
   </body>
 </html>
