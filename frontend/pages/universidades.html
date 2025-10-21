@@ -67,29 +67,33 @@
       </div>
     </nav>
 
+    <section class="hero">
+      <h2>Find Universities around Madrid</h2>
+    </section>
+
     <main class="container">
-      <section class="hero">
-        <h2>Find Universities around Madrid</h2>
-        <p>Select a filter by name, locality or degrees.</p>
-      </section>
-
       <section class="controls-card">
-        <label for="universitySelect">University</label>
-        <select id="universitySelect" size="5">
-          <option>Loading universities...</option>
-        </select>
+        <article>
+          <div>
+            <label for="universitySelect" class="controls-card-label">University</label>
+            <select id="universitySelect" size="5">
+              <option>Loading universities...</option>
+            </select>
+          </div>
+          <div>
+            <label for="localitySelect" class="controls-card-label">Locality</label>
+            <select id="localitySelect" size="5">
+              <option>Loading locations...</option>
+            </select>
+          </div>
 
-        <label for="localitySelect">Locality</label>
-        <select id="localitySelect" size="5">
-          <option>Loading locations...</option>
-        </select>
-
-        <!-- Carreras -->
-        <label for="degreeSelect">Degree</label>
-        <select id="degreeSelect" size="5">
-          <option>Loading degrees...</option>
-        </select>
-
+          <div>
+            <label for="degreeSelect" class="controls-card-label">Degree</label>
+            <select id="degreeSelect" size="5">
+              <option>Loading degrees...</option>
+            </select>
+          </div>
+        </article>
         <a href="#" id="showUniversitiesBtn" class="btn">Show Universities</a>
       </section>
       <section class="results-card" id="resultsCard">

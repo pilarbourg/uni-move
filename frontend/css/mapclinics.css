@@ -7,7 +7,7 @@
 body {
   font-family: "Roboto", sans-serif;
   line-height: 1.8;
-  background-color: #fdfcfb;
+  background-color: #f2f5f7;
   color: #333;
 }
 
@@ -15,8 +15,8 @@ body {
   --primary: #364a61;
   --secondary: #627e9e;
   --accent: #68748b;
-  --bg-light: #ffffff;
-  --bg-alt: #f7f6f3;
+  --bg-light: #f2f5f7;
+  --bg-alt: #f2f5f7;
   --muted: #777;
 }
 
@@ -51,9 +51,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #f5f5f5;
+  background-color: #f2f5f7;
   padding: 10px 30px;
   position: relative;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .boton {
@@ -132,39 +133,44 @@ body {
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
 }
 
-/* Hero Section */
 .hero {
-  background-color: var(--bg-light);
-  padding: 50px 20px;
-  border-radius: 12px;
-  margin: 20px 0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  background-color: #e5ebf0;
+  width: 100%;
+  padding: 10px 30px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   text-align: center;
 }
 
 .hero h2 {
-  font-size: 26px;
-  color: #1976d2;
-  margin-bottom: 15px;
+  padding: 5px 0px;
+  font-size: 20px;
+  color: #5a7c99;
+  background-color: #2d3e4d12;
+  border-radius: 50px;
 }
 
-.hero p {
-  font-size: 16px;
-  color: #555;
-}
-
-/* Controls Card */
 .controls-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: var(--bg-light);
   padding: 25px 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   margin: 20px 0;
+}
+
+.controls-card article {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 1rem;
+  gap: 3rem;
 }
 
 .controls-card label {
@@ -178,9 +184,17 @@ body {
   width: 100%;
   padding: 12px;
   margin-top: 5px;
-  border: 1px solid #ccc;
+  border: 3px solid #2d3e4d12;
   border-radius: 8px;
   font-size: 15px;
+  color: #2d3e4d;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.controls-card-label {
+  background-color: #2d3e4d12;
+  border-radius: 20px;
+  padding: 3px 20px;
 }
 
 .controls-card select:focus {
@@ -189,7 +203,6 @@ body {
   outline: none;
 }
 
-/* Map Section */
 .map-container {
   background-color: var(--bg-light);
   border-radius: 12px;
@@ -202,11 +215,10 @@ body {
   border-radius: 8px;
 }
 
-/* Button */
 .btn {
   display: inline-block;
   background-color: #d32f2f;
-  color: #fff;
+  color: #f2f5f7;
   text-align: center;
   padding: 12px 20px;
   margin-top: 15px;
@@ -222,8 +234,8 @@ body {
 }
 
 .site-footer {
-  background-color: #283b4b;
-  color: #f0f0f0;
+  background-color: #2d3e4d;
+  color: #f2f5f7;
   padding: 2rem 3rem;
   display: flex;
   justify-content: center;
