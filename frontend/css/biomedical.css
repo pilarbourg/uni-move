@@ -73,7 +73,7 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 24px;
-  color: #5A7C99;
+  color: #5a7c99;
   text-align: center;
   margin: 0;
 }
@@ -99,7 +99,7 @@ body {
 
 .menu a {
   text-decoration: none;
-  color: #5A7C99;
+  color: #5a7c99;
   padding: 8px 12px;
   display: block;
 }
@@ -109,7 +109,7 @@ body {
   position: absolute;
   background-color: white;
   min-width: 160px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
   list-style: none;
   padding: 0;
@@ -119,7 +119,7 @@ body {
 
 .dropdown-content li a {
   padding: 10px;
-  color: #5A7C99;
+  color: #5a7c99;
   border-radius: 10px;
 }
 
@@ -272,7 +272,7 @@ body {
 #profileContainer form {
   grid-column: 1 / -1;
   grid-row: 1 / -1;
-  align-items: stretch; 
+  align-items: stretch;
   gap: 5rem;
 }
 
@@ -288,7 +288,7 @@ body {
   padding: 1rem 1.5rem;
   border-top: 5px solid #627e9e;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-  rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .features-grid {
@@ -323,14 +323,56 @@ body {
   font-size: 14px;
 }
 
-footer {
+.site-footer {
+  background-color: #283b4b;
+  color: #f0f0f0;
+  padding: 2rem 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
-  padding: 1.5rem;
-  background-color: #627e9e;
-  border-top: 1px solid #eee;
-  color: #fff;
-  font-size: 0.9rem;
-  margin-top: 3rem;
+}
+
+.footer-content {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.footer-brand img {
+  width: 40px;
+  height: 40px;
+}
+
+.footer-links {
+  margin-bottom: 1rem;
+}
+
+.footer-links a {
+  color: #ccc;
+  text-decoration: none;
+  margin: 0 1rem;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #f05454;
+}
+
+.footer-copy {
+  font-size: 0.85rem;
+  color: #999;
 }
 
 .sub-biomed-section {
@@ -483,7 +525,7 @@ footer {
 }
 
 .contacts-section {
-  background-color: #f3f6f7; 
+  background-color: #f3f6f7;
   padding: 6rem;
   padding-top: 3rem;
   padding-bottom: 3rem;
@@ -503,7 +545,6 @@ footer {
   margin-bottom: 2rem;
   font-size: 1rem;
 }
-
 
 #addContactBtn {
   background-color: #d32f2f;
@@ -549,7 +590,7 @@ footer {
 }
 
 #contactForm .btn {
-  background-color: #d32f2f; 
+  background-color: #d32f2f;
   color: #fff;
   border: none;
   padding: 12px 20px;
@@ -647,7 +688,7 @@ footer {
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: rgba(50, 50, 93, 0.15) 0px 3px 8px -1px,
-              rgba(0, 0, 0, 0.15) 0px 1px 4px -1px;
+    rgba(0, 0, 0, 0.15) 0px 1px 4px -1px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   display: flex;
   flex-direction: column;
@@ -657,7 +698,7 @@ footer {
 .contact-item:hover {
   transform: translateY(-3px);
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-              rgba(0, 0, 0, 0.2) 0px 3px 7px -3px;
+    rgba(0, 0, 0, 0.2) 0px 3px 7px -3px;
 }
 
 .contact-item p {
@@ -669,7 +710,7 @@ footer {
 
 .contact-item .contact-actions {
   display: flex;
-  gap: 10px;       
+  gap: 10px;
   margin-top: 20px;
 }
 
@@ -686,7 +727,7 @@ footer {
   cursor: pointer;
   transition: all 0.25s ease;
   box-shadow: rgba(50, 50, 93, 0.2) 0px 2px 5px -1px,
-              rgba(0, 0, 0, 0.2) 0px 1px 3px -1px;
+    rgba(0, 0, 0, 0.2) 0px 1px 3px -1px;
 }
 
 .editBtn {
@@ -741,9 +782,8 @@ footer {
   padding: 2rem;
   margin-top: 3rem;
   box-shadow: rgba(50, 50, 93, 0.15) 0px 4px 10px -2px,
-              rgba(0, 0, 0, 0.1) 0px 3px 7px -3px;
+    rgba(0, 0, 0, 0.1) 0px 3px 7px -3px;
 }
-
 
 #reminder-section h5 {
   font-size: 1.4rem;
@@ -788,7 +828,6 @@ footer {
   cursor: pointer;
   transition: transform 0.2s, background-color 0.3s;
 }
-
 
 .contact-checkbox:hover {
   transform: translateY(-2px);
@@ -849,7 +888,7 @@ footer {
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-              rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 
 #send-reminder-btn:hover {
@@ -935,7 +974,6 @@ footer {
   gap: 20px;
 }
 
-
 .toast {
   min-width: 460px;
   max-width: 560px;
@@ -945,8 +983,8 @@ footer {
   border-radius: 16px;
   padding: 1.5rem 2rem;
   box-shadow: rgba(50, 50, 93, 0.15) 0px 10px 25px -2px,
-              rgba(0, 0, 0, 0.15) 0px 6px 12px -3px;
-  
+    rgba(0, 0, 0, 0.15) 0px 6px 12px -3px;
+
   font-size: 1.05rem;
   font-weight: 500;
   display: flex;
@@ -960,11 +998,23 @@ footer {
 }
 
 @keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 @keyframes fadeOut {
-  from { opacity: 1; transform: translateX(0); }
-  to { opacity: 0; transform: translateX(100%); }
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
 }

@@ -74,7 +74,7 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 24px;
-  color: #5A7C99;
+  color: #5a7c99;
   text-align: center;
   margin: 0;
 }
@@ -100,7 +100,7 @@ body {
 
 .menu a {
   text-decoration: none;
-  color: #5A7C99;
+  color: #5a7c99;
   padding: 8px 12px;
   display: block;
 }
@@ -110,7 +110,7 @@ body {
   position: absolute;
   background-color: white;
   min-width: 160px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
   list-style: none;
   padding: 0;
@@ -120,7 +120,7 @@ body {
 
 .dropdown-content li a {
   padding: 10px;
-  color: #5A7C99;
+  color: #5a7c99;
   border-radius: 10px;
 }
 
@@ -144,7 +144,7 @@ body {
   text-align: center;
   padding: 2rem;
   color: white;
-  background: linear-gradient(-45deg, #5A7C99, #446078, #d36767, #8b9ea0);
+  background: linear-gradient(-45deg, #5a7c99, #446078, #d36767, #8b9ea0);
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
   overflow: hidden;
@@ -185,7 +185,7 @@ body {
 }
 
 .hero .highlight {
-  color: #F05454;
+  color: #f05454;
 }
 
 .hero p {
@@ -200,7 +200,7 @@ body {
   font-size: 1rem;
   font-weight: 600;
   color: #333;
-  background: #F05454;
+  background: #f05454;
   border-radius: 999px;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -506,12 +506,54 @@ body {
   font-weight: 500;
 }
 
-footer {
+.site-footer {
+  background-color: #283b4b;
+  color: #f0f0f0;
+  padding: 2rem 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
-  padding: 1.5rem;
-  background-color: #627e9e;
-  border-top: 1px solid #eee;
-  color: #fff;
-  font-size: 0.9rem;
-  margin-top: 3rem;
+}
+
+.footer-content {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.footer-brand img {
+  width: 40px;
+  height: 40px;
+}
+
+.footer-links {
+  margin-bottom: 1rem;
+}
+
+.footer-links a {
+  color: #ccc;
+  text-decoration: none;
+  margin: 0 1rem;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #f05454;
+}
+
+.footer-copy {
+  font-size: 0.85rem;
+  color: #999;
 }

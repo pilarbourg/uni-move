@@ -66,12 +66,18 @@
     <main class="container">
       <section class="hero">
         <h2>Find Apartments in Madrid</h2>
-        <p>Select a neighborhood and/or price range to view available apartments.</p>
+        <p>
+          Select a neighborhood and/or price range to view available apartments.
+        </p>
       </section>
 
       <section class="controls-card">
         <label for="barrioInput">Neighborhood</label>
-        <input id="barrioInput" type="text" placeholder="Ej: Centro, Boadilla..." />
+        <input
+          id="barrioInput"
+          type="text"
+          placeholder="Ej: Centro, Boadilla..."
+        />
 
         <label for="precioInput">Max. Price (€)</label>
         <input id="precioInput" type="number" min="0" placeholder="Ej: 1200" />
@@ -84,7 +90,24 @@
       <section id="apartmentsList" class="list-container"></section>
     </main>
 
-    <footer><div class="container"><p>&copy; 2025 UniMove</p></div></footer>
+    <footer class="site-footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <img src="../assets/svgs/logo.svg" alt="MotivSMA Logo" />
+          <span>UniMove</span>
+        </div>
+        <div class="footer-links">
+          <a href="#">About</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="footer-copy">
+          <p>
+            &copy; 2025 UniMove | Built with ❤️ for students around the world
+          </p>
+        </div>
+      </div>
+    </footer>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="../js/mapaapartamentos.js"></script>

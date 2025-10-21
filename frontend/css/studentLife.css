@@ -73,7 +73,7 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 24px;
-  color: #5A7C99;
+  color: #5a7c99;
   text-align: center;
   margin: 0;
 }
@@ -99,7 +99,7 @@ body {
 
 .menu a {
   text-decoration: none;
-  color: #5A7C99;
+  color: #5a7c99;
   padding: 8px 12px;
   display: block;
 }
@@ -109,7 +109,7 @@ body {
   position: absolute;
   background-color: white;
   min-width: 160px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
   list-style: none;
   padding: 0;
@@ -119,7 +119,7 @@ body {
 
 .dropdown-content li a {
   padding: 10px;
-  color: #5A7C99;
+  color: #5a7c99;
   border-radius: 10px;
 }
 
@@ -329,36 +329,80 @@ main section {
   opacity: 0.8;
 }
 
-footer {
+.site-footer {
+  background-color: #283b4b;
+  color: #f0f0f0;
+  padding: 2rem 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
-  padding: 1.5rem;
-  background-color: #627e9e;
-  border-top: 1px solid #eee;
-  color: #fff;
-  font-size: 0.9rem;
-  margin-top: 3rem;
+}
+
+.footer-content {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.footer-brand img {
+  width: 40px;
+  height: 40px;
+}
+
+.footer-links {
+  margin-bottom: 1rem;
+}
+
+.footer-links a {
+  color: #ccc;
+  text-decoration: none;
+  margin: 0 1rem;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #f05454;
+}
+
+.footer-copy {
+  font-size: 0.85rem;
+  color: #999;
 }
 
 .highlight-marker span:hover {
   background: darkred;
 }
 
-.leave-review-btn, .toggle-reviews-btn {
+.leave-review-btn,
+.toggle-reviews-btn {
   background-color: #e1ecf4;
   border-radius: 20px;
   border: 1px solid #7aa7c7;
-  box-shadow: rgba(255, 255, 255, .7) 0 1px 0 0 inset;
+  box-shadow: rgba(255, 255, 255, 0.7) 0 1px 0 0 inset;
   box-sizing: border-box;
   color: #39739d;
   cursor: pointer;
   display: inline-block;
-  font-family: -apple-system,system-ui,"Segoe UI","Liberation Sans",sans-serif;
+  font-family: -apple-system, system-ui, "Segoe UI", "Liberation Sans",
+    sans-serif;
   font-size: 13px;
   font-weight: 400;
   line-height: 1.15385;
   margin: 0;
   outline: none;
-  padding: 8px .8em;
+  padding: 8px 0.8em;
   position: relative;
   text-align: center;
   text-decoration: none;
@@ -385,11 +429,11 @@ footer {
 }
 
 .leave-review-btn:focus {
-  box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
+  box-shadow: 0 0 0 4px rgba(0, 149, 255, 0.15);
 }
 
 .toggle-reviews-btn:focus {
-  box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
+  box-shadow: 0 0 0 4px rgba(0, 149, 255, 0.15);
 }
 
 .review-form {
@@ -436,9 +480,9 @@ footer {
   color: #355c7d;
   cursor: pointer;
   background-image: linear-gradient(45deg, transparent 50%, #5a7c99 50%),
-                    linear-gradient(135deg, #5a7c99 50%, transparent 50%);
+    linear-gradient(135deg, #5a7c99 50%, transparent 50%);
   background-position: calc(100% - 20px) calc(50% - 3px),
-                       calc(100% - 15px) calc(50% - 3px);
+    calc(100% - 15px) calc(50% - 3px);
   background-size: 5px 5px, 5px 5px;
   background-repeat: no-repeat;
   transition: all 0.2s ease-in-out;
@@ -476,7 +520,7 @@ footer {
   border-radius: 6px;
   font-size: 0.95rem;
   font-family: "Roboto", sans-serif;
-  color: #5A7C99;
+  color: #5a7c99;
   resize: none;
   width: 100%;
   transition: border-color 0.2s ease;

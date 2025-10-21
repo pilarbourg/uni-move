@@ -54,7 +54,16 @@
         /></a>
 
         <li class="user-section">
-          <button id="user-name" style="font-weight:bold;color:#5a7c99;cursor:pointer;border:none;background:none;"></button>
+          <button
+            id="user-name"
+            style="
+              font-weight: bold;
+              color: #5a7c99;
+              cursor: pointer;
+              border: none;
+              background: none;
+            "
+          ></button>
           <button id="logout" class="boton" style="display: none">
             <img src="assets/svgs/logout.svg" />
           </button>
@@ -282,8 +291,23 @@
       </section>
     </main>
 
-    <footer>
-      <p>&copy; 2025 UniMove | Built with ❤️ for students around the world</p>
+    <footer class="site-footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <img src="/frontend/assets/svgs/logo.svg" alt="MotivSMA Logo" />
+          <span>UniMove</span>
+        </div>
+        <div class="footer-links">
+          <a href="#">About</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="footer-copy">
+          <p>
+            &copy; 2025 UniMove | Built with ❤️ for students around the world
+          </p>
+        </div>
+      </div>
     </footer>
 
     <script>
@@ -363,7 +387,7 @@
       updateCarousel(false);
     </script>
   </body>
-    <script>
+  <script>
     document.addEventListener("DOMContentLoaded", function () {
       const username = localStorage.getItem("username");
       const userNameEl = document.getElementById("user-name");
@@ -426,16 +450,16 @@
         });
       }
     });
-    </script>
-    <script>
-    const btn = document.getElementById('user-name');
+  </script>
+  <script>
+    const btn = document.getElementById("user-name");
     btn.textContent = btn.dataset.username || "Usuario";
-    btn.onclick = () => window.location.href = "pages/profile.html";
-    </script>
-    <script>
-    document.getElementById('logout').style.display = 'block';
-    document.getElementById('logout').addEventListener('click', function() {
-      alert('You have successfully logged out.');
+    btn.onclick = () => (window.location.href = "pages/profile.html");
+  </script>
+  <script>
+    document.getElementById("logout").style.display = "block";
+    document.getElementById("logout").addEventListener("click", function () {
+      alert("You have successfully logged out.");
     });
-    </script>
+  </script>
 </html>
