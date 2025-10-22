@@ -341,22 +341,21 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* --- MAP CONTAINER FIX --- */
+
 .map-container {
-  position: relative; /* Important so overlay positions correctly */
+  position: relative; 
   background-color: var(--bg-light);
   border-radius: 12px;
-  padding: 0; /* Remove internal padding so map fills container */
+  padding: 0; 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
-/* --- CLINIC OVERLAY LIST --- */
 #clinic-list {
   position: absolute;
   top: 20px;
   left: 20px;
-  z-index: 500; /* Ensures it's above the map */
+  z-index: 500; 
   width: 320px;
   max-height: 400px;
   overflow-y: auto;
@@ -366,7 +365,6 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   padding: 15px;
 }
-
 
 #clinic-list::-webkit-scrollbar {
   width: 6px;
