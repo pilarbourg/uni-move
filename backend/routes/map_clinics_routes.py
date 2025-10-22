@@ -65,7 +65,7 @@ def get_clinics(university_id):
 
     #2. obtain clinics from supabase
     clinics_response = supabase.table("clinics") \
-        .select("id, name, latitude, longitude") \
+        .select("id, name, latitude, longitude, schedule, publicTransport, phoneNumber, email") \
         .execute()
 
     if not clinics_response.data:
@@ -81,7 +81,11 @@ def get_clinics(university_id):
                 "name": clinic["name"],
                 "latitude": clinic["latitude"],
                 "longitude": clinic["longitude"],
-                "distance_km": round(distance_km, 2)
+                "distance_km": round(distance_km, 2),
+                "schedule": clinic.get("schedule"),
+                "publicTransport": clinic.get("publicTransport"),
+                "phoneNumber": clinic.get("phoneNumber"),
+                "email": clinic.get("email")
             })
     
     nearby_clinics= sorted(nearby_clinics, key = lambda x: x["distance_km"])

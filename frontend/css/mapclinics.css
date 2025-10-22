@@ -212,7 +212,7 @@ body {
 
 #map {
   height: 500px;
-  border-radius: 8px;
+  width: 100%;
 }
 
 .btn {
@@ -339,4 +339,63 @@ body {
   border: 1px solid #ddd;
   text-align: left;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* --- MAP CONTAINER FIX --- */
+.map-container {
+  position: relative; /* Important so overlay positions correctly */
+  background-color: var(--bg-light);
+  border-radius: 12px;
+  padding: 0; /* Remove internal padding so map fills container */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* --- CLINIC OVERLAY LIST --- */
+#clinic-list {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 500; /* Ensures it's above the map */
+  width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+}
+
+
+#clinic-list::-webkit-scrollbar {
+  width: 6px;
+}
+#clinic-list::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+.clinic-item {
+  background: white;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.clinic-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+.clinic-item h4 {
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 4px;
+}
+.clinic-item p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 2px;
 }

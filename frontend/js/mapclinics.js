@@ -9,14 +9,14 @@ let radiusSelect = document.getElementById("radiusSelect");
 let universityMarker = null;
 let clinicMarkers = [];
 
-var redIcon = new L.Icon({
+const redIcon = new L.Icon({
   iconUrl: "../assets/images/marker-icon-2x-red.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
 });
 
-var blueIcon = new L.Icon({
+const blueIcon = new L.Icon({
   iconUrl: "../assets/images/marker-icon-2x-blue.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -57,33 +57,108 @@ async function fetchClinics() {
     );
     const clinics = await res.json();
 
+    if (!clinics || clinics.length === 0) {
+      alert("No clinics found in this area.");
+      return;
+    }
+
     if (universityMarker) map.removeLayer(universityMarker);
     clinicMarkers.forEach((m) => map.removeLayer(m));
     clinicMarkers = [];
 
     universityMarker = L.marker([parseFloat(uni.lat), parseFloat(uni.lng)], {
       icon: redIcon,
-    })
-      .addTo(map)
+    }).addTo(map)
       .bindPopup(`<b>${uni.name}</b>`)
       .openPopup();
 
+    const listContainer = document.getElementById("clinic-list");
+    listContainer.innerHTML = "<h3>Nearby Clinics</h3>";
+
     clinics.forEach((c) => {
-      const marker = L.marker(
-        [parseFloat(c.latitude), parseFloat(c.longitude)],
-        { icon: blueIcon }
-      )
+      const schedule = c.schedule || "Not provided";
+      const publicTransport = c.publicTransport || "Not provided";
+      const phone = c.phoneNumber || "Not provided";
+      const email = c.email || "Not provided";
+
+      const marker = L.marker([c.latitude, c.longitude], { icon: blueIcon })
         .addTo(map)
-        .bindPopup(`<b>${c.name}</b><br>Distance: ${c.distance_km} km`);
+        .bindPopup(`
+          <b>${c.name}</b><br>
+          <b>Schedule:</b> ${schedule}<br>
+          <b>Public Transport:</b> ${publicTransport}<br>
+          <b>Phone:</b> ${phone}<br>
+          <b>Email:</b> ${email}
+        `);
       clinicMarkers.push(marker);
+
+      const div = document.createElement("div");
+      div.classList.add("clinic-item");
+      div.innerHTML = `
+        <h4>${c.name}</h4>
+        <p><b>Schedule:</b> ${schedule}</p>
+        <p><b>Public Transport:</b> ${publicTransport}</p>
+        <p><b>Phone:</b> ${phone}</p>
+        <p><b>Email:</b> ${email}</p>
+      `;
+
+      div.addEventListener("click", () => {
+        clinicMarkers.forEach((m) => map.removeLayer(m));
+        clinicMarkers = [];
+
+        const singleMarker = L.marker([c.latitude, c.longitude], { icon: blueIcon })
+          .addTo(map)
+          .bindPopup(`
+            <b>${c.name}</b><br>
+            <b>Schedule:</b> ${schedule}<br>
+            <b>Public Transport:</b> ${publicTransport}<br>
+            <b>Phone:</b> ${phone}<br>
+            <b>Email:</b> ${email}
+          `)
+          .openPopup();
+
+        clinicMarkers.push(singleMarker);
+        map.setView([c.latitude, c.longitude], 16);
+
+        singleMarker.on("popupclose", () => {
+          map.removeLayer(singleMarker);
+          clinicMarkers = [];
+
+          clinics.forEach((clinic) => {
+            const sch = clinic.schedule || "Not provided";
+            const pt = clinic.publicTransport || "Not provided";
+            const ph = clinic.phoneNumber || "Not provided";
+            const em = clinic.email || "Not provided";
+
+            const m = L.marker([clinic.latitude, clinic.longitude], { icon: blueIcon })
+              .addTo(map)
+              .bindPopup(`
+                <b>${clinic.name}</b><br>
+                <b>Schedule:</b> ${sch}<br>
+                <b>Public Transport:</b> ${pt}<br>
+                <b>Phone:</b> ${ph}<br>
+                <b>Email:</b> ${em}
+              `);
+            clinicMarkers.push(m);
+          });
+
+          const allCoords = [
+            [parseFloat(uni.lat), parseFloat(uni.lng)],
+            ...clinics.map((c) => [parseFloat(c.latitude), parseFloat(c.longitude)]),
+          ];
+          map.fitBounds(allCoords, { padding: [50, 50] });
+        });
+      });
+
+      listContainer.appendChild(div);
     });
 
     const allCoords = [
       [parseFloat(uni.lat), parseFloat(uni.lng)],
       ...clinics.map((c) => [parseFloat(c.latitude), parseFloat(c.longitude)]),
     ];
-    if (allCoords.length > 0) map.fitBounds(allCoords, { padding: [50, 50] });
-    else map.setView([parseFloat(uni.lat), parseFloat(uni.lng)], 14);
+    map.fitBounds(allCoords, { padding: [50, 50] });
+
   } catch (err) {
     console.error("Error fetching clinics:", err);
   }
