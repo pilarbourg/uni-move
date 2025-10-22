@@ -1,4 +1,4 @@
-const map = L.map("map").setView([40.4168, -3.7038], 13);
+const map = L.map("map", { zoomControl: false }).setView([40.4168, -3.7038], 13);
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
@@ -8,6 +8,7 @@ let universitySelect = document.getElementById("universitySelect");
 let radiusSelect = document.getElementById("radiusSelect");
 let universityMarker = null;
 let clinicMarkers = [];
+let currentRoute = null;
 
 const redIcon = new L.Icon({
   iconUrl: "../assets/images/marker-icon-2x-red.png",
@@ -62,13 +63,20 @@ async function fetchClinics() {
       return;
     }
 
+    // Clear old data
     if (universityMarker) map.removeLayer(universityMarker);
     clinicMarkers.forEach((m) => map.removeLayer(m));
     clinicMarkers = [];
+    if (currentRoute) {
+      map.removeControl(currentRoute);
+      currentRoute = null;
+    }
 
+    // Add university marker
     universityMarker = L.marker([parseFloat(uni.lat), parseFloat(uni.lng)], {
       icon: redIcon,
-    }).addTo(map)
+    })
+      .addTo(map)
       .bindPopup(`<b>${uni.name}</b>`)
       .openPopup();
 
@@ -103,6 +111,12 @@ async function fetchClinics() {
       `;
 
       div.addEventListener("click", () => {
+        // Remove previous route
+        if (currentRoute) {
+          map.removeControl(currentRoute);
+          currentRoute = null;
+        }
+
         clinicMarkers.forEach((m) => map.removeLayer(m));
         clinicMarkers = [];
 
@@ -118,36 +132,34 @@ async function fetchClinics() {
           .openPopup();
 
         clinicMarkers.push(singleMarker);
-        map.setView([c.latitude, c.longitude], 16);
+        map.setView([c.latitude, c.longitude], 14);
 
-        singleMarker.on("popupclose", () => {
-          map.removeLayer(singleMarker);
-          clinicMarkers = [];
+        // Info banner
+        document.querySelectorAll(".route-info").forEach((el) => el.remove());
+        listContainer.insertAdjacentHTML(
+          "afterbegin",
+          `<p class="route-info">Showing route from <b>${c.name}</b> to <b>${uni.name}</b></p>`
+        );
 
-          clinics.forEach((clinic) => {
-            const sch = clinic.schedule || "Not provided";
-            const pt = clinic.publicTransport || "Not provided";
-            const ph = clinic.phoneNumber || "Not provided";
-            const em = clinic.email || "Not provided";
-
-            const m = L.marker([clinic.latitude, clinic.longitude], { icon: blueIcon })
-              .addTo(map)
-              .bindPopup(`
-                <b>${clinic.name}</b><br>
-                <b>Schedule:</b> ${sch}<br>
-                <b>Public Transport:</b> ${pt}<br>
-                <b>Phone:</b> ${ph}<br>
-                <b>Email:</b> ${em}
-              `);
-            clinicMarkers.push(m);
-          });
-
-          const allCoords = [
-            [parseFloat(uni.lat), parseFloat(uni.lng)],
-            ...clinics.map((c) => [parseFloat(c.latitude), parseFloat(c.longitude)]),
-          ];
-          map.fitBounds(allCoords, { padding: [50, 50] });
-        });
+        // 🧭 Create route (clinic ➜ university)
+        currentRoute = L.Routing.control({
+          waypoints: [
+            L.latLng(c.latitude, c.longitude),
+            L.latLng(uni.lat, uni.lng),
+          ],
+          routeWhileDragging: false,
+          draggableWaypoints: false,
+          addWaypoints: false,
+          createMarker: () => null,
+          lineOptions: {
+            styles: [{ color: "#007bff", weight: 5, opacity: 0.7 }],
+          },
+          show: false,
+          fitSelectedRoutes: true,
+          router: L.Routing.osrmv1({
+            serviceUrl: "https://router.project-osrm.org/route/v1",
+          }),
+        }).addTo(map);
       });
 
       listContainer.appendChild(div);
@@ -158,7 +170,6 @@ async function fetchClinics() {
       ...clinics.map((c) => [parseFloat(c.latitude), parseFloat(c.longitude)]),
     ];
     map.fitBounds(allCoords, { padding: [50, 50] });
-
   } catch (err) {
     console.error("Error fetching clinics:", err);
   }
