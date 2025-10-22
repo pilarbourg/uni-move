@@ -63,7 +63,6 @@ async function fetchClinics() {
       return;
     }
 
-    // Clear old data
     if (universityMarker) map.removeLayer(universityMarker);
     clinicMarkers.forEach((m) => map.removeLayer(m));
     clinicMarkers = [];
@@ -72,7 +71,6 @@ async function fetchClinics() {
       currentRoute = null;
     }
 
-    // Add university marker
     universityMarker = L.marker([parseFloat(uni.lat), parseFloat(uni.lng)], {
       icon: redIcon,
     })
@@ -111,7 +109,6 @@ async function fetchClinics() {
       `;
 
       div.addEventListener("click", () => {
-        // Remove previous route
         if (currentRoute) {
           map.removeControl(currentRoute);
           currentRoute = null;
@@ -134,14 +131,12 @@ async function fetchClinics() {
         clinicMarkers.push(singleMarker);
         map.setView([c.latitude, c.longitude], 14);
 
-        // Info banner
         document.querySelectorAll(".route-info").forEach((el) => el.remove());
         listContainer.insertAdjacentHTML(
           "afterbegin",
           `<p class="route-info">Showing route from <b>${c.name}</b> to <b>${uni.name}</b></p>`
         );
 
-        // 🧭 Create route (clinic ➜ university)
         currentRoute = L.Routing.control({
           waypoints: [
             L.latLng(c.latitude, c.longitude),
