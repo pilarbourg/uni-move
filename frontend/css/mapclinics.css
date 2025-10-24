@@ -340,8 +340,8 @@ main.container-universities {
   width: 100%;
 }
 
-#map-universities {
-  height: 80vh;
+.map-universities {
+  height: 80vh !important;
   width: 100%;
 }
 
