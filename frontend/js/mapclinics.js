@@ -1,4 +1,4 @@
-const map = L.map("map").setView([40.4168, -3.7038], 13);
+const map = L.map("map", { zoomControl: false }).setView([40.4168, -3.7038], 13);
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
@@ -8,15 +8,16 @@ let universitySelect = document.getElementById("universitySelect");
 let radiusSelect = document.getElementById("radiusSelect");
 let universityMarker = null;
 let clinicMarkers = [];
+let currentRoute = null;
 
-var redIcon = new L.Icon({
+const redIcon = new L.Icon({
   iconUrl: "../assets/images/marker-icon-2x-red.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
 });
 
-var blueIcon = new L.Icon({
+const blueIcon = new L.Icon({
   iconUrl: "../assets/images/marker-icon-2x-blue.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -57,9 +58,18 @@ async function fetchClinics() {
     );
     const clinics = await res.json();
 
+    if (!clinics || clinics.length === 0) {
+      alert("No clinics found in this area.");
+      return;
+    }
+
     if (universityMarker) map.removeLayer(universityMarker);
     clinicMarkers.forEach((m) => map.removeLayer(m));
     clinicMarkers = [];
+    if (currentRoute) {
+      map.removeControl(currentRoute);
+      currentRoute = null;
+    }
 
     universityMarker = L.marker([parseFloat(uni.lat), parseFloat(uni.lng)], {
       icon: redIcon,
@@ -68,22 +78,93 @@ async function fetchClinics() {
       .bindPopup(`<b>${uni.name}</b>`)
       .openPopup();
 
+    const listContainer = document.getElementById("clinic-list");
+    listContainer.innerHTML = "<h3>Nearby Clinics</h3>";
+
     clinics.forEach((c) => {
-      const marker = L.marker(
-        [parseFloat(c.latitude), parseFloat(c.longitude)],
-        { icon: blueIcon }
-      )
+      const schedule = c.schedule || "Not provided";
+      const publicTransport = c.publicTransport || "Not provided";
+      const phone = c.phoneNumber || "Not provided";
+      const email = c.email || "Not provided";
+
+      const marker = L.marker([c.latitude, c.longitude], { icon: blueIcon })
         .addTo(map)
-        .bindPopup(`<b>${c.name}</b><br>Distance: ${c.distance_km} km`);
+        .bindPopup(`
+          <b>${c.name}</b><br>
+          <b>Schedule:</b> ${schedule}<br>
+          <b>Public Transport:</b> ${publicTransport}<br>
+          <b>Phone:</b> ${phone}<br>
+          <b>Email:</b> ${email}
+        `);
       clinicMarkers.push(marker);
+
+      const div = document.createElement("div");
+      div.classList.add("clinic-item");
+      div.innerHTML = `
+        <h4>${c.name}</h4>
+        <p><b>Schedule:</b> ${schedule}</p>
+        <p><b>Public Transport:</b> ${publicTransport}</p>
+        <p><b>Phone:</b> ${phone}</p>
+        <p><b>Email:</b> ${email}</p>
+      `;
+
+      div.addEventListener("click", () => {
+        if (currentRoute) {
+          map.removeControl(currentRoute);
+          currentRoute = null;
+        }
+
+        clinicMarkers.forEach((m) => map.removeLayer(m));
+        clinicMarkers = [];
+
+        const singleMarker = L.marker([c.latitude, c.longitude], { icon: blueIcon })
+          .addTo(map)
+          .bindPopup(`
+            <b>${c.name}</b><br>
+            <b>Schedule:</b> ${schedule}<br>
+            <b>Public Transport:</b> ${publicTransport}<br>
+            <b>Phone:</b> ${phone}<br>
+            <b>Email:</b> ${email}
+          `)
+          .openPopup();
+
+        clinicMarkers.push(singleMarker);
+        map.setView([c.latitude, c.longitude], 14);
+
+        document.querySelectorAll(".route-info").forEach((el) => el.remove());
+        listContainer.insertAdjacentHTML(
+          "afterbegin",
+          `<p class="route-info">Showing route from <b>${c.name}</b> to <b>${uni.name}</b></p>`
+        );
+
+        currentRoute = L.Routing.control({
+          waypoints: [
+            L.latLng(c.latitude, c.longitude),
+            L.latLng(uni.lat, uni.lng),
+          ],
+          routeWhileDragging: false,
+          draggableWaypoints: false,
+          addWaypoints: false,
+          createMarker: () => null,
+          lineOptions: {
+            styles: [{ color: "#007bff", weight: 5, opacity: 0.7 }],
+          },
+          show: false,
+          fitSelectedRoutes: true,
+          router: L.Routing.osrmv1({
+            serviceUrl: "https://router.project-osrm.org/route/v1",
+          }),
+        }).addTo(map);
+      });
+
+      listContainer.appendChild(div);
     });
 
     const allCoords = [
       [parseFloat(uni.lat), parseFloat(uni.lng)],
       ...clinics.map((c) => [parseFloat(c.latitude), parseFloat(c.longitude)]),
     ];
-    if (allCoords.length > 0) map.fitBounds(allCoords, { padding: [50, 50] });
-    else map.setView([parseFloat(uni.lat), parseFloat(uni.lng)], 14);
+    map.fitBounds(allCoords, { padding: [50, 50] });
   } catch (err) {
     console.error("Error fetching clinics:", err);
   }

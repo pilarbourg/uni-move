@@ -10,6 +10,10 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+      />
   </head>
   <body>
     <nav class="navbar">
@@ -85,14 +89,13 @@
           <option value="4">4 km</option>
           <option value="5">5 km</option>
           <option value="10">10 km</option>
-          <option value="20">20 km</option>
-          <option value="50">50 km</option>
         </select>
         <a href="#" id="showClinicsBtn" class="btn">Show Clinics</a>
       </section>
 
       <section class="map-container">
         <div id="map"></div>
+        <div id="clinic-list"></div>
       </section>
     </main>
 
@@ -116,6 +119,8 @@
     </footer>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script src="https://unpkg.com/@mapbox/polyline"></script>
     <script src="../js/mapclinics.js"></script>
   </body>
 </html>
