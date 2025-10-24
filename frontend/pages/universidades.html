@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UniMove | Clinics Map</title>
+    <title>UniMove | Universities Map</title>
     <link rel="stylesheet" href="../css/mapclinics.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
@@ -71,25 +71,44 @@
       <h2>Find Universities around Madrid</h2>
     </section>
 
-    <main class="container">
-      <section class="controls-card">
-        <article>
+    <main class="container-universities">
+      <section class="container-cards-universities">
+        <article class="inner-container-universities">
+          <h1>Map Section</h1>
           <div>
-            <label for="universitySelect" class="controls-card-label">University</label>
-            <select id="universitySelect" size="5">
+            <label for="universitySelect" class="controls-card-label"
+              >University
+              <span>
+                Choose the university you're looking for to see its location on
+                the map.
+              </span></label
+            >
+            <select id="universitySelect" size="4">
               <option>Loading universities...</option>
             </select>
           </div>
           <div>
-            <label for="localitySelect" class="controls-card-label">Locality</label>
-            <select id="localitySelect" size="5">
+            <label for="localitySelect" class="controls-card-label"
+              >Neighborhood
+              <span>
+                Choose the neighborhood you want to filter by to discover the
+                universities within.
+              </span></label
+            >
+            <select id="localitySelect" size="4">
               <option>Loading locations...</option>
             </select>
           </div>
 
           <div>
-            <label for="degreeSelect" class="controls-card-label">Degree</label>
-            <select id="degreeSelect" size="5">
+            <label for="degreeSelect" class="controls-card-label"
+              >Degree
+              <span>
+                Choose the degree you want to filter by to see universities that
+                offer it.
+              </span></label
+            >
+            <select id="degreeSelect" size="4">
               <option>Loading degrees...</option>
             </select>
           </div>
@@ -100,7 +119,7 @@
         <div id="resultsList" class="results-list"></div>
       </section>
 
-      <section class="map-container">
+      <section class="map-container-universities">
         <div id="map"></div>
       </section>
     </main>
@@ -127,13 +146,21 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
-      const map = L.map("map").setView([40.4168, -3.7038], 13);
+      const map = L.map("map", { zoomControl: false }).setView(
+        [40.4168, -3.7038],
+        13
+      );
+
+      L.control
+        .zoom({
+          position: "topright",
+        })
+        .addTo(map);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
       }).addTo(map);
 
-      // Variables globales
       let universities = [];
       let universityMarkers = [];
       let degrees = [];
@@ -157,7 +184,8 @@
           const res = await fetch("http://127.0.0.1:8080/api/get_universities");
           universities = await res.json();
 
-          // Rellenar select de universidades
+          universitySelect.innerHTML = "";
+
           universities.forEach((u) => {
             const option = document.createElement("option");
             option.value = u.id;
@@ -170,11 +198,10 @@
         }
       }
       function renderUniversities(list) {
-        // Limpiar marcadores previos
         if (universityMarkers) {
           universityMarkers.forEach((marker) => map.removeLayer(marker));
         }
-        // Dibujar cada universidad
+
         list.forEach((u) => {
           const marker = L.marker(
             [parseFloat(u.latitude), parseFloat(u.longitude)],
@@ -197,6 +224,8 @@
           const res = await fetch("http://127.0.0.1:8080/api/get_degrees");
           degrees = await res.json();
 
+          degreeSelect.innerHTML = "";
+
           degrees.forEach((d) => {
             const option = document.createElement("option");
             option.value = d.id;
@@ -211,6 +240,9 @@
         try {
           const res = await fetch("http://127.0.0.1:8080/api/get_locations");
           locations = await res.json();
+
+          localitySelect.innerHTML = "";
+
           locations.forEach((l) => {
             const option = document.createElement("option");
             option.value = l.id;
@@ -281,7 +313,6 @@
             }
 
             filteredUnis.forEach((uni) => {
-              // Añadir marcador
               const marker = L.marker(
                 [parseFloat(uni.latitude), parseFloat(uni.longitude)],
                 { icon: redIcon }
@@ -290,11 +321,11 @@
                 .bindPopup(`<b>${uni.name}</b><br>${selectedDegree}`);
               universityMarkers.push(marker);
 
-              // Crear tarjeta
               const card = document.createElement("div");
               card.classList.add("university-card");
+              card.classList.add("uni-card");
               card.innerHTML = `
-          <h3 style="color:#1a4d8f; margin-bottom:12px; font-size:1.2rem;">
+          <h3 style="color:#5a7c99; margin-bottom:12px; font-size:1.2rem;">
             🏫 ${uni.name}
           </h3>
           <p><strong>⭐ Ranking:</strong> ${uni.ranking ?? "N/A"}</p>
@@ -305,6 +336,7 @@
           <p><strong>📞 Phone:</strong> ${uni.phoneNumber ?? "N/A"}</p>
         `;
               resultsList.appendChild(card);
+              document.getElementById("resultsCard").style.display = "flex";
             });
 
             const firstUni = filteredUnis[0];
@@ -336,13 +368,11 @@
               universityMarkers = [];
             }
 
-            // Petición al backend
             const res = await fetch(
               `http://127.0.0.1:8080/api/get_universities_by_degree_and_locality/${selectedDegree}${selectedLocation}`
             );
             const filteredUnis = await res.json();
 
-            // Limpia lista anterior
             resultsList.innerHTML = "";
 
             if (!filteredUnis || filteredUnis.length === 0) {
@@ -351,7 +381,6 @@
             }
 
             filteredUnis.forEach((uni) => {
-              // Añadir marcador
               const marker = L.marker(
                 [parseFloat(uni.latitude), parseFloat(uni.longitude)],
                 { icon: redIcon }
@@ -360,11 +389,11 @@
                 .bindPopup(`<b>${uni.name}</b><br>${selectedDegree}`);
               universityMarkers.push(marker);
 
-              // Crear tarjeta
               const card = document.createElement("div");
               card.classList.add("university-card");
+              card.classList.add("uni-card");
               card.innerHTML = `
-          <h3 style="color:#1a4d8f; margin-bottom:12px; font-size:1.2rem;">
+          <h3 style="color:#5a7c99; margin-bottom:12px; font-size:1.2rem;">
             🏫 ${uni.name}
           </h3>
           <p><strong>⭐ Ranking:</strong> ${uni.ranking ?? "N/A"}</p>
@@ -375,6 +404,7 @@
           <p><strong>📞 Phone:</strong> ${uni.phoneNumber ?? "N/A"}</p>
         `;
               resultsList.appendChild(card);
+              document.getElementById("resultsCard").style.display = "flex";
             });
 
             const firstUni = filteredUnis[0];
@@ -386,6 +416,7 @@
             console.error("Error showing all universities:", err);
           }
         }
+
         // Caso 4: usuario eligió una location
         else if (
           selectedLocation &&
@@ -399,13 +430,11 @@
               universityMarkers = [];
             }
 
-            // Petición al backend
             const res = await fetch(
               `http://127.0.0.1:8080/api/get_universities_by_locality/${selectedLocation}`
             );
             const filteredUnis = await res.json();
 
-            // Limpia lista anterior
             resultsList.innerHTML = "";
 
             if (!filteredUnis || filteredUnis.length === 0) {
@@ -414,7 +443,6 @@
             }
 
             filteredUnis.forEach((uni) => {
-              // Añadir marcador
               const marker = L.marker(
                 [parseFloat(uni.latitude), parseFloat(uni.longitude)],
                 { icon: redIcon }
@@ -423,11 +451,11 @@
                 .bindPopup(`<b>${uni.name}</b><br>${selectedDegree}`);
               universityMarkers.push(marker);
 
-              // Crear tarjeta
               const card = document.createElement("div");
               card.classList.add("university-card");
+              card.classList.add("uni-card");
               card.innerHTML = `
-          <h3 style="color:#1a4d8f; margin-bottom:12px; font-size:1.2rem;">
+          <h3 style="color:#5a7c99; margin-bottom:12px; font-size:1.2rem;">
             🏫 ${uni.name}
           </h3>
           <p><strong>⭐ Ranking:</strong> ${uni.ranking ?? "N/A"}</p>
@@ -438,6 +466,7 @@
           <p><strong>📞 Phone:</strong> ${uni.phoneNumber ?? "N/A"}</p>
         `;
               resultsList.appendChild(card);
+              document.getElementById("resultsCard").style.display = "flex";
             });
 
             const firstUni = filteredUnis[0];
@@ -449,10 +478,9 @@
             console.error("Error filtering by location:", err);
           }
         } else {
-          // Mostrar todas las universidades
           console.log("Showing all universities");
           window.alert(
-            "Showing all universities,please select valid data to filter."
+            "Showing all universities, please select valid data to filter."
           );
           renderUniversities(universities);
           const resultsList = document.getElementById("resultsList");
@@ -463,11 +491,28 @@
         degreeSelect.selectedIndex = "";
       });
 
-      // Llamar a la función
-
       fetchUniversities();
       fetchDegrees();
       fetchLocations();
+    </script>
+
+    <script>
+      document.querySelectorAll(".controls-card-label").forEach((label) => {
+        label.addEventListener("click", () => {
+          const select = document.getElementById(label.getAttribute("for"));
+          if (select.style.display === "block") {
+            select.style.display = "none";
+          } else {
+            document
+              .querySelectorAll(".container-cards-universities select")
+              .forEach((s) => {
+                s.style.display = "none";
+              });
+            select.style.display = "block";
+            select.focus();
+          }
+        });
+      });
     </script>
   </body>
 </html>

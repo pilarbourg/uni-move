@@ -53,8 +53,10 @@ body {
   justify-content: space-between;
   background-color: #f2f5f7;
   padding: 10px 30px;
-  position: relative;
+  position: sticky;
+  top: 0;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  z-index: 9999;
 }
 
 .boton {
@@ -144,6 +146,7 @@ body {
   padding: 10px 30px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   text-align: center;
+  z-index: 9998;
 }
 
 .hero h2 {
@@ -210,19 +213,143 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
+main.container-universities {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.map-container-universities {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+}
+
+.container-cards-universities {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 400px;
+  max-width: 500px;
+  background-color: #f2f5f7;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow-y: scroll;
+  height: 95%;
+  color: #5a7c99;
+}
+
+.container-cards-universities div {
+  position: relative;
+}
+
+.inner-container-universities {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.results-card {
+  position: absolute;
+  bottom: 20px;
+  left: 1250px;
+  right: 20px;
+  max-height: 640px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2) !important;
+  background: #f2f5f7;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1000;
+  display: none;
+  padding: 1rem;
+  color: #5a7c99;
+}
+
+.results-list {
+  background: #f2f5f7;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  padding: 1rem;
+  flex-wrap: nowrap;
+}
+
+.uni-card {
+  background: #f2f5f7;
+  white-space: normal;
+  width: 350px;
+  overflow-x: hidden;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+}
+
+.container-cards-universities select {
+  position: relative;
+  width: 100%;
+  height: 20vh;
+  padding: 12px;
+  margin-top: 15px;
+  border: 1px solid #2d3e4d12;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #5a7c99;
+  display: none;
+}
+
+.container-cards-universities label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: bold;
+  align-items: flex-start;
+  width: 100%;
+  background-color: #2d3e4d12;
+  border-radius: 10px;
+  padding: 3px 20px;
+  cursor: pointer;
+  user-select: none;
+  height: 100px;
+}
+
+.container-cards-universities label span {
+  font-weight: 100;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 #map {
-  height: 500px;
+  height: 80vh;
   border-radius: 8px;
 }
 
 .btn {
-  display: inline-block;
-  background-color: #d32f2f;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  background-color: #f05454;
   color: #f2f5f7;
   text-align: center;
   padding: 12px 20px;
   margin-top: 15px;
-  border-radius: 8px;
+  border-radius: 20px;
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
