@@ -1,0 +1,46 @@
+from flask import Blueprint, jsonify, request
+from backend.university_info.university_details import UniversityDetail, DegreeNotFoundException
+from supabase import create_client
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+moving_routes = Blueprint("moving_routes", __name__)
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+@moving_routes.route("/get_moving_companies", methods=["GET"])
+def get_moving_companies():
+    response = supabase.table("moving_companies").select("*").execute()
+
+    companies = [
+        {
+            "id": c.get("id"),
+            "name": c.get("name"),
+            "cif": c.get("cif"),
+            "base_fee": c.get("base_fee"),
+            "price_small_package": c.get("price_small_package"),
+            "price_medium_package": c.get("price_medium_package"),
+            "price_large_package": c.get("price_large_package"),
+            "price_solo_traslado": c.get("price_solo_traslado"),
+            "price_mudanza": c.get("price_mudanza"),
+            "price_mudanza_completa": c.get("price_mudanza_completa"),
+            "rating": c.get("rating"),
+            "location": c.get("location"),
+            "estimated_time_days": c.get("estimated_time_days"),
+            "max_weight_kg": c.get("max_weight_kg"),
+
+            
+        }
+        for c in response.data
+    ]
+
+    if companies is None:
+        # Something went wrong
+        return jsonify({"error": "Could not fetch companies"}), 500
+
+    return jsonify(companies)
