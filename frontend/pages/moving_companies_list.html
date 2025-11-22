@@ -4,24 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UniMove | Moving companies</title>
+
     <link rel="stylesheet" href="../css/mapclinics.css" />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
-      />
+    />
   </head>
-  <body>
+
+  <!-- 🔥 background-image SOLO AQUÍ -->
+  <body style="
+      background-image: url('../assets/images/moving.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+    ">
+
     <nav class="navbar">
       <h1 class="logo">
-        <img
-          src="../assets/svgs/logo.svg"
-          style="width: 36px; height: 36px"
-        />UniMove
+        <img src="../assets/svgs/logo.svg" style="width: 36px; height: 36px" />
+        UniMove
       </h1>
 
       <ul class="menu">
@@ -56,15 +66,11 @@
           </ul>
         </li>
       </ul>
-      <body style="background-image: url('../images/moving.jpeg'); 
-               background-size: cover; 
-               background-position: center; 
-               background-repeat: no-repeat; 
-               min-height: 100vh;">
+
       <div class="nav-right">
         <a href="../index.html">
-          <img src="../assets/svgs/home.svg" class="home-button"
-        /></a>
+          <img src="../assets/svgs/home.svg" class="home-button" />
+        </a>
 
         <li class="user-section">
           <span id="user-name" style="font-weight: bold; color: #5a7c99"></span>
@@ -74,44 +80,53 @@
         </li>
       </div>
     </nav>
-  <main class="container">
-    <section class="hero">
-      <h2>Find companies across Spain</h2>
-    </section>
 
- <div class="card-container">
+    <main class="container">
+      <section class="hero">
+        <h2>Find companies across Spain</h2>
+      </section>
+
+      <div class="card-container">
         <div class="main-card">
           <h3>Available Companies</h3>
+
+          <!-- 🔥 correcto: assets/images -->
           <img src="../assets/images/moving.jpeg" alt="Moving Companies" />
+
           <div id="companies"></div>
         </div>
       </div>
     </main>
-  <script>
-    async function fetchCompanies() {
-      try {
-        const res = await fetch("http://127.0.0.1:8080/get_moving_companies");
-        const companies = await res.json();
 
-        const container = document.getElementById("companies");
-        container.innerHTML = companies.map(u => `
-          <div class="card">
-            <h2>${u.name}</h2>
-            <p><strong>City:</strong> ${u.city ?? 'Unknown'}</p>
-            <p><strong>Ranking:</strong> ${u.ranking ?? 'N/A'}</p>
-            <button onclick="viewDetails(${u.id})">View Details</button>
-          </div>
-        `).join("");
-      } catch (error) {
-        console.error("Error fetching companies:", error);
+    <script>
+      async function fetchCompanies() {
+        try {
+          const res = await fetch("http://127.0.0.1:8080/get_moving_companies");
+          const companies = await res.json();
+
+          const container = document.getElementById("companies");
+          container.innerHTML = companies
+            .map(
+              (u) => `
+            <div class="card">
+              <h2>${u.name}</h2>
+              <p><strong>City:</strong> ${u.city ?? "Unknown"}</p>
+              <p><strong>Ranking:</strong> ${u.ranking ?? "N/A"}</p>
+              <button onclick="viewDetails(${u.id})">View Details</button>
+            </div>
+          `
+            )
+            .join("");
+        } catch (error) {
+          console.error("Error fetching companies:", error);
+        }
       }
-    }
 
-    function viewDetails(id) {
-      window.location.href = `company.html?id=${id}`;
-    }
+      function viewDetails(id) {
+        window.location.href = `company.html?id=${id}`;
+      }
 
-    fetchCompanies();
-  </script>
-</body>
+      fetchCompanies();
+    </script>
+  </body>
 </html>
