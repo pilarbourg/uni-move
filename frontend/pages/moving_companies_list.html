@@ -1,132 +1,500 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UniMove | Moving companies</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniMove | Moving Companies</title>
 
-    <link rel="stylesheet" href="../css/mapclinics.css" />
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+  <style>
+    /* ---------- GLOBAL ---------- */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f4f6f9;
+      color: #1e1e1e;
+    }
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
-    />
-  </head>
+    /* ---------- NAVBAR ---------- */
+    .navbar {
+      width: 100%;
+      padding: 16px 40px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    }
 
-  <!-- 🔥 background-image SOLO AQUÍ -->
-  <body style="
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    /* ---------- HERO SECTION ---------- */
+    .hero-section {
+      margin-top: 90px;
+      height: 280px;
       background-image: url('../assets/images/moving.jpeg');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
-      min-height: 100vh;
-    ">
+      position: relative;
+      border-radius: 0 0 28px 28px;
+      overflow: hidden;
+    }
 
-    <nav class="navbar">
-      <h1 class="logo">
-        <img src="../assets/svgs/logo.svg" style="width: 36px; height: 36px" />
-        UniMove
-      </h1>
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-      <ul class="menu">
-        <li class="dropdown">
-          <a href="#">Universities</a>
-          <ul class="dropdown-content">
-            <li><a href="universidades.html">Search on Map</a></li>
-            <li><a href="searchByDegree.html">Search by Degree</a></li>
-          </ul>
-        </li>
+    .hero-overlay h1 {
+      color: rgb(249, 249, 249);
+      font-size: 2.6rem;
+      font-weight: 600;
+      text-shadow: 0 4px 18px rgba(0,0,0,0.6);
+    }
 
-        <li class="dropdown">
-          <a href="#">Moving</a>
-          <ul class="dropdown-content">
-            <li><a href="mapaapartamentos.html">Apartments</a></li>
-          </ul>
-        </li>
+    /* ---------- CONTENT ---------- */
+    .page-content {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
 
-        <li class="dropdown">
-          <a href="#">Students</a>
-          <ul class="dropdown-content">
-            <li><a href="../index.html">Internships</a></li>
-            <li><a href="studentLife.html">Study Section</a></li>
-          </ul>
-        </li>
+    /* ---------- GRID ---------- */
+    .companies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 20px;
+    }
 
-        <li class="dropdown">
-          <a href="#">Health</a>
-          <ul class="dropdown-content">
-            <li><a href="biomedical.html">Health</a></li>
-            <li><a href="mapclinics.html">Clinical Maps</a></li>
-          </ul>
-        </li>
-      </ul>
+    /* ---------- COMPANY CARD ---------- */
+    .company-card {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(10px);
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+      transition: 0.25s ease;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.5);
+    }
 
-      <div class="nav-right">
-        <a href="../index.html">
-          <img src="../assets/svgs/home.svg" class="home-button" />
-        </a>
+    .company-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.16);
+    }
 
-        <li class="user-section">
-          <span id="user-name" style="font-weight: bold; color: #5a7c99"></span>
-          <button id="logout" class="boton" style="display: none">
-            <img src="../assets/svgs/logout.svg" />
-          </button>
-        </li>
-      </div>
-    </nav>
+    .company-card h2 {
+      margin: 0 0 10px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #2c3e50;
+    }
 
-    <main class="container">
-      <section class="hero">
-        <h2>Find companies across Spain</h2>
-      </section>
+    .company-card p {
+      margin: 4px 0;
+      font-size: 0.95rem;
+      color: #333;
+    }
+    .moving-form-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: -60px; /* sube por encima del grid */
+  margin-bottom: 40px;
+}
 
-      <div class="card-container">
-        <div class="main-card">
-          <h3>Available Companies</h3>
+/* FORM AESTHETIC GLASS */
+.moving-form {
+  width: 850px;
+  background: rgba(248, 248, 248, 0.82);
+  padding: 26px 32px;
+  border-radius: 18px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.5);
+  animation: fadeIn 0.4s ease;
+}
 
-          <!-- 🔥 correcto: assets/images -->
-          <img src="../assets/images/moving.jpeg" alt="Moving Companies" />
+.moving-form h2 {
+  margin-top: 0;
+  font-size: 1.6rem;
+  color: #2d3e50;
+  margin-bottom: 18px;
+  font-weight: 600;
+}
 
-          <div id="companies"></div>
+/* FORM GROUP */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  color: #1e1e1e;
+  font-weight: 500;
+}
+
+.form-group input {
+  padding: 12px 14px;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.9);
+  outline: none;
+  transition: 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #4f7cac;
+  box-shadow: 0 0 0 3px rgba(79,124,172,0.25);
+}
+
+/* BUTTON */
+.plan-move-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  border: none;
+  background: #4f7cac;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.plan-move-btn:hover {
+  background: #3c5e73;
+  transform: translateY(-2px);
+}
+
+.form-section {
+  margin-top: 25px;
+}
+
+.form-subtitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+.package-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.package-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.package-item input {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #dcdcdc;
+  font-size: 1rem;
+  outline: none;
+}
+
+.move-type-select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #dcdcdc;
+  font-size: 1rem;
+  outline: none;
+  background: white;
+}
+.autocomplete-box {
+  position: absolute;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 10px;
+  margin-top: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+  z-index: 999;
+}
+
+.suggestion-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+  </style>
+</head>
+
+<body>
+
+  <!-- ---------- NAVBAR ---------- -->
+  <nav class="navbar">
+    <div class="logo">
+      <img src="../assets/svgs/logo.svg" width="36"> UniMove
+    </div>
+  </nav>
+
+  <!-- ---------- HERO ---------- -->
+  <section class="hero-section">
+    <div class="hero-overlay">
+      <h1>Moving Companies in Spain</h1>
+    </div>
+  </section>
+<!-- ---------- SEARCH BOX FORM ---------- -->
+<section class="moving-form-container">
+  <div class="moving-form">
+    <h2>Plan your move</h2>
+
+    <div class="form-group">
+      <label>From:</label>
+      <input type="text" id="fromCity" placeholder="Madrid, Barcelona, Valencia...">
+    </div>
+
+    <div class="form-group">
+      <label>To:</label>
+      <input type="text" id="toCity" placeholder="Sevilla, Bilbao, Zaragoza...">
+    </div>
+
+    <div class="form-group">
+      <label>Moving date:</label>
+      <input type="date" id="moveDate">
+    </div>
+
+    <div class="form-section">
+      <h3 class="form-subtitle">Packages</h3>
+
+      <div class="package-grid">
+        <div class="package-item">
+          <label>Small packages:</label>
+          <input type="number" id="smallPackages" min="0" value="0">
+        </div>
+
+        <div class="package-item">
+          <label>Medium packages:</label>
+          <input type="number" id="mediumPackages" min="0" value="0">
+        </div>
+
+        <div class="package-item">
+          <label>Large packages:</label>
+          <input type="number" id="largePackages" min="0" value="0">
         </div>
       </div>
-    </main>
+    </div>
 
-    <script>
-      async function fetchCompanies() {
-        try {
-          const res = await fetch("http://127.0.0.1:8080/get_moving_companies");
-          const companies = await res.json();
+    <div class="form-section">
+      <h3 class="form-subtitle">Move type</h3>
 
-          const container = document.getElementById("companies");
-          container.innerHTML = companies
-            .map(
-              (u) => `
-            <div class="card">
-              <h2>${u.name}</h2>
-              <p><strong>City:</strong> ${u.city ?? "Unknown"}</p>
-              <p><strong>Ranking:</strong> ${u.ranking ?? "N/A"}</p>
-              <button onclick="viewDetails(${u.id})">View Details</button>
-            </div>
-          `
-            )
-            .join("");
-        } catch (error) {
-          console.error("Error fetching companies:", error);
-        }
+      <select id="moveType" class="move-type-select">
+        <option value="solo">Solo traslado</option>
+        <option value="mudanza">Mudanza</option>
+        <option value="complete">Mudanza completa</option>
+      </select>
+    </div>
+
+    <button class="plan-move-btn" onclick="planMove()">Search Companies</button>
+  </div>
+</section>
+
+<!-- ---------- PAGE CONTENT ---------- -->
+<div class="page-content" id="resultsSection" style="display:none;">
+  <h2>Available Companies</h2>
+  <div id="companies" class="companies-grid"></div>
+</div>
+
+  <script>
+
+  /* --------------------------
+        FETCH COMPANIES
+  --------------------------- */
+  async function fetchCompanies() {
+    try {
+      const res = await fetch("http://127.0.0.1:8080/get_moving_companies");
+      const companies = await res.json();
+
+      const container = document.getElementById("companies");
+
+      container.innerHTML = companies.map(c => `
+        <div class="company-card" onclick="openCompany(${c.id})">
+          <h2>${c.name}</h2>
+          <p><strong>City:</strong> ${c.city ?? "Unknown"}</p>
+          <p><strong>Ranking:</strong> ${c.ranking ?? "N/A"}</p>
+          <p><strong>Starting price:</strong> ${c.price ?? "N/A"}</p>
+        </div>
+      `).join("");
+
+    } catch (error) {
+      console.error("❌ Error fetching companies:", error);
+    }
+  }
+
+
+
+
+  /* --------------------------
+        OPEN COMPANY DETAILS
+  --------------------------- */
+  function openCompany(id) {
+    const from = document.getElementById("fromCity").value;
+    const to = document.getElementById("toCity").value;
+    const date = document.getElementById("moveDate").value;
+
+    const small = document.getElementById("smallPackages").value;
+    const medium = document.getElementById("mediumPackages").value;
+    const large = document.getElementById("largePackages").value;
+
+    const type = document.getElementById("moveType").value;
+
+    const query = `?id=${id}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${date}&small=${small}&medium=${medium}&large=${large}&type=${type}`;
+
+    window.location.href = `company.html${query}`;
+  }
+
+
+
+
+  /* --------------------------
+       VALIDACIÓN BACKEND API
+  --------------------------- */
+  async function validateAddressBackend(city) {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:8080/validate_address?city=${encodeURIComponent(city)}`
+      );
+
+      if (!res.ok) {
+        console.error("❌ Backend error validate_address");
+        return false;
       }
 
-      function viewDetails(id) {
-        window.location.href = `company.html?id=${id}`;
-      }
+      const data = await res.json();
+      return data.valid === true;
 
-      fetchCompanies();
-    </script>
-  </body>
+    } catch (e) {
+      console.error("❌ Cannot validate address:", e);
+      return false;
+    }
+  }
+
+
+
+
+  /* --------------------------
+         VALIDAR FECHA
+  --------------------------- */
+  function validateDate(date) {
+    const selected = new Date(date);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    return selected >= today;
+  }
+
+
+
+
+  /* --------------------------
+       VALIDAR PAQUETES
+  --------------------------- */
+  function validatePackages(small, medium, large) {
+    return (
+      Number.isInteger(small) &&
+      Number.isInteger(medium) &&
+      Number.isInteger(large) &&
+      small >= 0 &&
+      medium >= 0 &&
+      large >= 0
+    );
+  }
+
+
+
+
+  /* --------------------------
+            PLAN MOVE
+  --------------------------- */
+  async function planMove() {
+
+    const from = document.getElementById("fromCity").value.trim();
+    const to = document.getElementById("toCity").value.trim();
+    const date = document.getElementById("moveDate").value;
+
+    if (!from || !to || !date) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    /* VALIDAR DIRECCIONES */
+    const validFrom = await validateAddressBackend(from);
+    if (!validFrom) {
+      alert("Please enter a valid origin address.");
+      return;
+    }
+
+    const validTo = await validateAddressBackend(to);
+    if (!validTo) {
+      alert("Please enter a valid destination address.");
+      return;
+    }
+
+    /* VALIDAR FECHA */
+    if (!validateDate(date)) {
+      alert("Please select a valid moving date.");
+      return;
+    }
+
+    /* VALIDAR PAQUETES */
+    const small = parseInt(document.getElementById("smallPackages").value);
+    const medium = parseInt(document.getElementById("mediumPackages").value);
+    const large = parseInt(document.getElementById("largePackages").value);
+
+    if (!validatePackages(small, medium, large)) {
+      alert("Please enter valid package quantities.");
+      return;
+    }
+
+    /* MOSTRAR RESULTADOS */
+    document.getElementById("resultsSection").style.display = "block";
+
+    /* CARGAR COMPAÑÍAS */
+    fetchCompanies();
+  }
+
+  </script>
+
+</body>
 </html>

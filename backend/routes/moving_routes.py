@@ -12,6 +12,7 @@ SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+ORS_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjAzNjA1M2RiMGZjYzQyZGFhZmYyMGU4ZWZjNTkwZmE3IiwiaCI6Im11cm11cjY0In0="  # OpenRouteService API Key
 
 @moving_routes.route("/get_moving_companies", methods=["GET"])
 def get_moving_companies():
@@ -44,3 +45,40 @@ def get_moving_companies():
         return jsonify({"error": "Could not fetch companies"}), 500
 
     return jsonify(companies)
+
+@moving_routes.route("/calc_distance", methods=["GET"])
+def calc_distance(cityA, cityB):
+    import requests
+    # 1. Geocode city A
+    urlA = f"https://api.openrouteservice.org/geocode/search?api_key={ORS_KEY}&text={cityA}"
+    dataA = requests.get(urlA).json()
+    coordA = dataA["features"][0]["geometry"]["coordinates"]
+
+    # 2. Geocode city B
+    urlB = f"https://api.openrouteservice.org/geocode/search?api_key={ORS_KEY}&text={cityB}"
+    dataB = requests.get(urlB).json()
+    coordB = dataB["features"][0]["geometry"]["coordinates"]
+
+    lon1, lat1 = coordA
+    lon2, lat2 = coordB
+
+    # 3. Distance request
+    urlD = f"https://api.openrouteservice.org/v2/directions/driving-car?api_key={ORS_KEY}&start={lon1},{lat1}&end={lon2},{lat2}"
+    distData = requests.get(urlD).json()
+
+    meters = distData["features"][0]["properties"]["summary"]["distance"]
+    km = round(meters / 1000, 2)
+
+    return jsonify({"distance_km": km})
+
+@moving_routes.route("/validate_address")
+def validate_address(city):
+    import requests
+
+    url = f"https://api.openrouteservice.org/geocode/search?api_key={ORS_KEY}&text={city}"
+    res = requests.get(url).json()
+
+    exists = len(res.get("features", [])) > 0
+
+    return jsonify({"valid": exists})
+
