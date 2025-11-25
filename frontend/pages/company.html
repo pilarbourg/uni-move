@@ -131,89 +131,44 @@
 </body>
 
   <script>
-    // Extraer ID de la URL
-    async function loadCompany() {
-    const params = new URLSearchParams(window.location.search);
-    const companyId = params.get("id");
-    const small = Number(params.get("small"));
-    const medium = Number(params.get("medium"));
-    const large = Number(params.get("large"));
-    const type = params.get("type");
-    const packages = { small, medium, large };
-  
-    renderPackageBreakdown(packages);
+  /* -------------------------------------------------------
+   ⭐  GET URL PARAMS
+------------------------------------------------------- */
+function getParams() {
+  const params = new URLSearchParams(window.location.search);
 
-    const res = await fetch("http://127.0.0.1:8080/get_moving_companies");
-    const companies = await res.json();
-    const c = companies.find(x => x.id == companyId);
+  return {
+    id: params.get("id"),
+    from: params.get("from"),
+    to: params.get("to"),
+    date: params.get("date"),
+    small: Number(params.get("small")),
+    medium: Number(params.get("medium")),
+    large: Number(params.get("large")),
+    type: params.get("type")
+  };
+}
 
-    document.getElementById("companyName").innerText = c.name;
-    document.getElementById("companyCIF").innerText = c.cif;
-    document.getElementById("companyBaseFee").innerText = c.base_fee + " €";
-    document.getElementById("companyCity").innerText = c.location;
-    document.getElementById("companyTime").innerText = c.estimated_time_days + " days";
-    document.getElementById("companyWeight").innerText = c.max_weight_kg + " kg";
-    document.getElementById("companyRating").innerText = c.rating;
-    document.getElementById("companyRatingStars").innerHTML = renderStars(c.rating);
-
-    document.getElementById("priceSmall").innerText = c.price_small_package + " €";
-    document.getElementById("priceMedium").innerText = c.price_medium_package + " €";
-    document.getElementById("priceLarge").innerText = c.price_large_package + " €";
-    document.getElementById("priceSolo").innerText = c.price_solo_traslado + " €";
-    document.getElementById("priceMudanza").innerText = c.price_mudanza + " €";
-    document.getElementById("priceMudanzaCompleta").innerText = c.price_mudanza_completa + " €";
-
-    document.getElementById("companyPhone").innerText = c.phone ?? "Not available";
-    document.getElementById("companyEmail").innerText = c.email ?? "Not available";
-// ----------- ⭐ LOAD REVIEWS (from CSV / backend) -----------
-    const reviewsList = document.getElementById("reviewsList");
-    //TODO: fetch reviews from backend
-    // You will eventually fetch these from /get_reviews?id=...
-    // For now, using mock data:
-    const reviews = c.reviews ?? [
-      { stars: 4.5, author: "Ana López", text: "Great service, everything arrived perfectly." },
-      { stars: 5, author: "Carlos Fernández", text: "Amazing staff and fast moving service. Highly recommended." },
-      { stars: 3.5, author: "María Ruiz", text: "Good but could improve on timing." }
-    ];
-
+/* -------------------------------------------------------
+   ⭐  RENDER STARS
+------------------------------------------------------- */
 function renderStars(n) {
   let stars = "";
   const full = Math.floor(n);
   const half = n % 1 >= 0.5;
+
   for (let i = 0; i < full; i++) stars += "★";
   if (half) stars += "☆";
+
   return stars;
 }
 
-reviewsList.innerHTML = reviews.map(r => `
-  <div class="review-card">
-    <div class="review-stars">${renderStars(r.stars)}</div>
-    <div class="review-author">${r.author}</div>
-    <div class="review-preview">${r.text}</div>
-  </div>
-`).join("");
-    // GALLERY (ejemplo con imágenes guardadas en BBDD)
-    const gallery = document.getElementById("companyImages");
-    // En tu BBDD necesitarás agregar las rutas; aquí pongo 3 dummy images:
-    gallery.innerHTML = `
-        <img src="../assets/images/almacen1.jpg">
-        <img src="../assets/images/mudanza1.jpg">
-        <img src="../assets/images/empresa1.jpg">
-    `;
-    }
-    function sendMessage() {
-  const msg = document.getElementById("contactMessage").value.trim();
-  if (!msg) {
-    alert("Please write a message.");
-    return;
-  }
-
-  alert("Your message has been sent ✉️");
-}
-
+/* -------------------------------------------------------
+   ⭐  RENDER PACKAGE BREAKDOWN
+------------------------------------------------------- */
 function renderPackageBreakdown(packages) {
   const container = document.getElementById("packageBreakdownList");
-  container.innerHTML = "";  // limpiar
+  container.innerHTML = "";
 
   const descriptions = {
     small: "up to 25 kg",
@@ -223,74 +178,137 @@ function renderPackageBreakdown(packages) {
 
   Object.entries(packages).forEach(([type, count]) => {
     if (count > 0) {
-      const div = document.createElement("div");
-      div.classList.add("package-item");
-      div.innerHTML = `
-        <span>📦 ${type.charAt(0).toUpperCase() + type.slice(1)} package (x${count})</span>
+      const row = document.createElement("div");
+      row.classList.add("package-item");
+      row.innerHTML = `
+        <span>📦 ${type.charAt(0).toUpperCase() + type.slice(1)} (x${count})</span>
         <span>${descriptions[type]}</span>
       `;
-      container.appendChild(div);
+      container.appendChild(row);
     }
   });
 }
 
-function loadEstimateCard() {
-  const params = new URLSearchParams(window.location.search);
+/* -------------------------------------------------------
+   ⭐  LOAD COMPANY INFO
+------------------------------------------------------- */
+async function loadCompany() {
+  const { id, small, medium, large } = getParams();
+  const packages = { small, medium, large };
 
-  const from = params.get("from");
-  const to = params.get("to");
-  const small = Number(params.get("small"));
-  const medium = Number(params.get("medium"));
-  const large = Number(params.get("large"));
-  const packages = small + medium + large;
-  const type = params.get("type");
+  // Render mini breakdown
+  renderPackageBreakdown(packages);
 
-  // Mostrar en la card
-  document.getElementById("estimateRoute").textContent = `${from} → ${to}`;
-  document.getElementById("estimatePackages").textContent = packages;
-  document.getElementById("estimateType").textContent = type;
+  // Fetch companies
+  const res = await fetch("http://127.0.0.1:8080/get_moving_companies");
+  const data = await res.json();
+  const c = data.find(x => x.id == id);
 
-  // Calcular distancia con API OSRM o precalculada por el backend
-  fetch(`http://127.0.0.1:8080/calc_distance?from=${from}&to=${to}`)
-    .then(res => res.json())
-    .then(data => {
+  if (!c) {
+    alert("Company not found");
+    return;
+  }
 
-      const distance = data.distance_km;
-      document.getElementById("estimateDistance").textContent = `${distance} km`;
+  // Fill info
+  document.getElementById("companyName").innerText = c.name;
+  document.getElementById("companyCIF").innerText = c.cif;
+  document.getElementById("companyBaseFee").innerText = c.base_fee + " €";
+  document.getElementById("companyCity").innerText = c.location;
+  document.getElementById("companyTime").innerText = c.estimated_time_days + " days";
+  document.getElementById("companyWeight").innerText = c.max_weight_kg + " kg";
+  document.getElementById("companyRating").innerText = c.rating;
+  document.getElementById("companyRatingStars").innerHTML = renderStars(c.rating);
 
-      // Fórmula ejemplo (ajústala a tu backend):
-      let base = Number(document.getElementById("companyBaseFee").innerText.replace("€",""));
+  // Prices
+  document.getElementById("priceSmall").innerText = c.price_small_package + " €";
+  document.getElementById("priceMedium").innerText = c.price_medium_package + " €";
+  document.getElementById("priceLarge").innerText = c.price_large_package + " €";
+  document.getElementById("priceSolo").innerText = c.price_solo_traslado + " €";
+  document.getElementById("priceMudanza").innerText = c.price_mudanza + " €";
+  document.getElementById("priceMudanzaCompleta").innerText = c.price_mudanza_completa + " €";
 
-      let packageCost = packages * 5; // 5€ por paquete, ejemplo
-      let typeMultiplier = type === "complete" ? 2.2 : type === "large" ? 1.6 : 1.2;
-      let distanceCost = distance * 0.4; // 0.40€ por km, ejemplo
+  // Contact
+  document.getElementById("companyPhone").innerText = c.phone ?? "Not available";
+  document.getElementById("companyEmail").innerText = c.email ?? "Not available";
 
-      const total = Math.round((base + packageCost + distanceCost) * typeMultiplier);
+  /* ---------- ⭐ LOAD REVIEWS ---------- */
+  const reviews = c.reviews ?? [
+    { stars: 4.5, author: "Ana López", text: "Great service, everything arrived perfectly." },
+    { stars: 5, author: "Carlos Fernández", text: "Amazing staff and fast moving service." },
+    { stars: 3.5, author: "María Ruiz", text: "Good but could improve on timing." }
+  ];
 
-      document.getElementById("estimatePrice").textContent = `${total} €`;
-      // Ejemplo: packages=small:2,medium:1,large:0
-  const rawPackages = params.get("packages");
+  document.getElementById("reviewsList").innerHTML = reviews.map(r => `
+    <div class="review-card">
+      <div class="review-stars">${renderStars(r.stars)}</div>
+      <div class="review-author">${r.author}</div>
+      <div class="review-preview">${r.text}</div>
+    </div>
+  `).join("");
 
-  // Convertir a objeto
-  const pkg = rawPackages.split(",").reduce((acc, item) => {
-    const [type, count] = item.split(":");
-    acc[type] = Number(count);
-    return acc;
-  }, { small: 0, medium: 0, large: 0 });
-
-  // Mostrar número total
-  document.getElementById("estimatePackages").textContent =
-    pkg.small + pkg.medium + pkg.large;
-
-  // Render mini-card
-  renderPackageBreakdown(pkg);
-    });
+  /* ---------- ⭐ LOAD GALLERY ---------- */
+  document.getElementById("companyImages").innerHTML = `
+    <img src="../assets/images/almacen1.jpg">
+    <img src="../assets/images/mudanza1.jpg">
+    <img src="../assets/images/empresa1.jpg">
+  `;
 }
 
+/* -------------------------------------------------------
+   ⭐  LOAD ESTIMATE CARD
+------------------------------------------------------- */
+async function loadEstimateCard() {
+  const { from, to, small, medium, large, type } = getParams();
+
+  const totalPackages = small + medium + large;
+
+  // Show route & type
+  document.getElementById("estimateRoute").textContent = `${from} → ${to}`;
+  document.getElementById("estimatePackages").textContent = totalPackages;
+  document.getElementById("estimateType").textContent = type;
+
+  // Call backend to calculate distance
+  const res = await fetch(`http://127.0.0.1:8080/calc_distance?from=${from}&to=${to}`);
+  const data = await res.json();
+
+  if (!data.distance_km) {
+    document.getElementById("estimateDistance").textContent = "N/A";
+    return;
+  }
+
+  const distance = data.distance_km;
+  document.getElementById("estimateDistance").textContent = `${distance} km`;
+
+  // Get base fee
+  const base = Number(document.getElementById("companyBaseFee").innerText.replace("€", ""));
+
+  // Example formulas (adjust as needed)
+  const packageCost = (small * 5) + (medium * 8) + (large * 12);
+  const distanceCost = distance * 0.40;
+  const typeMultiplier = type === "complete" ? 2.2 : type === "mudanza" ? 1.6 : 1.2;
+
+  const total = Math.round((base + packageCost + distanceCost) * typeMultiplier);
+
+  document.getElementById("estimatePrice").textContent = `${total} €`;
+}
+
+/* -------------------------------------------------------
+   ⭐ SEND MESSAGE
+------------------------------------------------------- */
+function sendMessage() {
+  const msg = document.getElementById("contactMessage").value.trim();
+  if (!msg) {
+    alert("Please write a message.");
+    return;
+  }
+  alert("Your message has been sent! ✉️");
+}
+
+/* -------------------------------------------------------
+   ⭐ INIT ON PAGE LOAD
+------------------------------------------------------- */
+loadCompany();
 loadEstimateCard();
-
-
-    loadCompany();
   </script>
 
 </body>

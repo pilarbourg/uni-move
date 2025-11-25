@@ -46,33 +46,58 @@ def get_moving_companies():
 
     return jsonify(companies)
 
-@moving_routes.route("/calc_distance", methods=["GET"])
-def calc_distance(cityA, cityB):
-    import requests
-    # 1. Geocode city A
-    urlA = f"https://api.openrouteservice.org/geocode/search?api_key={ORS_KEY}&text={cityA}"
-    dataA = requests.get(urlA).json()
-    coordA = dataA["features"][0]["geometry"]["coordinates"]
+@moving_routes.route("/calc_distance")
+def calc_distance():
+    origin = request.args.get("from", "")
+    destination = request.args.get("to", "")
 
-    # 2. Geocode city B
-    urlB = f"https://api.openrouteservice.org/geocode/search?api_key={ORS_KEY}&text={cityB}"
-    dataB = requests.get(urlB).json()
-    coordB = dataB["features"][0]["geometry"]["coordinates"]
+    if not origin or not destination:
+        return jsonify({"error": "Missing parameters"}), 400
 
-    lon1, lat1 = coordA
-    lon2, lat2 = coordB
+    # 1 — Geocode ORIGIN
+    geo_url_o = f"https://api.openrouteservice.org/geocode/search?api_key={ORS_KEY}&text={origin}"
+    res_o = requests.get(geo_url_o).json()
+    if not res_o.get("features"):
+        return jsonify({"error": "Invalid origin"}), 400
 
-    # 3. Distance request
-    urlD = f"https://api.openrouteservice.org/v2/directions/driving-car?api_key={ORS_KEY}&start={lon1},{lat1}&end={lon2},{lat2}"
-    distData = requests.get(urlD).json()
+    lon_o, lat_o = res_o["features"][0]["geometry"]["coordinates"]
 
-    meters = distData["features"][0]["properties"]["summary"]["distance"]
-    km = round(meters / 1000, 2)
+    # 2 — Geocode DESTINATION
+    geo_url_d = f"https://api.openrouteservice.org/geocode/search?api_key={ORS_KEY}&text={destination}"
+    res_d = requests.get(geo_url_d).json()
+    if not res_d.get("features"):
+        return jsonify({"error": "Invalid destination"}), 400
 
-    return jsonify({"distance_km": km})
+    lon_d, lat_d = res_d["features"][0]["geometry"]["coordinates"]
+
+    # 3 — Calculate route distance
+    directions_url = "https://api.openrouteservice.org/v2/directions/driving-car"
+    payload = {
+        "coordinates": [
+            [lon_o, lat_o],
+            [lon_d, lat_d]
+        ]
+    }
+    headers = {
+        "Authorization": ORS_KEY,
+        "Content-Type": "application/json"
+    }
+
+    route_res = requests.post(directions_url, json=payload, headers=headers).json()
+
+    try:
+        distance_m = route_res["routes"][0]["summary"]["distance"]
+        distance_km = round(distance_m / 1000, 1)
+
+        return jsonify({"distance_km": distance_km})
+
+    except Exception as e:
+        return jsonify({"error": "Routing failed", "details": str(e)}), 500
+
 
 @moving_routes.route("/validate_address")
-def validate_address(city):
+def validate_address():
+    city = request.args.get("city")
     import requests
 
     url = f"https://api.openrouteservice.org/geocode/search?api_key={ORS_KEY}&text={city}"
