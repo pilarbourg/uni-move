@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Company Details</title>
+  <title>UniMove | Company Details</title>
   <link rel="stylesheet" href="../css/company.css" />
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -11,305 +11,147 @@
 </head>
 
 <body>
+<body>
 
+  <!-- 🔵 OVERLAY que contiene LOADER + CONTENIDO -->
   <div class="overlay">
 
-    <!-- ⭐ BOTÓN + TÍTULO -->
-    <div class="button-title-container">
-      <button class="back-btn" onclick="history.back()">← Back</button>
-      <h1 class="company-title" id="companyName">Loading...</h1>
+    <!-- ⏳ LOADER -->
+    <div id="loader" class="loader">
+      Loading...
     </div>
 
-    <!-- ⭐ CONTENEDOR PRINCIPAL -->
-    <div class="company-wrapper">
-      <div class="company-main-card">
+    <!-- 🌟 TODO EL CONTENIDO DE LA PÁGINA (OCULTO HASTA QUE CARGA) -->
+    <div id="pageContent" style="display: none;">
 
-        <!-- ⭐ BLOQUE 1: DETAILS + PRICING + GALLERY -->
-        <div class="details-split">
-
-          <!-- LEFT COLUMN -->
-          <div class="left-column">
-
-            <div class="details-grid">
-
-              <!-- ⭐ COMPANY DETAILS MINI CARD -->
-              <div class="mini-card">
-                <h3 class="mini-title">Company Details</h3>
-
-                <div class="details-center">
-                  <div class="detail-row"><span>📄</span> <strong>CIF:</strong> <span id="companyCIF"></span></div>
-                  <div class="detail-row"><span>💶</span> <strong>Base fee:</strong> <span id="companyBaseFee"></span></div>
-                  <div class="detail-row"><span>📍</span> <strong>City:</strong> <span id="companyCity"></span></div>
-                  <div class="detail-row"><span>⏳</span> <strong>Estimated:</strong> <span id="companyTime"></span></div>
-                  <div class="detail-row"><span>🏋️</span> <strong>Max weight:</strong> <span id="companyWeight"></span></div>
-                  <div class="detail-row"><span>⭐</span> <strong>Rating:</strong> <span id="companyRatingStars"></span> <span id="companyRating"></span></div>
-                </div>
-              </div>
-
-              <!-- ⭐ PRICING MINI CARD -->
-              <div class="mini-card">
-                <h3 class="mini-title">Pricing</h3>
-
-                <div class="details-center">
-                  <div class="detail-row"><span>📦</span> <strong>Small package:</strong> <span id="priceSmall"></span></div>
-                  <div class="detail-row"><span>📦</span> <strong>Medium package:</strong> <span id="priceMedium"></span></div>
-                  <div class="detail-row"><span>📦</span> <strong>Large package:</strong> <span id="priceLarge"></span></div>
-                  <div class="detail-row"><span>🚚</span> <strong>Solo traslado:</strong> <span id="priceSolo"></span></div>
-                  <div class="detail-row"><span>📤</span> <strong>Mudanza:</strong> <span id="priceMudanza"></span></div>
-                  <div class="detail-row"><span>🏠</span> <strong>Mudanza completa:</strong> <span id="priceMudanzaCompleta"></span></div>
-                </div>
-              </div>
-
-            </div> <!-- end details-grid -->
-          </div> <!-- end left column -->
-
-          <!-- RIGHT COLUMN: GALLERY -->
-          <div class="right-column">
-            <h3 class="gallery-tittle">Image Gallery</h3>
-            <div class="gallery" id="companyImages"></div>
-          </div>
-
-        </div> <!-- end details-split -->
-
-
-        <!-- ⭐ BLOQUE 2: ESTIMATED COST -->
-        <div class="estimate-card">
-          <h2 class="estimate-title">Estimated Move Cost</h2>
-
-         <div class="estimate-row">
-          <h5 class="estimate-label">🔜 Origin → Destination:</h5>
-          <span id="estimateRoute">Loading...</span>
-          </div>
-
-          <div class="estimate-row">
-          <h5 class="estimate-label">↔️ Total distance:</h5>
-          <span id="estimateDistance">- km</span>
-          </div>
-
-          <div class="estimate-row">
-          <h5 class="estimate-label">📥 Selected packages:</h5>
-          <span id="estimatePackages">-</span>
-         </div>
-
-          <div class="package-breakdown-card">
-          <h5 class="pb-title">Package Details</h5>
-          <div id="packageBreakdownList"></div>
-         </div>
-
-         <div class="estimate-row">
-          <h5 class="estimate-label">👣 Move type:</h5>
-          <span id="estimateType">-</span>
-         </div>
-
+      <!-- ⭐ BOTÓN + TÍTULO -->
+      <div class="button-title-container">
+        <button class="back-btn" onclick="history.back()">← Back</button>
+        <h1 class="company-title" id="companyName">Loading...</h1>
       </div>
 
+      <!-- ⭐ CONTENEDOR PRINCIPAL -->
+      <div class="company-wrapper">
+        <div class="company-main-card">
 
-        <!-- ⭐ BLOQUE 3: REVIEWS -->
-        <h3 class="subsection">Reviews</h3>
-        <div class="reviews-section" id="reviewsList"></div>
+          <!-- ---------------------------------------------------------
+                BLOQUE 1: DETALLES + PRECIOS + GALERÍA
+          --------------------------------------------------------- -->
+          <div class="details-split">
+
+            <!-- LEFT COLUMN -->
+            <div class="left-column">
+
+              <div class="details-grid">
+
+                <!-- MINI CARD DETAILS -->
+                <div class="mini-card">
+                  <h3 class="mini-title">Company Details</h3>
+
+                  <div class="details-center">
+                    <div class="detail-row"><span>📄</span> <strong>CIF:</strong> <span id="companyCIF"></span></div>
+                    <div class="detail-row"><span>💶</span> <strong>Base fee:</strong> <span id="companyBaseFee"></span></div>
+                    <div class="detail-row"><span>📍</span> <strong>City:</strong> <span id="companyCity"></span></div>
+                    <div class="detail-row"><span>⏳</span> <strong>Estimated:</strong> <span id="companyTime"></span></div>
+                    <div class="detail-row"><span>🏋️</span> <strong>Max weight:</strong> <span id="companyWeight"></span></div>
+                    <div class="detail-row"><span>⭐</span> <strong>Rating:</strong> 
+                      <span id="companyRatingStars"></span> <span id="companyRating"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- MINI CARD PRICING -->
+                <div class="mini-card">
+                  <h3 class="mini-title">Pricing</h3>
+
+                  <div class="details-center">
+                    <div class="detail-row"><strong>📦 Small:</strong> <span id="priceSmall"></span></div>
+                    <div class="detail-row"><strong>📦 Medium:</strong> <span id="priceMedium"></span></div>
+                    <div class="detail-row"><strong>📦 Large:</strong> <span id="priceLarge"></span></div>
+                    <div class="detail-row"><strong>🚚 Solo traslado:</strong> <span id="priceSolo"></span></div>
+                    <div class="detail-row"><strong>📤 Mudanza:</strong> <span id="priceMudanza"></span></div>
+                    <div class="detail-row"><strong>🏠 Mudanza completa:</strong> <span id="priceMudanzaCompleta"></span></div>
+                  </div>
+                </div>
+
+              </div><!-- details-grid END -->
+            </div><!-- left-column END -->
+
+            <!-- RIGHT COLUMN → GALLERY -->
+            <div class="right-column">
+              <h3 class="gallery-title">Image Gallery</h3>
+              <div class="gallery" id="companyImages"></div>
+            </div>
+
+          </div><!-- details-split END -->
 
 
-        <!-- ⭐ BLOQUE 4: CONTACT -->
-        <h3 class="subsection">Contact</h3>
-        <div class="contact-section">
-          <div class="contact-info">
-            <p><strong>Phone:</strong> <span id="companyPhone"></span></p>
-            <p><strong>Email:</strong> <span id="companyEmail"></span></p>
+          <!-- ---------------------------------------------------------
+                BLOQUE 2: ESTIMATED COST
+          --------------------------------------------------------- -->
+          <div class="estimate-card">
+            <h2 class="estimate-title">Estimated Move Cost</h2>
+
+            <div class="estimate-row">
+              <h5>🔜 Origin → Destination:</h5>
+              <span id="estimateRoute">Loading...</span>
+            </div>
+
+            <div class="estimate-row">
+              <h5>↔️ Distance:</h5>
+              <span id="estimateDistance">- km</span>
+            </div>
+
+            <div class="estimate-row">
+              <h5>📦 Packages:</h5>
+              <span id="estimatePackages">-</span>
+            </div>
+
+            <div class="package-breakdown-card">
+              <h5 class="pb-title">Package Details</h5>
+              <div id="packageBreakdownList"></div>
+            </div>
+
+            <div class="estimate-row">
+              <h5>👣 Move type:</h5>
+              <span id="estimateType">-</span>
+            </div>
+
+            <div class="estimate-total-row">
+              <h3>Total Estimated Cost:</h3>
+              <span id="estimateTotalCost">-</span>
           </div>
 
-          <textarea class="contact-message" id="contactMessage" placeholder="Write your message..."></textarea>
 
-          <button class="contact-send-btn" onclick="sendMessage()">Send Message</button>
-        </div>
-
-      </div> <!-- end main-card -->
-    </div> <!-- end wrapper -->
-
-  </div> <!-- end overlay -->
+          <!-- ---------------------------------------------------------
+                BLOQUE 3: REVIEWS
+          --------------------------------------------------------- -->
+          <h3 class="subsection">Reviews</h3>
+          <div class="reviews-section" id="reviewsList"></div>
 
 
-</body>
+          <!-- ---------------------------------------------------------
+                BLOQUE 4: CONTACT
+          --------------------------------------------------------- -->
+          <h3 class="subsection">Contact</h3>
+          <div class="contact-section">
+            <div class="contact-info">
+              <p><strong>Phone:</strong> <span id="companyPhone"></span></p>
+              <p><strong>Email:</strong> <span id="companyEmail"></span></p>
+            </div>
 
-  <script>
-  /* -------------------------------------------------------
-   ⭐  GET URL PARAMS
-------------------------------------------------------- */
-function getParams() {
-  const params = new URLSearchParams(window.location.search);
+            <textarea class="contact-message" id="contactMessage" placeholder="Write your message..."></textarea>
 
-  return {
-    id: params.get("id"),
-    from: params.get("from"),
-    to: params.get("to"),
-    date: params.get("date"),
-    small: Number(params.get("small")),
-    medium: Number(params.get("medium")),
-    large: Number(params.get("large")),
-    type: params.get("type")
-  };
-}
+            <button class="contact-send-btn" onclick="sendMessage()">Send Message</button>
+          </div>
 
-/* -------------------------------------------------------
-   ⭐  RENDER STARS
-------------------------------------------------------- */
-function renderStars(n) {
-  let stars = "";
-  const full = Math.floor(n);
-  const half = n % 1 >= 0.5;
+        </div><!-- company-main-card END -->
+      </div><!-- company-wrapper END -->
 
-  for (let i = 0; i < full; i++) stars += "★";
-  if (half) stars += "☆";
+    </div><!-- pageContent END -->
 
-  return stars;
-}
-
-/* -------------------------------------------------------
-   ⭐  RENDER PACKAGE BREAKDOWN
-------------------------------------------------------- */
-function renderPackageBreakdown(packages) {
-  const container = document.getElementById("packageBreakdownList");
-  container.innerHTML = "";
-
-  const descriptions = {
-    small: "up to 25 kg",
-    medium: "25–50 kg",
-    large: "over 50 kg"
-  };
-
-  Object.entries(packages).forEach(([type, count]) => {
-    if (count > 0) {
-      const row = document.createElement("div");
-      row.classList.add("package-item");
-      row.innerHTML = `
-        <span>📦 ${type.charAt(0).toUpperCase() + type.slice(1)} (x${count})</span>
-        <span>${descriptions[type]}</span>
-      `;
-      container.appendChild(row);
-    }
-  });
-}
-
-/* -------------------------------------------------------
-   ⭐  LOAD COMPANY INFO
-------------------------------------------------------- */
-async function loadCompany() {
-  const { id, small, medium, large } = getParams();
-  const packages = { small, medium, large };
-
-  // Render mini breakdown
-  renderPackageBreakdown(packages);
-
-  // Fetch companies
-  const res = await fetch("http://127.0.0.1:8080/get_moving_companies");
-  const data = await res.json();
-  const c = data.find(x => x.id == id);
-
-  if (!c) {
-    alert("Company not found");
-    return;
-  }
-
-  // Fill info
-  document.getElementById("companyName").innerText = c.name;
-  document.getElementById("companyCIF").innerText = c.cif;
-  document.getElementById("companyBaseFee").innerText = c.base_fee + " €";
-  document.getElementById("companyCity").innerText = c.location;
-  document.getElementById("companyTime").innerText = c.estimated_time_days + " days";
-  document.getElementById("companyWeight").innerText = c.max_weight_kg + " kg";
-  document.getElementById("companyRating").innerText = c.rating;
-  document.getElementById("companyRatingStars").innerHTML = renderStars(c.rating);
-
-  // Prices
-  document.getElementById("priceSmall").innerText = c.price_small_package + " €";
-  document.getElementById("priceMedium").innerText = c.price_medium_package + " €";
-  document.getElementById("priceLarge").innerText = c.price_large_package + " €";
-  document.getElementById("priceSolo").innerText = c.price_solo_traslado + " €";
-  document.getElementById("priceMudanza").innerText = c.price_mudanza + " €";
-  document.getElementById("priceMudanzaCompleta").innerText = c.price_mudanza_completa + " €";
-
-  // Contact
-  document.getElementById("companyPhone").innerText = c.phone ?? "Not available";
-  document.getElementById("companyEmail").innerText = c.email ?? "Not available";
-
-  /* ---------- ⭐ LOAD REVIEWS ---------- */
-  const reviews = c.reviews ?? [
-    { stars: 4.5, author: "Ana López", text: "Great service, everything arrived perfectly." },
-    { stars: 5, author: "Carlos Fernández", text: "Amazing staff and fast moving service." },
-    { stars: 3.5, author: "María Ruiz", text: "Good but could improve on timing." }
-  ];
-
-  document.getElementById("reviewsList").innerHTML = reviews.map(r => `
-    <div class="review-card">
-      <div class="review-stars">${renderStars(r.stars)}</div>
-      <div class="review-author">${r.author}</div>
-      <div class="review-preview">${r.text}</div>
-    </div>
-  `).join("");
-
-  /* ---------- ⭐ LOAD GALLERY ---------- */
-  document.getElementById("companyImages").innerHTML = `
-    <img src="../assets/images/almacen1.jpg">
-    <img src="../assets/images/mudanza1.jpg">
-    <img src="../assets/images/empresa1.jpg">
-  `;
-}
-
-/* -------------------------------------------------------
-   ⭐  LOAD ESTIMATE CARD
-------------------------------------------------------- */
-async function loadEstimateCard() {
-  const { from, to, small, medium, large, type } = getParams();
-
-  const totalPackages = small + medium + large;
-
-  // Show route & type
-  document.getElementById("estimateRoute").textContent = `${from} → ${to}`;
-  document.getElementById("estimatePackages").textContent = totalPackages;
-  document.getElementById("estimateType").textContent = type;
-
-  // Call backend to calculate distance
-  const res = await fetch(`http://127.0.0.1:8080/calc_distance?from=${from}&to=${to}`);
-  const data = await res.json();
-
-  if (!data.distance_km) {
-    document.getElementById("estimateDistance").textContent = "N/A";
-    return;
-  }
-
-  const distance = data.distance_km;
-  document.getElementById("estimateDistance").textContent = `${distance} km`;
-
-  // Get base fee
-  const base = Number(document.getElementById("companyBaseFee").innerText.replace("€", ""));
-
-  // Example formulas (adjust as needed)
-  const packageCost = (small * 5) + (medium * 8) + (large * 12);
-  const distanceCost = distance * 0.40;
-  const typeMultiplier = type === "complete" ? 2.2 : type === "mudanza" ? 1.6 : 1.2;
-
-  const total = Math.round((base + packageCost + distanceCost) * typeMultiplier);
-
-  document.getElementById("estimatePrice").textContent = `${total} €`;
-}
-
-/* -------------------------------------------------------
-   ⭐ SEND MESSAGE
-------------------------------------------------------- */
-function sendMessage() {
-  const msg = document.getElementById("contactMessage").value.trim();
-  if (!msg) {
-    alert("Please write a message.");
-    return;
-  }
-  alert("Your message has been sent! ✉️");
-}
-
-/* -------------------------------------------------------
-   ⭐ INIT ON PAGE LOAD
-------------------------------------------------------- */
-loadCompany();
-loadEstimateCard();
-  </script>
-
+  </div><!-- overlay END -->
+  <script src="../js/company.js">
+</script>
 </body>
 </html>

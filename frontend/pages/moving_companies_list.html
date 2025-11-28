@@ -4,260 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UniMove | Moving Companies</title>
+  <link rel="stylesheet" href="../css/moving_companies_list.css" />
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    /* ---------- GLOBAL ---------- */
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #f4f6f9;
-      color: #1e1e1e;
-    }
-
-    /* ---------- NAVBAR ---------- */
-    .navbar {
-      width: 100%;
-      padding: 16px 40px;
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(10px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: fixed;
-      top: 0;
-      z-index: 10;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-
-    /* ---------- HERO SECTION ---------- */
-    .hero-section {
-      margin-top: 90px;
-      height: 280px;
-      background-image: url('../assets/images/moving.jpeg');
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      border-radius: 0 0 28px 28px;
-      overflow: hidden;
-    }
-
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(4px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .hero-overlay h1 {
-      color: rgb(249, 249, 249);
-      font-size: 2.6rem;
-      font-weight: 600;
-      text-shadow: 0 4px 18px rgba(0,0,0,0.6);
-    }
-
-    /* ---------- CONTENT ---------- */
-    .page-content {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    /* ---------- GRID ---------- */
-    .companies-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      margin-top: 20px;
-    }
-
-    /* ---------- COMPANY CARD ---------- */
-    .company-card {
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(10px);
-      padding: 22px;
-      border-radius: 16px;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
-      transition: 0.25s ease;
-      cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.5);
-    }
-
-    .company-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.16);
-    }
-
-    .company-card h2 {
-      margin: 0 0 10px;
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #2c3e50;
-    }
-
-    .company-card p {
-      margin: 4px 0;
-      font-size: 0.95rem;
-      color: #333;
-    }
-    .moving-form-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: -60px; /* sube por encima del grid */
-  margin-bottom: 40px;
-}
-
-/* FORM AESTHETIC GLASS */
-.moving-form {
-  width: 850px;
-  background: rgba(248, 248, 248, 0.82);
-  padding: 26px 32px;
-  border-radius: 18px;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.5);
-  animation: fadeIn 0.4s ease;
-}
-
-.moving-form h2 {
-  margin-top: 0;
-  font-size: 1.6rem;
-  color: #2d3e50;
-  margin-bottom: 18px;
-  font-weight: 600;
-}
-
-/* FORM GROUP */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 18px;
-}
-
-.form-group label {
-  font-size: 0.95rem;
-  margin-bottom: 6px;
-  color: #1e1e1e;
-  font-weight: 500;
-}
-
-.form-group input {
-  padding: 12px 14px;
-  border: 1px solid #dcdcdc;
-  border-radius: 10px;
-  font-size: 1rem;
-  background: rgba(255,255,255,0.9);
-  outline: none;
-  transition: 0.2s;
-}
-
-.form-group input:focus {
-  border-color: #4f7cac;
-  box-shadow: 0 0 0 3px rgba(79,124,172,0.25);
-}
-
-/* BUTTON */
-.plan-move-btn {
-  margin-top: 10px;
-  width: 100%;
-  padding: 12px;
-  font-size: 1.1rem;
-  border-radius: 12px;
-  border: none;
-  background: #4f7cac;
-  color: white;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s;
-}
-
-.plan-move-btn:hover {
-  background: #3c5e73;
-  transform: translateY(-2px);
-}
-
-.form-section {
-  margin-top: 25px;
-}
-
-.form-subtitle {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 12px;
-}
-
-.package-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.package-item {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.package-item input {
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid #dcdcdc;
-  font-size: 1rem;
-  outline: none;
-}
-
-.move-type-select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid #dcdcdc;
-  font-size: 1rem;
-  outline: none;
-  background: white;
-}
-.autocomplete-box {
-  position: absolute;
-  background: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  border-radius: 10px;
-  margin-top: 5px;
-  max-height: 200px;
-  overflow-y: auto;
-  width: 100%;
-  z-index: 999;
-}
-
-.suggestion-item {
-  padding: 10px 12px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.suggestion-item:hover {
-  background-color: #f0f0f0;
-}
-
-/* ANIMATION */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-  </style>
 </head>
 
 <body>
@@ -320,9 +71,9 @@
       <h3 class="form-subtitle">Move type</h3>
 
       <select id="moveType" class="move-type-select">
-        <option value="solo">Solo traslado</option>
-        <option value="mudanza">Mudanza</option>
-        <option value="complete">Mudanza completa</option>
+        <option value="only transport">Solo traslado</option>
+        <option value="half move">Mudanza</option>
+        <option value="complete move">Mudanza completa</option>
       </select>
     </div>
 
@@ -333,37 +84,126 @@
 <!-- ---------- PAGE CONTENT ---------- -->
 <div class="page-content" id="resultsSection" style="display:none;">
   <h2>Available Companies</h2>
+  <div class="filter-container">
+  <button class="filter-btn">Filter ⏷</button>
+  <div class="filter-menu" id="filterMenu">
+    <div class="filter-option" onclick="applyFilter('price')">Sort by price</div>
+    <div class="filter-option" onclick="applyFilter('rating')">Sort by rating</div>
+  </div>
   <div id="companies" class="companies-grid"></div>
 </div>
 
   <script>
 
-  /* --------------------------
-        FETCH COMPANIES
-  --------------------------- */
-  async function fetchCompanies() {
-    try {
-      const res = await fetch("http://127.0.0.1:8080/get_moving_companies");
-      const companies = await res.json();
+  /* ------------------------------------------------------------------
+    GLOBAL STATE (cache de compañías + distancia + paquetes)
+------------------------------------------------------------------ */
+let loadedCompanies = [];
+let cachedDistance = 0;
+let packageCounts = { small: 0, medium: 0, large: 0 };
 
-      const container = document.getElementById("companies");
 
-      container.innerHTML = companies.map(c => `
-        <div class="company-card" onclick="openCompany(${c.id})">
-          <h2>${c.name}</h2>
-          <p><strong>City:</strong> ${c.city ?? "Unknown"}</p>
-          <p><strong>Ranking:</strong> ${c.ranking ?? "N/A"}</p>
-          <p><strong>Starting price:</strong> ${c.price ?? "N/A"}</p>
-        </div>
-      `).join("");
+/* ------------------------------------------------------------------
+    FETCH COMPANIES + PREPARE CALCULATIONS
+------------------------------------------------------------------ */
+async function fetchCompanies() {
+  try {
+    const res = await fetch("http://127.0.0.1:8080/get_moving_companies");
+    const companies = await res.json();
 
-    } catch (error) {
-      console.error("❌ Error fetching companies:", error);
-    }
+    // Guardar en memoria
+    loadedCompanies = companies;
+
+    // Leer datos del formulario
+    const from = document.getElementById("fromCity").value.trim();
+    const to = document.getElementById("toCity").value.trim();
+
+    packageCounts.small = Number(document.getElementById("smallPackages").value);
+    packageCounts.medium = Number(document.getElementById("mediumPackages").value);
+    packageCounts.large = Number(document.getElementById("largePackages").value);
+
+    // Get distance
+    const distanceRes = await fetch(
+      `http://127.0.0.1:8080/calc_distance?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`
+    );
+    const distanceData = await distanceRes.json();
+    cachedDistance = distanceData.distance_km ?? 0;
+    console.log("Distance (km):", cachedDistance);
+
+    // Calcular precios estimados
+    loadedCompanies.forEach(c => {
+      const base = c.base_fee ?? 0;
+      const km = c.km_price ?? 0;
+      console.log("KM Price:", km * cachedDistance);
+      const pSmall = c.price_small_package ?? 0;
+      const pMedium = c.price_medium_package ?? 0;
+      const pLarge = c.price_large_package ?? 0;
+
+      c.estimatedPrice =
+        base +
+        (packageCounts.small * pSmall) +
+        (packageCounts.medium * pMedium) +
+        (packageCounts.large * pLarge) +
+        (km * cachedDistance);
+    });
+
+    // Mostrar por defecto (orden por precio)
+    applyFilter("price");
+
+  } catch (error) {
+    console.error("❌ Error fetching companies:", error);
+  }
+}
+
+
+/* ------------------------------------------------------------------
+    APPLY FILTER (price | rating)
+------------------------------------------------------------------ */
+function applyFilter(criteria) {
+  let list = [...loadedCompanies];
+
+  if (criteria === "price") {
+    list.sort((a, b) => a.estimatedPrice - b.estimatedPrice);
   }
 
+  if (criteria === "rating") {
+    list.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+  }
+
+  renderCompanies(list);
+}
 
 
+/* ------------------------------------------------------------------
+    RENDER COMPANIES (solo dibuja tarjetas)
+------------------------------------------------------------------ */
+function renderCompanies(companies) {
+  const container = document.getElementById("companies");
+
+  container.innerHTML = companies
+    .map(c => `
+      <div class="company-card" onclick="openCompany(${c.id})">
+
+        <h2>${c.name}</h2>
+
+        <p><strong>City:</strong> ${c.location ?? "Unknown"}</p>
+
+        <p><strong>Rating:</strong> 
+          ${c.rating ? c.rating + " ⭐" : "N/A"}
+        </p>
+
+        <p><strong>Starting price:</strong> 
+          ${c.base_fee ? c.base_fee + " €" : "N/A"}
+        </p>
+
+        <p><strong>Estimated price:</strong> 
+          ${c.estimatedPrice.toFixed(2)} €
+        </p>
+
+      </div>
+    `)
+    .join("");
+}
 
   /* --------------------------
         OPEN COMPANY DETAILS
@@ -383,7 +223,6 @@
 
     window.location.href = `company.html${query}`;
   }
-
 
 
 

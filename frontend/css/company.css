@@ -217,6 +217,19 @@ body {
   margin: 10px 0;
   font-size: 1.1rem;
 }
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  z-index: 9999;
+}
 
 .estimate-total {
   margin-top: 28px;
