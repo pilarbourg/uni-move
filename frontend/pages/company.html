@@ -37,54 +37,47 @@
           <!-- ---------------------------------------------------------
                 BLOQUE 1: DETALLES + PRECIOS + GALERÍA
           --------------------------------------------------------- -->
-          <div class="details-split">
+    <!-- ▫️ BLOQUE 1: DETAILS + PRICING + GALLERY -->
+<div class="company-top-two-columns">
 
-            <!-- LEFT COLUMN -->
-            <div class="left-column">
+  <!-- Columna 1: Company Details -->
+  <section class="left-card">
+    <h3 class="mini-title">Company Details</h3>
+    <div class="details-center">
+      <div class="detail-row"><strong>CIF:</strong> <span id="companyCIF"></span></div>
+      <div class="detail-row"><strong>Base fee:</strong> <span id="companyBaseFee"></span></div>
+      <div class="detail-row"><strong>City:</strong> <span id="companyCity"></span></div>
+      <div class="detail-row"><strong>Estimated:</strong> <span id="companyTime"></span></div>
+      <div class="detail-row"><strong>Max weight:</strong> <span id="companyWeight"></span></div>
+      <div class="detail-row"><strong>Rating:</strong> 
+        <span id="companyRatingStars"></span>
+        <span id="companyRating"></span>
+      </div>
+    </div>
+  </section>
 
-              <div class="details-grid">
+  <!-- Columna 2: Pricing -->
+  <section class="right-card">
+    <h3 class="mini-title">Pricing</h3>
+    <div class="details-center">
+      <div class="detail-row"><strong>Small:</strong> <span id="priceSmall"></span></div>
+      <div class="detail-row"><strong>Medium:</strong> <span id="priceMedium"></span></div>
+      <div class="detail-row"><strong>Large:</strong> <span id="priceLarge"></span></div>
+      <div class="detail-row"><strong>Solo traslado:</strong> <span id="priceSolo"></span></div>
+      <div class="detail-row"><strong>Mudanza:</strong> <span id="priceMudanza"></span></div>
+      <div class="detail-row"><strong>Mudanza completa:</strong> <span id="priceMudanzaCompleta"></span></div>
+    </div>
+  </section>
 
-                <!-- MINI CARD DETAILS -->
-                <div class="mini-card">
-                  <h3 class="mini-title">Company Details</h3>
+</div>
 
-                  <div class="details-center">
-                    <div class="detail-row"><span>📄</span> <strong>CIF:</strong> <span id="companyCIF"></span></div>
-                    <div class="detail-row"><span>💶</span> <strong>Base fee:</strong> <span id="companyBaseFee"></span></div>
-                    <div class="detail-row"><span>📍</span> <strong>City:</strong> <span id="companyCity"></span></div>
-                    <div class="detail-row"><span>⏳</span> <strong>Estimated:</strong> <span id="companyTime"></span></div>
-                    <div class="detail-row"><span>🏋️</span> <strong>Max weight:</strong> <span id="companyWeight"></span></div>
-                    <div class="detail-row"><span>⭐</span> <strong>Rating:</strong> 
-                      <span id="companyRatingStars"></span> <span id="companyRating"></span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- MINI CARD PRICING -->
-                <div class="mini-card">
-                  <h3 class="mini-title">Pricing</h3>
-
-                  <div class="details-center">
-                    <div class="detail-row"><strong>📦 Small:</strong> <span id="priceSmall"></span></div>
-                    <div class="detail-row"><strong>📦 Medium:</strong> <span id="priceMedium"></span></div>
-                    <div class="detail-row"><strong>📦 Large:</strong> <span id="priceLarge"></span></div>
-                    <div class="detail-row"><strong>🚚 Solo traslado:</strong> <span id="priceSolo"></span></div>
-                    <div class="detail-row"><strong>📤 Mudanza:</strong> <span id="priceMudanza"></span></div>
-                    <div class="detail-row"><strong>🏠 Mudanza completa:</strong> <span id="priceMudanzaCompleta"></span></div>
-                  </div>
-                </div>
-
-              </div><!-- details-grid END -->
-            </div><!-- left-column END -->
-
-            <!-- RIGHT COLUMN → GALLERY -->
-            <div class="right-column">
-              <h3 class="gallery-title">Image Gallery</h3>
-              <div class="gallery" id="companyImages"></div>
-            </div>
-
-          </div><!-- details-split END -->
-
+<!-- Galería debajo de las dos columnas -->
+<section class="gallery-container">
+  <h3 class="mini-title gallery-title">Image Gallery</h3>
+  <div class="gallery-carousel" id="companyImages">
+    <!-- aquí mete JS las <img> -->
+  </div>
+</section>
 
           <!-- ---------------------------------------------------------
                 BLOQUE 2: ESTIMATED COST

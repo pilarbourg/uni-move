@@ -65,6 +65,9 @@ async function loadCompany() {
 
   if (!c) return alert("Company not found");
 
+  // 🔥 GUARDAR COMPAÑÍA GLOBALMENTE
+  window.currentCompany = c;
+
   document.getElementById("companyName").textContent = c.name;
   document.getElementById("companyCIF").textContent = c.cif;
   document.getElementById("companyBaseFee").textContent = c.base_fee + " €";
@@ -85,28 +88,16 @@ async function loadCompany() {
   // Contact
   document.getElementById("companyPhone").textContent = c.phone ?? "Not available";
   document.getElementById("companyEmail").textContent = c.email ?? "Not available";
-  const km_price = c.km_price ? c.km_price + " €" : "Not available";
-  // Reviews
-  const reviews = c.reviews ?? [];
-  document.getElementById("reviewsList").innerHTML = reviews.length === 0 ?
-      "<p>No reviews yet.</p>" :
-      reviews.map(r => `
-        <div class="review-card">
-          <div class="review-stars">${renderStars(r.stars)}</div>
-          <div class="review-author">${r.author}</div>
-          <div class="review-preview">${r.text}</div>
-        </div>`).join("");
 
-  // Load images separated
   await loadCompanyImages(c.id);
 
-  // Package breakdown
   renderPackageBreakdown({
     small: params.small,
     medium: params.medium,
     large: params.large
   });
 }
+
 
 /* -------------------------------------------------------
    LOAD IMAGES
@@ -123,8 +114,9 @@ async function loadCompanyImages(id) {
   }
 
   gallery.innerHTML = imgs.map(img =>
-    `<img src="${img.image_url}" class="company-img">`
-  ).join("");
+  `<img src="${img.image_url}" alt="Company image">`
+).join("");
+
 }
 
 /* -------------------------------------------------------
@@ -132,12 +124,17 @@ async function loadCompanyImages(id) {
 ------------------------------------------------------- */
 async function loadEstimateCard() {
   const { from, to, small, medium, large, type } = getParams();
+  const c = window.currentCompany; // ⭐ Recuperamos la compañía
+
+  if (!c) return;
 
   document.getElementById("estimateRoute").textContent = `${from} → ${to}`;
   document.getElementById("estimatePackages").textContent = small + medium + large;
   document.getElementById("estimateType").textContent = type;
 
-  const res = await fetch(`http://127.0.0.1:8080/calc_distance?from=${from}&to=${to}`);
+  const res = await fetch(
+    `http://127.0.0.1:8080/calc_distance?from=${from}&to=${to}`
+  );
   const data = await res.json();
 
   if (!data.distance_km) {
@@ -147,13 +144,27 @@ async function loadEstimateCard() {
 
   const distance = data.distance_km;
   document.getElementById("estimateDistance").textContent = `${distance} km`;
-  const totalCostKm= data.distance_km * km_price;
-  const totalCostPackages = (small * price_small_package) +
-                            (medium * price_medium_package) +
-                            (large * price_large_package);
-  const totalCost = totalCostKm + totalCostPackages + base_fee;
-    document.getElementById("estimateTotalCost").textContent = totalCost.toFixed(2) + " €"; 
 
+  // ---- ⭐ AHORA SÍ EXISTEN TODAS ESTAS VARIABLES ⭐ ----
+
+  const kmPrice = c.km_price ?? 0;
+  const baseFee = c.base_fee ?? 0;
+
+  const priceSmall = c.price_small_package ?? 0;
+  const priceMedium = c.price_medium_package ?? 0;
+  const priceLarge = c.price_large_package ?? 0;
+
+  const costPackages =
+      small * priceSmall +
+      medium * priceMedium +
+      large * priceLarge;
+
+  const costDistance = kmPrice * distance;
+
+  const totalCost = baseFee + costPackages + costDistance;
+
+  document.getElementById("estimateTotalCost")
+    .textContent = totalCost.toFixed(2) + " €";
 }
 
 /* -------------------------------------------------------

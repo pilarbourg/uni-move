@@ -70,14 +70,18 @@ body {
 /* --------------------------------------------- */
 
 .company-wrapper {
-  width: 100%;
+  width: 1050px;
   display: flex;
   justify-content: center;
 }
 
 .company-main-card {
-  width: 80%;
-  max-width: 950px;
+  
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
   background: rgba(255,255,255,0.75);
   padding: 32px;
   border-radius: 24px;
@@ -90,97 +94,86 @@ body {
 /* --------------------------------------------- */
 /*  DETAILS + PRICING + GALLERY SPLIT            */
 /* --------------------------------------------- */
-
-.details-split {
-  display: flex;
-  justify-content: center;
-  gap: 90px;
-  width: 100%;
-  margin-top: 20px;
-}
-
-.left-column,
-.right-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.left-column {
-  width: 60%;
-}
-
-.right-column {
-  width: 40%;
-  gap: 10px;
-}
-
-/* --------------------------------------------- */
-/*  MINI CARDS                                    */
-/* --------------------------------------------- */
-
-.details-grid {
+/* -------------------------------------------------------
+   FILA 1 — 2 columnas limpias
+------------------------------------------------------- */
+.company-top-two-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 32px;
+  width: 100%;
 }
 
-.mini-card {
-  background: rgba(255, 255, 255, 0);
-  padding: 24px;
-  border-radius: 18px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.4);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+/* Cards de cada columna */
+.left-card {
+  width: 50%;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 22px;
+  padding: 28px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+.right-card {
+  width: 50%;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 22px;
+  padding: 28px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
 }
 
 .mini-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #2c3e50;
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: #1f2937;
 }
-
 .details-center {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top: 10px;
+  gap: 8px;
 }
 
 .detail-row {
-  width: 100%;
-  max-width: 280px;
+  margin-right: 6px;
   display: flex;
+  margin: 8px 0;
+  font-size: 1rem;
+}
+
+/* -------------------------------------------------------
+   GALERÍA (DEBAJO)
+------------------------------------------------------- */
+.gallery-container {
+  width: 100%;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  margin: 6px 0;
 }
-
-/* --------------------------------------------- */
-/*  IMAGE GALLERY                                 */
-/* --------------------------------------------- */
-.gallery-tittle {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 1px;
-  color: #2c3e50;
+.gallery-title {
+  text-align: center;
+  margin-bottom: 10px;
 }
-
-.gallery {
-  display: grid;
-
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 12px;
+.gallery-carousel {
   width: 100%;
+  max-width: 950px;
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 8px 4px 12px;
 }
 
-.gallery img {
-  width: 100%;
-  height: 150px;
+.gallery-carousel img {
+  flex: 0 0 260px;
+  height: 170px;
   object-fit: cover;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 18px;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
 }
 
 /* --------------------------------------------- */
@@ -199,23 +192,22 @@ body {
 }
 
 .estimate-title {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 600;
   margin-bottom: 25px;
   color: #2c3e50;
 }
 .estimate-label {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-style: bold;
   font-weight: 800;
   color: #000000;
   margin: 0;
 }
 .estimate-row {
+  font-size: 1.4rem;
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
-  font-size: 1.1rem;
 }
 .loader {
   position: fixed;
@@ -374,16 +366,21 @@ font-size: 1rem;
 /*  RESPONSIVE                                    */
 /* --------------------------------------------- */
 
+/* RESPONSIVE NUEVO */
 @media (max-width: 900px) {
-  .details-split {
-    flex-direction: column;
+
+  .company-top-two-columns {
+    grid-template-columns: 1fr; /* Cambia a 1 columna en móvil */
   }
-  .left-column,
-  .right-column {
+
+  .left-card,
+  .right-card {
     width: 100%;
   }
-  .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+
+  .gallery-carousel img {
+    width: 180px;
+    height: 120px;
   }
 }
 

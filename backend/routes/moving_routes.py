@@ -38,7 +38,7 @@ def get_moving_companies():
             "km_price": c.get("km_price"),
             "phone": c.get("phone"),
             "email": c.get("email"),
-            
+
 
             
         }
@@ -59,10 +59,19 @@ def get_company_images():
         return jsonify({"error": "Missing company id"}), 400
 
     try:
-        res = supabase.table("moving_company_images").select("*").eq("company_id", company_id).execute()
-        return jsonify(res.data)
+        res = supabase.table("moving_companies_images") \
+                      .select("*") \
+                      .eq("company_id", company_id) \
+                      .execute()
+
+        return jsonify(res.data or [])
+
     except Exception as e:
-        return jsonify({"error": "Database error", "details": str(e)}), 500
+        return jsonify({
+            "error": "Database error",
+            "details": str(e)
+        }), 500
+
     
 @moving_routes.route("/calc_distance", methods=["GET"])
 def calc_distance():
