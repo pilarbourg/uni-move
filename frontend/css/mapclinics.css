@@ -8,7 +8,7 @@ body {
   font-family: "Roboto", sans-serif;
   line-height: 1.8;
   background-color: #f2f5f7;
-  color: #333;
+  color: #627e9e;
 }
 
 :root {
@@ -135,9 +135,7 @@ body {
 }
 
 .container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
+
 }
 
 .hero {
@@ -538,9 +536,5 @@ main.container-universities {
   border-radius: 8px;
   margin-bottom: 10px;
   border-left: 4px solid #007bff;
-}
-
-.leaflet-control-zoom {
-  display: none !important;
 }
 
