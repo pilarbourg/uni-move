@@ -38,7 +38,7 @@ body {
 }
 
 .back-btn {
-  position: absolute;
+ /* position: absolute;*/
   left: 0;
   padding: 12px 18px;
   background: #4f7cac;
@@ -49,6 +49,7 @@ body {
   font-size: 1rem;
   font-weight: 600;
   transition: 0.25s;
+  
 }
 
 .back-btn:hover {
@@ -81,7 +82,7 @@ body {
   max-width: 1200px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 12px;
   background: rgba(255,255,255,0.75);
   padding: 32px;
   border-radius: 24px;
@@ -106,22 +107,20 @@ body {
 
 /* Cards de cada columna */
 .left-card {
-  width: 50%;
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-radius: 22px;
-  padding: 28px 32px;
+  padding: 28px ;
   border: 1px solid rgba(255, 255, 255, 0.6);
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
 }
 .right-card {
-  width: 50%;
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-radius: 22px;
-  padding: 28px 32px;
+  padding:  32px;
   border: 1px solid rgba(255, 255, 255, 0.6);
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
 }
@@ -140,8 +139,6 @@ body {
 
 .detail-row {
   margin-right: 6px;
-  display: flex;
-  margin: 8px 0;
   font-size: 1rem;
 }
 
@@ -192,23 +189,138 @@ body {
 }
 
 .estimate-title {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 600;
   margin-bottom: 25px;
   color: #2c3e50;
 }
 .estimate-label {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-style: bold;
-  font-weight: 800;
+  font-weight: 600;
   color: #000000;
-  margin: 0;
 }
+/* Reduce vertical spacing entre cada fila */
 .estimate-row {
-  font-size: 1.4rem;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin: 4px 0;       
+  padding: 2px 0;
 }
+/* ---------- MODAL OVERLAY ---------- */
+.review-modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(2px);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ---------- MODAL BOX ---------- */
+.review-modal-content {
+  background: #ffffff;
+  width: 380px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+  animation: fadeIn 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: Inter, sans-serif;
+}
+
+.review-modal-content h3 {
+  margin-top: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2d4c66;
+}
+
+.review-modal-content label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2d4c66;
+  margin-top: 5px;
+}
+
+.review-modal-content input,
+.review-modal-content textarea,
+.review-modal-content select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #dce6ef;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.review-modal-content textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.send-review-btn {
+  background: #4a90e2;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.send-review-btn:hover {
+  background: #3576c4;
+}
+
+.close-review-btn {
+  background: #e5e5e5;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.close-review-btn:hover {
+  background: #ccc;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* La fila del total */
+.estimate-total-row {
+  display: flex;
+  justify-content: space-between;  /* título izquierda – precio derecha */
+  align-items: center;
+  margin-top: 12px;
+  padding: 8px 0;
+  border-top: 1px solid #ddd;      /* opcional para separar */
+}
+
+/* Ajuste del texto */
+.estimate-total-row h3 {
+  margin: 0;
+}
+
+.estimate-total-row span {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
 .loader {
   position: fixed;
   top: 0;
@@ -223,15 +335,6 @@ body {
   z-index: 9999;
 }
 
-.estimate-total {
-  margin-top: 28px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.3rem;
-  font-weight: 600;
-}
 
 /* --------------------------------------------- */
 /*  PACKAGE BREAKDOWN MINI CARD                   */
@@ -277,42 +380,74 @@ font-size: 1rem;
   gap: 14px;
   margin-top: 10px;
 }
-
 .review-card {
-  background: rgba(255,255,255,0.8);
-  padding: 16px;
-  border-radius: 14px;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.6);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.10);
-  transition: 0.2s;
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: 0.25s ease;
 }
 
 .review-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.12);
 }
 
-.review-stars {
-  color: gold;
-  font-size: 1.1rem;
-  margin-bottom: 6px;
+/* HEADER */
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.review-author {
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 4px;
+/* Avatar */
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7ba9ff, #5f7cea);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  margin-right: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 }
 
-.review-preview {
-  color: #555;
-  font-size: 0.95rem;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+/* User + date */
+.review-meta {
+  flex: 1;
 }
+
+.review-user {
+  font-size: 17px;
+  color: #2a3b4c;
+}
+
+.review-date {
+  display: block;
+  font-size: 13px;
+  color: #8a96a3;
+  margin-top: 2px;
+}
+
+/* Rating */
+.review-rating {
+  font-size: 18px;
+  color: #f4c430;
+}
+
+/* Text */
+.review-text {
+  margin-top: 15px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #3c4b5c;
+}
+
 
 /* --------------------------------------------- */
 /*  CONTACT CARD                                  */

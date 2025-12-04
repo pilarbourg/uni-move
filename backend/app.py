@@ -22,6 +22,8 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+
 
 app.register_blueprint(profile_routes)
 app.register_blueprint(chat_routes)

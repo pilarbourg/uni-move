@@ -15,6 +15,52 @@ function getParams() {
     type: p.get("type")
   };
 }
+async function loadReviews(companyId) {
+  try {
+    const res = await fetch(`http://127.0.0.1:8080/fetch_company_reviews?id=${companyId}`);
+    const reviews = await res.json();
+
+    renderReviews(reviews);
+
+  } catch (err) {
+    console.error("Error loading reviews:", err);
+  }
+}
+function renderReviews(reviews) {
+  const container = document.getElementById("reviewsList");
+
+  if (!reviews.length) {
+    container.innerHTML = `<p>No reviews yet.</p>`;
+    return;
+  }
+
+  container.innerHTML = reviews
+    .map(r => {
+    const user_name = localStorage.getItem("user_email");
+      return `
+        <div class="review-card">
+
+          <div class="review-header">
+
+
+            <div class="review-meta">
+              <strong class="review-user">${user_name?? "Anonymous"}</strong>
+              <span class="review-date">${r.review_date ?? ""}</span>
+            </div>
+
+            <div class="review-rating">
+               ${renderStars(r.rating)}
+            </div>
+
+          </div>
+
+          <p class="review-text">${r.comment}</p>
+
+        </div>
+      `;
+    })
+    .join("");
+}
 
 /* -------------------------------------------------------
    RENDER STARS
@@ -114,7 +160,7 @@ async function loadCompanyImages(id) {
   }
 
   gallery.innerHTML = imgs.map(img =>
-  `<img src="${img.image_url}" alt="Company image">`
+  `<img src="${img.image}" alt="Company image">`
 ).join("");
 
 }
@@ -141,11 +187,9 @@ async function loadEstimateCard() {
     document.getElementById("estimateDistance").textContent = "N/A";
     return;
   }
-
+  
   const distance = data.distance_km;
   document.getElementById("estimateDistance").textContent = `${distance} km`;
-
-  // ---- ⭐ AHORA SÍ EXISTEN TODAS ESTAS VARIABLES ⭐ ----
 
   const kmPrice = c.km_price ?? 0;
   const baseFee = c.base_fee ?? 0;
@@ -154,17 +198,40 @@ async function loadEstimateCard() {
   const priceMedium = c.price_medium_package ?? 0;
   const priceLarge = c.price_large_package ?? 0;
 
+  const PACKAGE_WEIGHTS = {
+  small: 12.5,
+  medium: 20,
+  large: 35
+};
+
   const costPackages =
       small * priceSmall +
       medium * priceMedium +
       large * priceLarge;
 
+  const totalWeight =
+      small  * PACKAGE_WEIGHTS.small +
+      medium * PACKAGE_WEIGHTS.medium +
+      large  * PACKAGE_WEIGHTS.large;
+  const MAX_WEIGHT_PER_MOVE =c.max_weight_kg;
+  const movesNeeded = Math.ceil(totalWeight / MAX_WEIGHT_PER_MOVE);
+  console.log("small:", small);
+console.log("medium:", medium);
+console.log("large:", large);
+
+console.log("weights:", PACKAGE_WEIGHTS);
+console.log("MAX_WEIGHT_PER_MOVE:", MAX_WEIGHT_PER_MOVE);
+
+console.log("totalWeight:", totalWeight);
+document.getElementById("neededMoves").textContent= `${movesNeeded} moves`;
   const costDistance = kmPrice * distance;
-
-  const totalCost = baseFee + costPackages + costDistance;
-
+  const partialCost = baseFee + costPackages + costDistance ;
+  const extraCost = calculateExpressFee(getParams().date, partialCost);
+  const finalPrice=extraCost.finalPrice*movesNeeded;
+  console.log(movesNeeded);
+ console.log(finalPrice);
   document.getElementById("estimateTotalCost")
-    .textContent = totalCost.toFixed(2) + " €";
+    .textContent = finalPrice.toFixed(2) + " €";
 }
 
 /* -------------------------------------------------------
@@ -193,3 +260,114 @@ async function initPage() {
 }
 
 document.addEventListener("DOMContentLoaded", initPage);
+
+function calculateExpressFee(moveDate, basePrice) {
+  const today = new Date();
+  const target = new Date(moveDate);
+  const daysLeft = daysBetween(today, target);
+
+  let extra = 0;
+
+  if (daysLeft < 14) {
+    // Mudanza express → recargo fuerte
+    extra = basePrice * 0.5; 
+  } else if (daysLeft < 30) {
+    // Menos de un mes → recargo moderado
+    extra = basePrice * 0.25;   // +10% (ejemplo)
+  } else {
+    // Más de un mes → sin recargo
+    extra = 0;
+  }
+
+  const finalPrice = basePrice + extra;
+
+  return {
+    daysLeft,
+    extra,
+    finalPrice
+  };
+}
+function daysBetween(date1, date2) {
+  const diff = date2.getTime() - date1.getTime();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24)); // días
+
+}
+document.addEventListener("DOMContentLoaded", async () => {
+  const params = new URLSearchParams(window.location.search);
+  const companyId = params.get("id");
+
+  console.log("Loading reviews for company", companyId);
+
+  await loadReviews(companyId);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("JS loaded, DOM ready ✅");
+
+ // Elements
+const reviewModal = document.getElementById("reviewModal");
+const openReviewBtn = document.getElementById("openReviewBtn");
+const closeReviewBtn = document.getElementById("closeReviewBtn");
+
+// When clicking "Write a Review"
+openReviewBtn.addEventListener("click", () => {
+  console.log("Opening review modal...");
+  reviewModal.style.display = "flex";
+});
+
+// Close modal
+closeReviewBtn.addEventListener("click", () => {
+  reviewModal.style.display = "none";
+});
+
+// Close modal when clicking outside the box
+window.addEventListener("click", (e) => {
+  if (e.target === reviewModal) reviewModal.style.display = "none";
+});
+});
+
+
+document.getElementById("sendReviewBtn").onclick = async function () {
+  const params = new URLSearchParams(window.location.search);
+  const company_id = params.get("id");
+
+  let user_id = localStorage.getItem("user_id");
+
+  if (!user_id) {
+    alert("You must be logged in to write a review.");
+    return;
+  }
+
+  const rating = Number(document.getElementById("reviewRating").value);
+  const comment = document.getElementById("reviewComment").value.trim();
+  const date = document.getElementById("reviewDate").value;
+  const service_type = document.getElementById("reviewType").value;
+
+  const payload = { company_id, user_id, rating, comment, date, service_type };
+  console.log("Sending review payload:", payload);
+
+  try {
+    const res = await fetch("http://127.0.0.1:8080/submit_company_review", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error("Error from backend:", data);
+      alert("Error submitting review.");
+      return;
+    }
+
+    alert("Review submitted successfully!");
+    reviewModal.style.display = "none";
+
+  } catch (error) {
+    console.error("Fetch error:", error);
+    alert("Network or CORS error");
+  }
+};
+
+

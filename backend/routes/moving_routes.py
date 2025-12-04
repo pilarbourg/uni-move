@@ -4,10 +4,10 @@ from dotenv import load_dotenv
 import os
 from supabase import create_client
 import requests
-
 load_dotenv()
 
 moving_routes = Blueprint("moving_routes", __name__)
+CORS(moving_routes)
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
@@ -50,6 +50,7 @@ def get_moving_companies():
         return jsonify({"error": "Could not fetch companies"}), 500
 
     return jsonify(companies)
+BUCKET = "moving_companies"   # tu bucket real
 
 @moving_routes.route("/get_company_images")
 def get_company_images():
@@ -61,16 +62,20 @@ def get_company_images():
     try:
         res = supabase.table("moving_companies_images") \
                       .select("*") \
-                      .eq("company_id", company_id) \
+                      .eq("company_id", int(company_id)) \
                       .execute()
 
-        return jsonify(res.data or [])
+        images = res.data or []
+
+        # Transform image paths into full Supabase public URLs
+        for img in images:
+            if img.get("image_url"):
+                img["image_url"] = f"{SUPABASE_URL}/storage/v1/object/public/{BUCKET}/{img['image_url']}"
+
+        return jsonify(images)
 
     except Exception as e:
-        return jsonify({
-            "error": "Database error",
-            "details": str(e)
-        }), 500
+        return jsonify({"error": "Database error", "details": str(e)}), 500
 
     
 @moving_routes.route("/calc_distance", methods=["GET"])
@@ -182,3 +187,55 @@ def validate_address():
 
     return jsonify({"valid": exists})
 
+@moving_routes.route("/fetch_company_reviews")
+def fetch_company_reviews():
+    company_id = request.args.get("id")
+
+    if not company_id:
+        return jsonify({"error": "Missing company id"}), 400
+
+    try:
+        res = supabase.table("reviews_moving_companies") \
+                      .select("*") \
+                      .eq("company_id", int(company_id)) \
+                      .execute()
+
+        return jsonify(res.data or [])
+
+    except Exception as e:
+        return jsonify({
+            "error": "Database error",
+            "details": str(e)
+        }), 500
+@moving_routes.route("/submit_company_review", methods=["POST", "OPTIONS"])
+def submit_company_review():
+    if request.method == "OPTIONS":
+        return jsonify({"status": "ok"}), 200
+    data = request.get_json()
+
+    company_id = data.get("company_id")
+    user_id = data.get("user_id")
+    date=data.get("date")
+    service_type=data.get("service_type")   
+    rating = data.get("rating")
+    comment = data.get("comment")
+
+    if not all([company_id, user_id, rating, comment, date, service_type]):
+        return jsonify({"error": "Missing required fields"}), 400
+    try:
+        res = supabase.table("reviews_moving_companies").insert({
+            "company_id": company_id,
+            "user_id": user_id,
+            "rating": rating,
+            "comment": comment,
+            "review_date": date,
+            "service_type": service_type
+        }).execute()
+
+        return jsonify({"message": "Review submitted successfully", "data": res.data}), 201
+    except Exception as e:
+        return jsonify({
+            "error": "Database error",
+            "details": str(e)
+        }), 500
+    

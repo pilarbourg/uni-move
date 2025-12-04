@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UniMove | Company Details</title>
   <link rel="stylesheet" href="../css/company.css" />
+  <link rel="icon" href="data:,">
+
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
    
@@ -44,12 +46,12 @@
   <section class="left-card">
     <h3 class="mini-title">Company Details</h3>
     <div class="details-center">
-      <div class="detail-row"><strong>CIF:</strong> <span id="companyCIF"></span></div>
-      <div class="detail-row"><strong>Base fee:</strong> <span id="companyBaseFee"></span></div>
-      <div class="detail-row"><strong>City:</strong> <span id="companyCity"></span></div>
-      <div class="detail-row"><strong>Estimated:</strong> <span id="companyTime"></span></div>
-      <div class="detail-row"><strong>Max weight:</strong> <span id="companyWeight"></span></div>
-      <div class="detail-row"><strong>Rating:</strong> 
+      <div class="detail-row"><strong>🫆 CIF:</strong> <span id="companyCIF"></span></div>
+      <div class="detail-row"><strong>💲Base fee:</strong> <span id="companyBaseFee"></span></div>
+      <div class="detail-row"><strong>🏢 City:</strong> <span id="companyCity"></span></div>
+      <div class="detail-row"><strong>💸 Estimated:</strong> <span id="companyTime"></span></div>
+      <div class="detail-row"><strong>⚖️ Max weight:</strong> <span id="companyWeight"></span></div>
+      <div class="detail-row"><strong>🌟 Rating:</strong> 
         <span id="companyRatingStars"></span>
         <span id="companyRating"></span>
       </div>
@@ -60,12 +62,12 @@
   <section class="right-card">
     <h3 class="mini-title">Pricing</h3>
     <div class="details-center">
-      <div class="detail-row"><strong>Small:</strong> <span id="priceSmall"></span></div>
-      <div class="detail-row"><strong>Medium:</strong> <span id="priceMedium"></span></div>
-      <div class="detail-row"><strong>Large:</strong> <span id="priceLarge"></span></div>
-      <div class="detail-row"><strong>Solo traslado:</strong> <span id="priceSolo"></span></div>
-      <div class="detail-row"><strong>Mudanza:</strong> <span id="priceMudanza"></span></div>
-      <div class="detail-row"><strong>Mudanza completa:</strong> <span id="priceMudanzaCompleta"></span></div>
+      <div class="detail-row"><strong>📦 Small:</strong> <span id="priceSmall"></span></div>
+      <div class="detail-row"><strong>📦 Medium:</strong> <span id="priceMedium"></span></div>
+      <div class="detail-row"><strong>📦 Large:</strong> <span id="priceLarge"></span></div>
+      <div class="detail-row"><strong>🚙 Solo traslado:</strong> <span id="priceSolo"></span></div>
+      <div class="detail-row"><strong>📨 Mudanza:</strong> <span id="priceMudanza"></span></div>
+      <div class="detail-row"><strong>📥 Mudanza completa:</strong> <span id="priceMudanzaCompleta"></span></div>
     </div>
   </section>
 
@@ -86,27 +88,32 @@
             <h2 class="estimate-title">Estimated Move Cost</h2>
 
             <div class="estimate-row">
-              <h5>🔜 Origin → Destination:</h5>
+              <h3>🔜 Origin → Destination:</h3>
               <span id="estimateRoute">Loading...</span>
             </div>
 
             <div class="estimate-row">
-              <h5>↔️ Distance:</h5>
+              <h3>↔️ Distance:</h3>
               <span id="estimateDistance">- km</span>
             </div>
 
             <div class="estimate-row">
-              <h5>📦 Packages:</h5>
+              <h3>Number of moves needed</h3>
+              <span id="neededMoves"></span>
+            </div>
+
+            <div class="estimate-row">
+              <h3>📦 Packages:</h3>
               <span id="estimatePackages">-</span>
             </div>
 
             <div class="package-breakdown-card">
-              <h5 class="pb-title">Package Details</h5>
+              <h4 class="pb-title">Package Details</h4>
               <div id="packageBreakdownList"></div>
             </div>
 
             <div class="estimate-row">
-              <h5>👣 Move type:</h5>
+              <h3>👣 Move type:</h3>
               <span id="estimateType">-</span>
             </div>
 
@@ -137,6 +144,40 @@
 
             <button class="contact-send-btn" onclick="sendMessage()">Send Message</button>
           </div>
+
+          <button id="openReviewBtn" class="review-btn">Write a Review ⭐</button>
+
+        <!-- MODAL -->
+        <div id="reviewModal" class="review-modal">
+  <div class="review-modal-content">
+
+    <h3>Write a Review</h3>
+
+    <label>Username:</label>
+    <strong id="reviewUserNameDisplay"></strong>
+
+    <label>Rating (1-5):</label>
+    <input type="number" id="reviewRating" min="1" max="5">
+
+    <label>Date of Service:</label>
+    <input type="date" id="reviewDate">
+
+    <label>Type of Service:</label>
+    <select id="reviewType">
+      <option value="solo transport">Transport Only</option>
+      <option value="full move">Full Move</option>
+      <option value="packing">Packing</option>
+    </select>
+
+    <label>Comment:</label>
+    <textarea id="reviewComment"></textarea>
+
+    <button id="sendReviewBtn" class="send-review-btn">Submit Review</button>
+    <button id="closeReviewBtn" class="close-review-btn">Cancel</button>
+
+  </div>
+</div>
+
 
         </div><!-- company-main-card END -->
       </div><!-- company-wrapper END -->
