@@ -9,6 +9,8 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   </head>
   <body>
@@ -79,17 +81,17 @@
         <button class="tablinks" onclick="openSubpage(event, 'Degrees')">
           Search Degrees
         </button>
-        <button class="tablinks" onclick="openSubpage(event, 'Libraries')">
-          Explore Libraries
+        <button class="tablinks" onclick="openSubpage(event, 'Events')">
+          Upcoming Events
         </button>
       </div>
 
-      <div id="Universities" class="tabcontent">
-        <h3>Libraries</h3>
-        <div class="libraries-container">
-          <ul id="library-list"></ul>
-          <div class="libraries-map" id="librariesMap"></div>
-        </div>
+      <div id="Universities" class="tabcontent"> 
+        <h3>Libraries</h3> 
+        <div class="libraries-container"> 
+          <ul id="library-list"></ul> 
+          <div class="libraries-map" id="librariesMap"></div> 
+        </div> 
       </div>
 
       <div id="Degrees" class="tabcontent">
@@ -97,9 +99,12 @@
         <p>Paris is the capital of France.</p>
       </div>
 
-      <div id="Libraries" class="tabcontent">
-        <h3>s</h3>
-        <p>s is the capital of Japan.</p>
+      <div id="Events" class="tabcontent">
+        <h3>Upcoming Events in Madrid</h3>
+        <div class="libraries-container">
+          <ul id="event-list"></ul>
+          <div class="events-calendar" id="eventsCalendar"></div>
+        </div>
       </div>
     </main>
 
@@ -124,6 +129,7 @@
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="../js/mapLibraries.js"></script>
+    <script src="../js/eventsMadrid.js"></script>
     <script>
       function openSubpage(evt, title) {
         var i, tabcontent, tablinks;
@@ -145,6 +151,7 @@
       document.addEventListener("DOMContentLoaded", () => {
         document.querySelector(".tablinks").click();
       });
+      
     </script>
   </body>
 </html>

@@ -15,6 +15,7 @@ from backend.routes.universities.libraries_external import libraries_routes
 from backend.routes.medical_reminders_routes import medical_reminders_routes
 from backend.routes.universities.libraries_review import libraries_reviews_routes
 from backend.routes.moving_routes import moving_routes
+from backend.routes.events import events_routes
 from flask_cors import CORS
 import logging
 
@@ -39,6 +40,7 @@ app.register_blueprint(medical_reminders_routes)
 app.register_blueprint(libraries_routes)
 app.register_blueprint(libraries_reviews_routes)
 app.register_blueprint(moving_routes)
+app.register_blueprint(events_routes)
 
 
 print("\n=== ROUTES ===")

@@ -566,3 +566,16 @@ main section {
     transform: translateY(0);
   }
 }
+
+.events-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Equal width for testing */
+  gap: 1rem;
+  width: 100%;
+  border: 1px solid red; /* visual debugging */
+}
+
+#event-list, #eventsCalendar {
+  border: 1px solid blue; /* visual debugging */
+  min-height: 300px;
+}
