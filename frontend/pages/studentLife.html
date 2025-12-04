@@ -77,7 +77,7 @@
           Find Local Libraries
         </button>
         <button class="tablinks" onclick="openSubpage(event, 'Degrees')">
-          Search Degrees
+          Pomodoro Timer
         </button>
         <button class="tablinks" onclick="openSubpage(event, 'Libraries')">
           Explore Libraries
@@ -93,8 +93,50 @@
       </div>
 
       <div id="Degrees" class="tabcontent">
-        <h3>Paris</h3>
-        <p>Paris is the capital of France.</p>
+        <h3>Pomodoro Timer</h3>
+        <div id="pomodoro-root" class="pomodoro-root">
+          <div class="pomodoro-left">
+            <div class="pomodoro-mode" id="p-mode">Focus</div>
+            <div class="pomodoro-time" id="p-time">25:00</div>
+          </div>
+
+          <div class="pomodoro-right">
+            <div class="pomodoro-controls">
+              <button id="p-start" class="btn">Start</button>
+              <button id="p-pause" class="btn" disabled>Pause</button>
+              <button id="p-reset" class="btn">Reset</button>
+              <button id="p-skip" class="btn">Skip</button>
+            </div>
+
+            <div class="pomodoro-config">
+              <label
+                >Focus
+                <input
+                  type="number"
+                  id="p-focus-min"
+                  min="1"
+                  max="120"
+                  value="25"
+              /></label>
+              <label
+                >Break
+                <input
+                  type="number"
+                  id="p-break-min"
+                  min="1"
+                  max="60"
+                  value="5"
+              /></label>
+              <label
+                >Auto-start <input type="checkbox" id="p-auto" checked
+              /></label>
+            </div>
+
+            <div class="pomodoro-footer">
+              <div id="p-count">Completed focus sessions: 0</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="Libraries" class="tabcontent">
@@ -144,6 +186,114 @@
 
       document.addEventListener("DOMContentLoaded", () => {
         document.querySelector(".tablinks").click();
+      });
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const startBtn = document.getElementById("p-start");
+        const pauseBtn = document.getElementById("p-pause");
+        const resetBtn = document.getElementById("p-reset");
+        const skipBtn = document.getElementById("p-skip");
+
+        const modeEl = document.getElementById("p-mode");
+        const timeEl = document.getElementById("p-time");
+
+        const focusInput = document.getElementById("p-focus-min");
+        const breakInput = document.getElementById("p-break-min");
+        const autoCheckbox = document.getElementById("p-auto");
+        const countEl = document.getElementById("p-count");
+
+        let timer = null;
+        let mode = "focus";
+        let remaining = focusInput.value * 60;
+        let endTime = null;
+        let running = false;
+        let completedFocus = 0;
+
+        function format(sec) {
+          const m = Math.floor(sec / 60);
+          const s = sec % 60;
+          return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+        }
+
+        function updateUI() {
+          timeEl.textContent = format(remaining);
+          modeEl.textContent = mode === "focus" ? "Focus" : "Break";
+          startBtn.disabled = running;
+          pauseBtn.disabled = !running;
+          countEl.textContent = `Completed focus sessions: ${completedFocus}`;
+        }
+
+        function start() {
+          if (running) return;
+          running = true;
+
+          endTime = Date.now() + remaining * 1000;
+
+          timer = setInterval(() => {
+            remaining = Math.round((endTime - Date.now()) / 1000);
+
+            if (remaining <= 0) {
+              clearInterval(timer);
+              running = false;
+              remaining = 0;
+              updateUI();
+
+              if (mode === "focus") {
+                completedFocus++;
+                mode = "break";
+                remaining = breakInput.value * 60;
+              } else {
+                mode = "focus";
+                remaining = focusInput.value * 60;
+              }
+
+              updateUI();
+              if (autoCheckbox.checked) start();
+            }
+
+            updateUI();
+          }, 250);
+
+          updateUI();
+        }
+
+        function pause() {
+          running = false;
+          clearInterval(timer);
+          remaining = Math.round((endTime - Date.now()) / 1000);
+          updateUI();
+        }
+
+        function reset() {
+          pause();
+          mode = "focus";
+          remaining = focusInput.value * 60;
+          completedFocus = 0;
+          updateUI();
+        }
+
+        function skip() {
+          pause();
+          if (mode === "focus") {
+            completedFocus++;
+            mode = "break";
+            remaining = breakInput.value * 60;
+          } else {
+            mode = "focus";
+            remaining = focusInput.value * 60;
+          }
+          updateUI();
+          if (autoCheckbox.checked) start();
+        }
+
+        startBtn.onclick = start;
+        pauseBtn.onclick = pause;
+        resetBtn.onclick = reset;
+        skipBtn.onclick = skip;
+
+        updateUI();
       });
     </script>
   </body>
