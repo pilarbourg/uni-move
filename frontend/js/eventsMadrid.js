@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", loadEvents);
 
 async function loadEvents(){
     try {
-        const res = await fetch("http://localhost:8080/events-madrid"); 
+        const res = await fetch("http://localhost:8080/api/events-madrid"); 
         const data = await res.json();
 
         const events = data._embedded?.events || [];

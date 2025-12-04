@@ -9,7 +9,7 @@ events_routes = Blueprint("events_routes", __name__)
 
 TM_API_KEY = os.getenv("TM_API_KEY")
 
-@events_routes.route("/events-madrid", methods=["GET"])
+@events_routes.route("/api/events-madrid", methods=["GET"])
 def get_events():
     if not TM_API_KEY:
         return jsonify({"error": "Missing TM_API_KEY in .env"}), 500
