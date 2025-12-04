@@ -39,7 +39,6 @@
         <li class="dropdown">
           <a href="#">Students</a>
           <ul class="dropdown-content">
-            <li><a href="../index.html">Internships</a></li>
             <li><a href="studentLife.html">Study Section</a></li>
           </ul>
         </li>
@@ -375,7 +374,7 @@ filterBtn.addEventListener("click", async () => {
       }
 
             const res = await fetch(
-              `http://127.0.0.1:8080/api/get_universities_by_degree_and_locality/${selectedDegree}${selectedLocation}`
+              `http://127.0.0.1:8080/api/get_universities_by_degree_and_locality/${selectedDegree}/${selectedLocation}`
             );
       const filteredUnis = await res.json();
 
@@ -395,7 +394,6 @@ filterBtn.addEventListener("click", async () => {
           .bindPopup(`<b>${uni.name}</b><br>${selectedDegree}`);
         universityMarkers.push(marker);
 
-        // Crear tarjeta
         const card = document.createElement("div");
         card.classList.add("university-card");
               card.classList.add("uni-card");
@@ -443,7 +441,6 @@ filterBtn.addEventListener("click", async () => {
             );
       const filteredUnis = await res.json();
 
-      // Limpia lista anterior
       resultsList.innerHTML = "";
 
       if (!filteredUnis || filteredUnis.length === 0) {
@@ -457,10 +454,9 @@ filterBtn.addEventListener("click", async () => {
           { icon: redIcon }
         )
           .addTo(map)
-          .bindPopup(`<b>${uni.name}</b><br>${selectedDegree}`);
+          .bindPopup(`<b>${uni.name}</b>`);
         universityMarkers.push(marker);
 
-        // Crear tarjeta
         const card = document.createElement("div");
         card.classList.add("university-card");
               card.classList.add("uni-card");

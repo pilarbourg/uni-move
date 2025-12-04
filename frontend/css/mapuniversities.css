@@ -1,0 +1,14 @@
+.leaflet-control-zoom {
+  z-index: 5000 !important;
+}
+
+#map, .map-universities {
+  position: relative;
+  z-index: 1;
+}
+
+.leaflet-control-container {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}

@@ -2,16 +2,11 @@ from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
-from supabase import create_client
+from ..services.supabase_client import supabase
 
 load_dotenv()
 
 map_universities_routes = Blueprint("map_universities_routes", __name__, url_prefix="/api")
-
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @map_universities_routes.route("/get_universities", methods=["GET"])
 def get_universities():
@@ -28,7 +23,6 @@ def get_universities():
     ]
 
     if universities is None:
-        # Something went wrong
         return jsonify({"error": "Could not fetch universities"}), 500
 
     return jsonify(universities)
@@ -47,7 +41,6 @@ def get_degrees():
     ]
 
     if degrees is None:
-        # Something went wrong
         return jsonify({"error": "Could not fetch degrees"}), 500
 
     return jsonify(degrees)
@@ -66,7 +59,6 @@ def get_locations():
     ]
 
     if locations is None:
-        # Something went wrong
         return jsonify({"error": "Could not fetch locations"}), 500
 
     return jsonify(locations)
