@@ -1,0 +1,91 @@
+/* NAVBAR BASE */
+.navbar {
+  background: #ffffff;
+  padding: 12px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 50;
+}
+
+/* MENU GENERAL */
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+}
+
+/* ITEMS DEL MENU */
+.menu > li {
+  position: relative;
+}
+
+.menu > li > a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  padding: 10px 5px;
+  display: inline-block;
+}
+
+/* -----------------------------
+   🔽 DROPDOWN MEJORADO
+----------------------------- */
+
+/* El contenedor ahora mantiene el hover aunque el ratón se mueva */
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* El menú desplegable */
+.dropdown-content {
+  position: absolute;
+  top: 100%; /* Justo debajo del item del menú */
+  left: 0;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 12px 0;
+  min-width: 180px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity .22s ease, transform .22s ease, visibility .22s;
+  
+  pointer-events: none; /* Evita que se cierre al salir del <li> */
+}
+
+/* Estilos del enlace dentro del dropdown */
+.dropdown-content li a {
+  display: block;
+  padding: 10px 18px;
+  color: #333;
+  text-decoration: none;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.dropdown-content li a:hover {
+  background: #f2f6ff;
+  color: #1e60d4;
+}
+
+
+/* Aumentar el área de hover */
+.dropdown {
+  padding-bottom: 20px; /* MÁS ÁREA ACTIVA */
+}
+
+/* Evitar que se cierre al mover entre el item principal y el menú */
+.dropdown:hover {
+  background: transparent;
+}
+

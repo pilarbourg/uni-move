@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="/frontend/components/header.css">
+<link rel="icon" type="image/svg+xml" href="/frontend/assets/svgs/logo.svg" />
+
+<nav class="navbar">
+  <h1 class="logo">
+    <img src="/frontend/assets/svgs/logo.svg" style="width:36px;height:36px" /> UniMove
+  </h1>
+
+  <ul class="menu">
+    <li class="dropdown">
+      <a href="#">Universities</a>
+      <ul class="dropdown-content">
+        <li><a id="universitiesLink">Search on Map</a></li>
+        <li><a id="degreesLink">Search by Degree</a></li>
+      </ul>
+    </li>
+
+    <li class="dropdown">
+      <a href="#">Moving</a>
+      <ul class="dropdown-content">
+        <li><a id="apartmentsLink">Apartments</a></li>
+        <li><a id="movingLink"> Moving Companies</a></li>
+      </ul>
+    </li>
+
+    <li class="dropdown">
+      <a href="#">Students</a>
+      <ul class="dropdown-content">
+        <li><a id="studyLink">Study Section</a></li>
+      </ul>
+    </li>
+
+    <li class="dropdown">
+      <a href="#">Health</a>
+      <ul class="dropdown-content">
+        <li><a id="healthLink">Health</a></li>
+        <li><a id="clinicalmapsLink">Clinical Maps</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class="nav-right">
+    <a href="/index.html">
+      <img src="/frontend/assets/svgs/home.svg" class="home-button" />
+    </a>
+
+    <li class="user-section">
+      <button id="user-name"
+        style="font-weight:bold;color:#5a7c99;cursor:pointer;border:none;background:none;">
+      </button>
+      <button id="logout" class="boton" style="display:none">
+        <img src="/frontend/assets/svgs/logout.svg" />
+      </button>
+    </li>
+  </div>
+</nav>

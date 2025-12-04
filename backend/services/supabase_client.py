@@ -10,5 +10,5 @@ http_client = httpx.Client(http2=False)
 supabase: Client = create_client(
     SUPABASE_URL,
     SUPABASE_KEY,
-    http_client=http_client
+   
 )
