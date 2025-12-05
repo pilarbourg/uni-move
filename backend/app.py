@@ -16,6 +16,7 @@ from backend.routes.medical_reminders_routes import medical_reminders_routes
 from backend.routes.universities.libraries_review import libraries_reviews_routes
 from backend.routes.moving_routes import moving_routes
 from backend.routes.events import events_routes
+from backend.services.idealista_api import IdealistaAPI
 from flask_cors import CORS
 import logging
 
@@ -43,7 +44,7 @@ app.register_blueprint(libraries_routes)
 app.register_blueprint(libraries_reviews_routes)
 app.register_blueprint(moving_routes)
 app.register_blueprint(events_routes)
-
+app.register_blueprint(IdealistaAPI().create_routes())
 
 print("\n=== ROUTES ===")
 for rule in app.url_map.iter_rules():
