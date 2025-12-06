@@ -43,8 +43,8 @@ function render(list) {
 }
 
 async function fetchAll() {
-  const res = await fetch("http://127.0.0.1:8080/get_apartments");
-  render(await res.json());
+    const res = await fetch("http://127.0.0.1:8080/api/idealista/properties");
+    render(await res.json());
 }
 
 async function filter() {

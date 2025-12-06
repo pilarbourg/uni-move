@@ -1,328 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UniMove | Search by Degree</title>
-    <link rel="stylesheet" href="../css/styles.css" />
-    <style>
-      .search-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 60px 20px;
-        background: #f9fafc;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UniMove | Apartments by Price</title>
+  <link rel="stylesheet" href="../css/styles.css" />
 
-      .search-card {
-        background-color: #fff;
-        border-radius: 15px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        max-width: 900px;
-        width: 100%;
-        padding: 40px;
-        text-align: center;
-        border-top: 6px solid #1a4d8f;
-      }
+  <style>
+    /* ====== ESTILOS DE LA SECCIÓN DE BÚSQUEDA ====== */
 
-      .search-card h2 {
-        color: #1a4d8f;
-        font-size: 1.9rem;
-        margin-bottom: 10px;
-      }
+    .search-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      background: #f9fafc;
+    }
 
-      .search-card p {
-        color: #555;
-        font-size: 1rem;
-        margin-bottom: 30px;
-      }
+    .search-card {
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      max-width: 900px;
+      width: 100%;
+      padding: 40px;
+      text-align: center;
+      border-top: 6px solid #1a4d8f;
+    }
 
-      .search-box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-bottom: 15px;
-      }
+    .search-card h2 {
+      color: #1a4d8f;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
 
-      .search-box input {
-        padding: 12px 16px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        min-width: 260px;
-        font-size: 1rem;
-      }
+    .search-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
 
-      .search-box button {
-        background-color: #1a4d8f;
-        color: #fff;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: background 0.3s;
-      }
+    .search-box input {
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      min-width: 260px;
+      font-size: 1rem;
+    }
 
-      .search-box button:hover {
-        background-color: #153a6c;
-      }
+    .search-box button {
+      background-color: #1a4d8f;
+      color: #fff;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
 
-      .checkbox-container {
-        margin-top: 10px;
-        font-size: 0.95rem;
-        color: #444;
-      }
+    .search-box button:hover {
+      background-color: #153a6c;
+    }
 
-      .results-card {
-        background: #fff;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        max-width: 1000px;
-        margin: 40px auto;
-      }
+    .results-card {
+      padding: 40px;
+      max-width: 1100px;
+      margin: 40px auto;
+    }
 
-      .results-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-        gap: 20px;
-      }
+    .results-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 20px;
+    }
 
-      .university-card {
-        background-color: #ffffff;
-        border: 1px solid #e5e5e5;
-        border-radius: 14px;
-        padding: 22px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        transition: 0.3s;
-      }
+    .apt-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
 
-      .university-card:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      }
-    </style>
-  </head>
-  <body>
-    <nav class="navbar">
-      <h1 class="logo">
-        <img
-          src="../assets/svgs/logo.svg"
-          style="width: 36px; height: 36px"
-        />UniMove
-      </h1>
+    .apt-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
 
-      <ul class="menu">
-        <li class="dropdown">
-          <a href="#">Universities</a>
-          <ul class="dropdown-content">
-            <li><a href="universidades.html">Search on Map</a></li>
-            <li><a href="searchByDegree.html">Search by Degree</a></li>
-          </ul>
-        </li>
+  </style>
+</head>
 
-        <li class="dropdown">
-          <a href="#">Moving</a>
-          <ul class="dropdown-content">
-            <li><a href="mapaapartamentos.html">Apartments</a></li>
-          </ul>
-        </li>
+<body>
 
-        <li class="dropdown">
-          <a href="#">Students</a>
-          <ul class="dropdown-content">
-            <li><a href="studentLife.html">Study Section</a></li>
-          </ul>
-        </li>
+<!-- 🔵 NAVBAR ORIGINAL -->
+<nav class="navbar">
+  <h1 class="logo">
+    <img src="../assets/svgs/logo.svg" style="width: 36px; height: 36px" />
+    UniMove
+  </h1>
 
-        <li class="dropdown">
-          <a href="#">Health</a>
-          <ul class="dropdown-content">
-            <li><a href="biomedical.html">Health</a></li>
-            <li><a href="mapclinics.html">Clinical Maps</a></li>
-          </ul>
-        </li>
+  <ul class="menu">
+    <li class="dropdown">
+      <a href="#">Universities</a>
+      <ul class="dropdown-content">
+        <li><a href="universidades.html">Search on Map</a></li>
+        <li><a href="searchByDegree.html">Search by Degree</a></li>
       </ul>
+    </li>
 
-      <div class="nav-right">
-        <a href="../index.html">
-          <img src="../assets/svgs/home.svg" class="home-button"
-        /></a>
+    <li class="dropdown">
+      <a href="#">Moving</a>
+      <ul class="dropdown-content">
+        <li><a href="mapaapartamentos.html">Apartments</a></li>
+      </ul>
+    </li>
 
-        <li class="user-section">
-          <span id="user-name" style="font-weight: bold; color: #5a7c99"></span>
-          <button id="logout" class="boton" style="display: none">
-            <img src="../assets/svgs/logout.svg" />
-          </button>
-        </li>
-      </div>
-    </nav>
+    <li class="dropdown">
+      <a href="#">Students</a>
+      <ul class="dropdown-content">
+        <li><a href="studentLife.html">Study Section</a></li>
+      </ul>
+    </li>
 
-  <main>
-    <section class="search-section">
-      <div class="search-card">
-        <h2>Find Apartments by Price and Location</h2>
-        <p>Enter the neighborhood and budget to discover apartments that fit your needs :)</p>
+    <li class="dropdown">
+      <a href="#">Health</a>
+      <ul class="dropdown-content">
+        <li><a href="biomedical.html">Health</a></li>
+        <li><a href="mapclinics.html">Clinical Maps</a></li>
+      </ul>
+    </li>
+  </ul>
 
-        <div class="search-box">
-          <input
-            type="text"
-            id="barrioInput"
-            placeholder="Example: Centro, Boadilla, Valdemoro..."
-          />
-          <input
-            type="number"
-            id="precioInput"
-            placeholder="Max. price (€)"
-            min="0"
-          />
-          <button id="searchBtn">Search</button>
-        </div>
+  <div class="nav-right">
+    <a href="../index.html">
+      <img src="../assets/svgs/home.svg" class="home-button" />
+    </a>
+  </div>
+</nav>
 
-        <!-- Opcional: ampliar coincidencias (ilike ya ayuda) -->
-        <div class="checkbox-container">
-          <label>
-            <input type="checkbox" id="includeSimilar" />
-            <span>Also include broadly-matching neighborhoods</span>
-          </label>
-        </div>
-      </div>
-    </section>
+<!-- 🔵 SECCIÓN DE BÚSQUEDA -->
+<main>
+  <section class="search-section">
+    <div class="search-card">
+      <h2>Find Apartments by Price</h2>
+      <p>Search apartments in Madrid filtered only by maximum price.</p>
 
-    <section class="results-card" id="resultsCard" style="display: none">
-      <div id="resultsList" class="results-list"></div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-content">
-      <div class="footer-brand">
-        <img src="../assets/svgs/logo.svg" alt="MotivSMA Logo" />
-        <span>UniMove</span>
-      </div>
-      <div class="footer-links">
-        <a href="#">About</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Contact</a>
-      </div>
-      <div class="footer-copy">
-        <p>
-          &copy; 2025 UniMove | Built with ❤️ for students around the world
-        </p>
+      <div class="search-box">
+        <input type="number" id="precioInput" placeholder="Max. price (€)" min="0" />
+        <button id="searchBtn">Search</button>
       </div>
     </div>
-  </footer>
+  </section>
 
-  <script>
-    const searchBtn = document.getElementById("searchBtn");
-    const barrioInput = document.getElementById("barrioInput");
-    const precioInput = document.getElementById("precioInput");
-    const resultsList = document.getElementById("resultsList");
-    const resultsCard = document.getElementById("resultsCard");
-    const includeSimilar = document.getElementById("includeSimilar");
+  <section class="results-card" id="resultsCard" style="display:none;">
+    <div id="resultsList" class="results-list"></div>
+  </section>
+</main>
 
-    // Renderiza tarjetas de apartamentos
-    function renderApartments(apartments) {
-      resultsCard.style.display = "block";
-      resultsList.innerHTML = "";
+<!-- 🔵 FOOTER ORIGINAL -->
+<footer class="site-footer">
+  <div class="footer-content">
+    <div class="footer-brand">
+      <img src="../assets/svgs/logo.svg" />
+      <span>UniMove</span>
+    </div>
 
-      if (!Array.isArray(apartments) || apartments.length === 0) {
-        resultsList.innerHTML = "<p>No apartments found for this search.</p>";
-        return;
-      }
+    <div class="footer-links">
+      <a href="#">About</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Contact</a>
+    </div>
 
-      apartments.forEach((a) => {
-        const card = document.createElement("div");
-        card.className = "apartment-card";
-        card.innerHTML = `
-          <h3 style="color:#1a4d8f; margin-bottom:10px; font-size:1.2rem;">
-            🏠 ${a.titulo ?? "Apartment"}
-          </h3>
-          <p><strong>Neighborhood:</strong> ${a.barrio ?? "N/A"}</p>
-          <p><strong>Price:</strong> ${a.precio ?? "N/A"} €</p>
-          <p><strong>Size:</strong> ${a.tamano_m2 ?? "N/A"} m²</p>
-          <p><strong>Furnished:</strong> ${a.amueblado ? "Yes" : "No"}</p>
-          <p><strong>Location:</strong> ${a.latitud ?? "?"}, ${a.longitud ?? "?"}</p>
-        `;
-        resultsList.appendChild(card);
-      });
+    <div class="footer-copy">
+      <p>© 2025 UniMove | Built with ❤️ for students around the world</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const searchBtn = document.getElementById("searchBtn");
+  const precioInput = document.getElementById("precioInput");
+  const resultsCard = document.getElementById("resultsCard");
+  const resultsList = document.getElementById("resultsList");
+
+  function render(apts) {
+    resultsCard.style.display = "block";
+    resultsList.innerHTML = "";
+
+    if (!apts || apts.length === 0) {
+      resultsList.innerHTML = "<p>No apartments found.</p>";
+      return;
     }
 
+    apts.forEach(a => {
+      const card = document.createElement("div");
+      card.className = "apt-card";
 
-    function buildUrl(barrio, precio) {
+      card.innerHTML = `
+        <img src="${a.thumbnail}" />
+        <h3>${a.title}</h3>
+        <p><strong>Price:</strong> ${a.price}</p>
+        <p><strong>Rooms:</strong> ${a.rooms ?? "?"}</p>
+        <p><strong>Baths:</strong> ${a.bathrooms ?? "?"}</p>
+        <p><strong>Size:</strong> ${a.size ?? "?"} m²</p>
+        <a href="${a.url}" target="_blank" style="color:#1a4d8f;">View on Idealista</a>
+      `;
 
-      if (barrio && precio) {
-
-        return `http://127.0.0.1:8080/get_apartments_by_barrio_price?barrio=${encodeURIComponent(
-          barrio
-        )}&presupuesto=${precio}`;
-      }
-
-      if (barrio) {
-        return `http://127.0.0.1:8080/get_apartments_by_barrio/${encodeURIComponent(
-          barrio
-        )}`;
-      }
-
-      if (precio) {
-        return `http://127.0.0.1:8080/get_apartments_by_price/${precio}`;
-      }
-
-      return "http://127.0.0.1:8080/get_apartments";
-    }
-
-    async function searchApartments() {
-      const barrio = barrioInput.value.trim();
-      const precio = precioInput.value.trim();
-
-
-      if (!barrio && !precio) {
-        resultsCard.style.display = "block";
-        resultsList.innerHTML =
-          "<p style='color:red;'>Please enter a neighborhood and/or a maximum price.</p>";
-        return;
-      }
-
-      const url = buildUrl(barrio, precio);
-
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-
-
-        if (includeSimilar.checked && barrio) {
-
-          const barrioShort = barrio.split(",")[0].split(" ").slice(0, 1).join(" ");
-          if (barrioShort && barrioShort.toLowerCase() !== barrio.toLowerCase()) {
-            const res2 = await fetch(
-              `http://127.0.0.1:8080/get_apartments_by_barrio/${encodeURIComponent(
-                barrioShort
-              )}`
-            );
-            const data2 = await res2.json();
-
-            const seen = new Set((data || []).map((x) => x.id));
-            data2.forEach((x) => { if (!seen.has(x.id)) data.push(x); });
-          }
-        }
-
-        renderApartments(data);
-      } catch (err) {
-        console.error("Error fetching apartments:", err);
-        resultsCard.style.display = "block";
-        resultsList.innerHTML =
-          "<p style='color:red;'>Error connecting to the server.</p>";
-      }
-    }
-
-    searchBtn.addEventListener("click", searchApartments);
-    barrioInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") searchApartments();
+      resultsList.appendChild(card);
     });
-    precioInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") searchApartments();
+  }
+
+  async function search() {
+    const precio = precioInput.value.trim();
+
+    if (!precio) {
+      alert("Enter a maximum price.");
+      return;
+    }
+
+    const res = await fetch("http://127.0.0.1:8080/idealista/properties");
+    const data = await res.json();
+
+    const filtered = data.filter(a => {
+      const price = parseFloat(a.price);
+      return !isNaN(price) && price <= precio;
     });
-  </script>
+
+    render(filtered);
+  }
+
+  searchBtn.addEventListener("click", search);
+</script>
+
 </body>
+</html>
