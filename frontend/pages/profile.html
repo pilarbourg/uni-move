@@ -1,74 +1,342 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Profile</title>
-<style>
-  body {
-    font-family: "Poppins", sans-serif;
-    background: linear-gradient(to right, #74ebd5, #ACB6E5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  .card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    padding: 30px;
-    width: 360px;
-    text-align: center;
-  }
-  h2 {
-    color: #333;
-    margin-bottom: 20px;
-  }
-  input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-  }
-  button {
-    background-color: #6C63FF;
-    border: none;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 15px;
-    width: 100%;
-    font-size: 16px;
-  }
-  button:hover {
-    background-color: #574fd6;
-  }
-  .saved-data {
-    background: #f4f4f9;
-    border-radius: 12px;
-    padding: 12px;
-    margin-top: 20px;
-    text-align: left;
-    color: #555;
-  }
-  .saved-data p {
-    margin: 6px 0;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario - UNI-MOVE</title>
+    <style>
+        /* Mismo CSS del anterior profile.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .profile-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+        }
+        
+        .form-container {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 20px;
+            padding-right: 50px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-icon {
+            font-size: 20px;
+        }
+        
+        .message {
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px 40px 30px;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            .form-container {
+                padding: 30px 25px;
+            }
+            
+            .header {
+                padding: 25px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="card">
-  <h2>My Profile</h2>
-  <form id="profileForm">
-    <input name="name" placeholder="Name">
-    <input name="nationality" placeholder="Nationality">
-    <input name="hobby" placeholder="Hobby">
-    <button>Save</button>
-  </form>
+    <div class="container">
+        <div class="header">
+            <div class="profile-icon">👤</div>
+            <h1>UNI-MOVE Perfil</h1>
+            <p>Completa tu información personal</p>
+        </div>
+        
+        <div class="form-container">
+            <div id="message" class="message"></div>
+            
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="email">Email (requerido)</label>
+                    <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="profile_name">Nombre de Perfil</label>
+                    <input type="text" id="profile_name" name="profile_name" placeholder="Ej: Juan Pérez">
+                </div>
+                
+                <div class="form-group">
+                    <label for="nationality">Nacionalidad</label>
+                    <select id="nationality" name="nationality">
+                        <option value="">Selecciona tu nacionalidad</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="Chile">Chile</option>
+                        <option value="Colombia">Colombia</option>
+                        <option value="España">España</option>
+                        <option value="México">México</option>
+                        <option value="Perú">Perú</option>
+                        <option value="Estados Unidos">Estados Unidos</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="hobby">Hobby o Interés</label>
+                    <input type="text" id="hobby" name="hobby" placeholder="Ej: Fotografía, Fútbol, Lectura">
+                </div>
+                
+                <button type="submit" class="btn" id="submitBtn">
+                    <span id="btnText">Guardar Perfil</span>
+                    <span id="btnIcon" class="btn-icon">💾</span>
+                </button>
+            </form>
+        </div>
+        
+        <div class="footer">
+            <p><a href="/">← Volver al inicio</a></p>
+            <p style="margin-top: 5px; font-size: 12px;">UNI-MOVE © 2025</p>
+        </div>
+    </div>
+
+    <script>
+            // En la función submit, cambia la URL a absoluta:
+    document.getElementById('profileForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value.trim();
+        const profile_name = document.getElementById('profile_name').value.trim();
+        const nationality = document.getElementById('nationality').value;
+        const hobby = document.getElementById('hobby').value.trim();
+        
+        if (!email) {
+            showMessage('Por favor, ingresa tu email', 'error');
+            return;
+        }
+        
+        // Mostrar estado de carga
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnIcon = document.getElementById('btnIcon');
+        
+        btnText.textContent = 'Guardando...';
+        btnIcon.innerHTML = '<div class="loading"></div>';
+        submitBtn.disabled = true;
+        
+        try {
+            const profileData = {
+                email: email
+            };
+            
+            if (profile_name) profileData.profile_name = profile_name;
+            if (nationality) profileData.nationality = nationality;
+            if (hobby) profileData.hobby = hobby;
+            
+            // IMPORTANTE: Usar URL absoluta con tu puerto
+            const response = await fetch('http://localhost:8080/api/update_profile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(profileData)
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                showMessage('Perfil actualizado exitosamente!', 'success');
+                console.log('Respuesta del servidor:', result);
+            } else {
+                showMessage(result.message || 'Error al actualizar el perfil', 'error');
+            }
+        } catch (error) {
+            showMessage(`Error de conexión: ${error.message}. Verifica que el servidor esté corriendo.`, 'error');
+            console.error('Error completo:', error);
+        } finally {
+            btnText.textContent = 'Guardar Perfil';
+            btnIcon.innerHTML = '💾';
+            submitBtn.disabled = false;
+        }
+    });
+  </script>
 </body>
 </html>
