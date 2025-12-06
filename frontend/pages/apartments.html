@@ -65,39 +65,40 @@
     <div class="cards-container" id="cards-container"></div>
 
     <script>
-      async function fetchApartments() {
-        try {
-          const response = await fetch(
-            "http://127.0.0.1:8080/api/idealista/properties"
-          );
-          const apartments = await response.json();
+async function fetchApartments() {
+    try {
+        const response = await fetch("http://127.0.0.1:8080/idealista/properties");
+        const apartments = await response.json();
 
-          const container = document.getElementById("cards-container");
-          container.innerHTML = "";
+        const container = document.getElementById("cards-container");
+        container.innerHTML = "";
 
-          apartments.forEach((apartment) => {
+        apartments.forEach(apartment => {
             const card = document.createElement("div");
             card.className = "card";
 
             card.innerHTML = `
-                        <img src="${apartment.thumbnail}" alt="Apartment">
-                        <div class="card-body">
-                            <h3>${apartment.title}</h3>
-                            <p>Price: ${apartment.price}</p>
-                            <p>Rooms: ${apartment.rooms} | Bathrooms: ${apartment.bathrooms}</p>
-                            <p>Size: ${apartment.size} m²</p>
-                            <a href="${apartment.url}" target="_blank">View Listing</a>
-                        </div>
-                    `;
+                <img src="${apartment.thumbnail}" alt="Apartment">
+                <div class="card-body">
+                    <h3>${apartment.title}</h3>
+                    <p><strong>Precio:</strong> ${apartment.price}</p>
+                    <p><strong>Rooms:</strong> ${apartment.rooms}</p>
+                    <p><strong>Bathrooms:</strong> ${apartment.bathrooms}</p>
+                    <p><strong>Tamaño:</strong> ${apartment.size} m²</p>
+                    <a href="${apartment.url}" target="_blank">Ver en Idealista</a>
+                </div>
+            `;
 
             container.appendChild(card);
-          });
-        } catch (error) {
-          console.error("Error fetching apartments:", error);
-        }
-      }
+        });
 
-      fetchApartments();
-    </script>
+    } catch (error) {
+        console.error("Error fetching apartments:", error);
+    }
+}
+
+fetchApartments();
+</script>
+
   </body>
 </html>
