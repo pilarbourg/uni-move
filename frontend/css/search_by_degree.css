@@ -1,0 +1,253 @@
+body {
+    background: #f9fafc;
+}
+
+.search-section {
+    /* Fondo con degradado suave para la cabecera (Header Visual) */
+    background: linear-gradient(145deg, #e0f0ff 0%, #f9fafc 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px 40px;
+}
+
+.search-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    max-width: 900px;
+    width: 100%;
+    padding: 40px;
+    text-align: center;
+}
+
+.search-card h2 {
+    color: #1a4d8f;
+    font-size: 2rem;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.search-box-unified {
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto 20px;
+    border: 2px solid #1a4d8f;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+}
+
+.search-box-unified:focus-within {
+    box-shadow: 0 0 10px rgba(26, 77, 143, 0.4);
+}
+
+.search-box-unified input {
+    flex-grow: 1;
+    padding: 15px 20px;
+    border: none;
+    font-size: 1.1rem;
+    outline: none;
+}
+
+.search-box-unified button {
+    background-color: #1a4d8f;
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.3s;
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-box-unified button:hover {
+    background-color: #153a6c;
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.filters select {
+    padding: 10px 30px 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #cceeff;
+    background-color: #f7fcff;
+    font-size: 0.95rem;
+    appearance: none;
+    /* Icono de flecha SVG en Base64 */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%231a4d8f%22%20d%3D%22M6%209L0%203h12z%22/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    cursor: pointer;
+}
+
+.checkbox-container {
+    margin-top: 15px;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+/* ==================================== */
+/* 5. Tarjetas de Resultados */
+/* ==================================== */
+.results-card {
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+.results-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 25px;
+}
+
+/* Animación sutil al cargar las tarjetas */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.university-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.university-card:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+}
+
+.university-card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    color: #1a4d8f;
+    font-size: 1.4rem;
+}
+
+.university-card p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.university-card p strong {
+    min-width: 120px;
+    display: inline-block;
+    color: #444;
+}
+
+.contact-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: bold;
+    align-self: flex-start;
+}
+
+.contact-btn:hover {
+    background-color: #45a049;
+}
+
+/* Estilo para los títulos de resultados de búsqueda por grados relacionados */
+.results-list h3 {
+    grid-column: 1 / -1;
+    font-size: 1.6rem !important;
+    color: #0d284a !important;
+    margin: 30px 0 10px !important;
+    padding-left: 10px;
+    border-left: 4px solid #1a4d8f;
+}
+
+/* ==================================== */
+/* 6. Modal de Contacto (con animación) */
+/* ==================================== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-out; /* Transición de opacidad */
+}
+
+/* Estado activo del modal */
+.modal.show {
+    opacity: 1;
+    display: flex; /* Asegura que se muestre */
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(-50px);
+    transition: transform 0.3s ease-out; /* Transición de movimiento */
+}
+
+/* Movimiento del modal cuando está activo */
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+
+.modal-content textarea {
+    width: 100%;
+    height: 120px;
+    margin-top: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    resize: vertical;
+    font-size: 1rem;
+}
+
+.modal-content button {
+    background-color: #1a4d8f;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s;
+    font-weight: bold;
+}
+
+.modal-content button:hover {
+    background-color: #153a6c;
+}

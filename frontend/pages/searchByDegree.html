@@ -4,144 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UniMove | Search by Degree</title>
+
     <link rel="stylesheet" href="../css/mapclinics.css" />
-    <style>
-      body {
-        background: #f9fafc;
-      }
-
-      .search-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 60px 20px;
-      }
-
-      .search-card {
-        background-color: #fff;
-        border-radius: 15px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        max-width: 900px;
-        width: 100%;
-        padding: 40px;
-        text-align: center;
-      }
-
-      .search-card h2 {
-        color: #1a4d8f;
-        font-size: 1.9rem;
-        margin-bottom: 10px;
-      }
-
-      .filters {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        margin-top: 15px;
-      }
-
-      .filters select {
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        font-size: 0.95rem;
-      }
-
-      .checkbox-container {
-        margin-top: 15px;
-        font-size: 0.95rem;
-        color: #444;
-      }
-
-      .results-card {
-        background: #fff;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        max-width: 1000px;
-        margin: 40px auto;
-      }
-
-      .results-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-        gap: 20px;
-      }
-
-      .university-card {
-        background-color: #ffffff;
-        border: 1px solid #e5e5e5;
-        border-radius: 14px;
-        padding: 22px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        transition: 0.3s;
-      }
-
-      .university-card:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      }
-
-      .contact-btn {
-        background-color: #1a4d8f;
-        color: white;
-        border: none;
-        padding: 10px 16px;
-        border-radius: 8px;
-        margin-top: 10px;
-        cursor: pointer;
-        transition: background 0.3s;
-      }
-
-      .contact-btn:hover {
-        background-color: #153a6c;
-      }
-
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-      }
-
-      .modal-content {
-        background: white;
-        border-radius: 12px;
-        padding: 25px;
-        width: 90%;
-        max-width: 500px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      }
-
-      .modal-content textarea {
-        width: 100%;
-        height: 100px;
-        margin-top: 10px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        padding: 10px;
-      }
-
-      .modal-content button {
-        background-color: #1a4d8f;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-top: 10px;
-      }
-
-      .modal-content button:hover {
-        background-color: #153a6c;
-      }
-    </style>
+    <link rel="stylesheet" href="../css/search_by_degree.css" />
   </head>
 
   <body>
@@ -200,37 +65,36 @@
     </nav>
 
     <main>
-      <section class="hero">
-        <h2>Find Universities by Degree</h2>
-      </section>
-
-      <section class="search-section" >
+      <section class="search-section">
         <div class="search-card">
-          <p>Enter the degree name to discover which universities offer it!</p>
+            <h2>Find Universities by Degree</h2>
+            <p>Enter the degree name to discover which universities offer it!</p>
 
-          <div class="search-box">
-            <input
-              type="text"
-              id="degreeInput"
-              placeholder="Example: Law, Medicine, Computer Engineering..."
-            />
-            <button id="searchBtn">Search</button>
-          </div>
+            <div class="search-box-unified">
+                <input
+                    type="text"
+                    id="degreeInput"
+                    placeholder="Example: Law, Medicine, Computer Engineering..."
+                />
+                <button id="searchBtn">
+                    Search
+                </button>
+            </div>
 
-          <div class="filters">
-            <select id="typeFilter">
-              <option value="">All Types</option>
-              <option value="publica">Public</option>
-              <option value="privada">Private</option>
-            </select>
-          </div>
+            <div class="filters">
+                <select id="typeFilter">
+                    <option value="">All Types</option>
+                    <option value="publica">Public</option>
+                    <option value="privada">Private</option>
+                </select>
+            </div>
 
-          <div class="checkbox-container">
-            <label>
-              <input type="checkbox" id="includeSimilar" />
-              <span>Also include similar degrees</span>
-            </label>
-          </div>
+            <div class="checkbox-container">
+                <label>
+                    <input type="checkbox" id="includeSimilar" />
+                    <span>Also include similar degrees</span>
+                </label>
+            </div>
         </div>
       </section>
 
@@ -253,7 +117,7 @@
     <footer class="site-footer">
       <div class="footer-content">
         <div class="footer-brand">
-          <img src="../assets/svgs/logo.svg" alt="MotivSMA Logo" />
+          <img src="../assets/svgs/logo.svg" alt="UniMove Logo" />
           <span>UniMove</span>
         </div>
         <div class="footer-links">
@@ -303,11 +167,7 @@
               )}`
             );
 
-            console.log("Fetching related degrees from URL:", relatedRes); // <-- ADD THIS
-
             const relatedData = await relatedRes.json();
-
-            console.log("Related degrees response:", relatedData); // <-- optional, see the returned JSON
 
             if (relatedData.related_degrees?.length > 0) {
               degreesToSearch = degreesToSearch.concat(
@@ -341,7 +201,7 @@
 
           allResults.forEach((block) => {
             const title = document.createElement("h3");
-            title.textContent = ` Results for: ${block.degree}`;
+            title.textContent = `Results for: ${block.degree}`;
             title.style.gridColumn = "1 / -1";
             title.style.fontSize = "1.4rem";
             title.style.color = "#1a4d8f";
@@ -352,7 +212,7 @@
               const displayType =
                 u.type && u.type !== "N/A"
                   ? u.type.charAt(0).toUpperCase() + u.type.slice(1)
-                  : "Public"; // valor por defecto
+                  : "Public";
 
               const card = document.createElement("div");
               card.className = "university-card";
@@ -379,6 +239,14 @@
       function openContactModal(universityName) {
         selectedUniversity = universityName;
         contactModal.style.display = "flex";
+        // Añadir clase para la animación (CSS: .modal.show)
+        setTimeout(() => contactModal.classList.add('show'), 10);
+      }
+
+      function closeContactModal() {
+        contactModal.classList.remove('show');
+        // Esperar que termine la animación antes de ocultar
+        setTimeout(() => contactModal.style.display = 'none', 300);
       }
 
       document
@@ -395,12 +263,13 @@
 
           const data = await res.json();
           alert(data.message || "Message sent!");
-          contactModal.style.display = "none";
+          closeContactModal(); // Usar la nueva función de cierre
           document.getElementById("contactMessage").value = "";
         });
 
+      // Cierre del modal al hacer clic fuera (modificado para usar closeContactModal)
       window.onclick = (e) => {
-        if (e.target === contactModal) contactModal.style.display = "none";
+        if (e.target === contactModal) closeContactModal();
       };
 
       searchBtn.addEventListener("click", searchUniversities);
