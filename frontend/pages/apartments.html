@@ -1,104 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Apartments | Idealista</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #f5f5f5;
-      }
-      h1 {
-        text-align: center;
-      }
-      .cards-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-        margin-top: 20px;
-      }
-      .card {
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        transition: transform 0.2s;
-      }
-      .card:hover {
-        transform: scale(1.02);
-      }
-      .card img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-      }
-      .card-body {
-        padding: 15px;
-      }
-      .card-body h3 {
-        margin: 0 0 10px 0;
-        font-size: 18px;
-      }
-      .card-body p {
-        margin: 5px 0;
-        font-size: 14px;
-        color: #555;
-      }
-      .card-body a {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 6px 12px;
-        background-color: #007bff;
-        color: white;
-        border-radius: 5px;
-        text-decoration: none;
-      }
-      .card-body a:hover {
-        background-color: #0056b3;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Apartments for Rent</h1>
-    <div class="cards-container" id="cards-container"></div>
+    <title>UniMove | Apartments</title>
+    <link rel="stylesheet" href="../css/apartments.css" />
+</head>
 
-    <script>
-async function fetchApartments() {
-    try {
-        const response = await fetch("http://127.0.0.1:8080/api/idealista/properties");
-        const apartments = await response.json();
+<body>
+    <nav class="navbar">
+      <h1 class="logo">
+        <img
+          src="../assets/svgs/logo.svg"
+          style="width: 36px; height: 36px"
+        />UniMove
+      </h1>
 
-        const container = document.getElementById("cards-container");
-        container.innerHTML = "";
+      <ul class="menu">
+        <li class="dropdown">
+          <a href="#">Universities</a>
+          <ul class="dropdown-content">
+            <li><a href="universidades.html">Search on Map</a></li>
+            <li><a href="searchByDegree.html">Search by Degree</a></li>
+          </ul>
+        </li>
 
-        apartments.forEach(apartment => {
-            const card = document.createElement("div");
-            card.className = "card";
+        <li class="dropdown">
+          <a href="#">Moving</a>
+          <ul class="dropdown-content">
+            <li><a href="movingCompaniesList.html">Moving Companies</a></li>
+            <li><a href="apartments.html">Apartments</a></li>
+          </ul>
+        </li>
 
-            card.innerHTML = `
-                <img src="${apartment.thumbnail}" alt="Apartment">
-                <div class="card-body">
-                    <h3>${apartment.title}</h3>
-                    <p><strong>Precio:</strong> ${apartment.price}</p>
-                    <p><strong>Rooms:</strong> ${apartment.rooms}</p>
-                    <p><strong>Bathrooms:</strong> ${apartment.bathrooms}</p>
-                    <p><strong>Tamaño:</strong> ${apartment.size} m²</p>
-                    <a href="${apartment.url}" target="_blank">Ver en Idealista</a>
-                </div>
-            `;
+        <li class="dropdown">
+          <a href="#">Students</a>
+          <ul class="dropdown-content">
+            <li><a href="studentLife.html">Study Section</a></li>
+          </ul>
+        </li>
 
-            container.appendChild(card);
-        });
+        <li class="dropdown">
+          <a href="#">Health</a>
+          <ul class="dropdown-content">
+            <li><a href="biomedical.html">Health</a></li>
+            <li><a href="mapclinics.html">Clinical Maps</a></li>
+          </ul>
+        </li>
+      </ul>
 
-    } catch (error) {
-        console.error("Error fetching apartments:", error);
-    }
-}
+      <div class="nav-right">
+        <a href="../index.html">
+          <img src="../assets/svgs/home.svg" class="home-button"
+        /></a>
 
-fetchApartments();
-</script>
+        <li class="user-section">
+          <span id="user-name" style="font-weight: bold; color: #5a7c99"></span>
+          <button id="logout" class="boton" style="display: none">
+            <img src="../assets/svgs/logout.svg" />
+          </button>
+        </li>
+      </div>
+    </nav>
 
-  </body>
+    <section class="search-section">
+        <div class="search-card">
+            <h2>Find Apartments by Price</h2>
+            <p>Search apartments available via Idealista API</p>
+
+            <div class="search-box">
+                <input type="number" id="priceInput" placeholder="Max price (€)" min="0">
+                <button id="searchBtn">Search</button>
+                <button id="resetBtn" class="reset">Show All</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="results" class="results"></section>
+
+    <footer class="site-footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <img src="../assets/svgs/logo.svg" alt="MotivSMA Logo" />
+          <span>UniMove</span>
+        </div>
+        <div class="footer-links">
+          <a href="#">About</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="footer-copy">
+          <p>
+            &copy; 2025 UniMove | Built with ❤️ for students around the world
+          </p>
+        </div>
+      </div>
+    </footer>
+    <script src="../js/apartments.js"></script>
+</body>
 </html>
