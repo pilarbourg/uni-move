@@ -399,6 +399,8 @@
       const health = document.getElementById("healthLink");
       const clinicalmaps = document.getElementById("clinicalmapsLink");
       const study = document.getElementById("studyLink");
+      const movingCompanies = document.getElementById("movingCompaniesLink");
+
       let loggedIn = false;
 
       if (username) {
@@ -418,7 +420,8 @@
       if (loggedIn) {
         if (universities) universities.href = "pages/universidades.html";
         if (degrees) degrees.href = "pages/searchByDegree.html";
-        if (apartments) apartments.href = "pages/apartments.html";
+        if (apartments) apartments.href = "pages/searchApartments.html";
+        if (movingCompanies) movingCompanies.href = "pages/movingCompaniesList.html";
         if (health) health.href = "pages/biomedical.html";
         if (clinicalmaps) clinicalmaps.href = "pages/mapclinics.html";
         if (study) study.href = "pages/studentLife.html";
