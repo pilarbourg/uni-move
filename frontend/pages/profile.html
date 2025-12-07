@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="es">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de Usuario - UNI-MOVE</title>
@@ -250,60 +250,7 @@
             }
         }
     </style>
-    </head>
-    <nav class="navbar">
-      <h1 class="logo">
-        <img
-          src="../assets/svgs/logo.svg"
-          style="width: 36px; height: 36px"
-        />UniMove
-      </h1>
-
-      <ul class="menu">
-        <li class="dropdown">
-          <a href="#">Universities</a>
-          <ul class="dropdown-content">
-            <li><a href="universidades.html">Search on Map</a></li>
-            <li><a href="searchByDegree.html">Search by Degree</a></li>
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a href="#">Moving</a>
-          <ul class="dropdown-content">
-            <li><a href="movingCompaniesList.html">Apartments</a></li>
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a href="#">Students</a>
-          <ul class="dropdown-content">
-            <li><a href="studentLife.html">Study Section</a></li>
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a href="#">Health</a>
-          <ul class="dropdown-content">
-            <li><a href="biomedical.html">Health</a></li>
-            <li><a href="mapclinics.html">Clinical Maps</a></li>
-          </ul>
-        </li>
-      </ul>
-
-      <div class="nav-right">
-        <a href="../index.html">
-          <img src="../assets/svgs/home.svg" class="home-button"
-        /></a>
-
-        <li class="user-section">
-          <span id="user-name" style="font-weight: bold; color: #5a7c99"></span>
-          <button id="logout" class="boton" style="display: none">
-            <img src="../assets/svgs/logout.svg" />
-          </button>
-        </li>
-      </div>
-    </nav>
+</head>
 <body>
     <div class="container">
         <div class="header">
@@ -384,6 +331,7 @@
     <script>
 // Variable para el email
 let userEmail = '';
+let hasProfile = false;
 
 // Cuando carga la página
 document.addEventListener('DOMContentLoaded', async function() {
@@ -429,12 +377,17 @@ async function checkAndLoadProfile(email) {
     try {
         // Primero intentar cargar desde localStorage
         const savedProfileData = localStorage.getItem("profileData");
-        const hasProfile = localStorage.getItem("hasProfile") === "true";
+        const savedHasProfile = localStorage.getItem("hasProfile") === "true";
         
-        if (hasProfile && savedProfileData) {
+        if (savedHasProfile && savedProfileData) {
             const profileData = JSON.parse(savedProfileData);
-            populateForm(profileData);
-            updateProfileStatus(true);
+            // Verificar si realmente tiene datos
+            if (profileData.profile_name || profileData.nationality || profileData.hobby) {
+                populateForm(profileData);
+                updateProfileStatus(true);
+                hasProfile = true;
+                return;
+            }
         }
         
         // Luego verificar con el servidor para estar seguros
@@ -442,12 +395,15 @@ async function checkAndLoadProfile(email) {
         
         if (response.ok) {
             const data = await response.json();
+            console.log('📊 Datos del servidor:', data);
             
             // Actualizar localStorage
             localStorage.setItem("hasProfile", data.has_profile);
             localStorage.setItem("profileData", JSON.stringify(data.profile_data));
             
-            if (data.has_profile) {
+            hasProfile = data.has_profile;
+            
+            if (data.has_profile && (data.profile_data.profile_name || data.profile_data.nationality || data.profile_data.hobby)) {
                 populateForm(data.profile_data);
                 updateProfileStatus(true);
             } else {
@@ -460,6 +416,7 @@ async function checkAndLoadProfile(email) {
         
     } catch (error) {
         console.log('ℹ️ Error al verificar perfil:', error);
+        updateProfileStatus(false);
     }
 }
 
@@ -470,22 +427,38 @@ async function loadProfileData(email) {
         
         if (response.ok) {
             const data = await response.json();
+            console.log('📥 Datos completos del perfil:', data);
             
-            // Actualizar localStorage
-            localStorage.setItem("hasProfile", true);
-            localStorage.setItem("profileData", JSON.stringify({
-                profile_name: data.profile_name,
-                nationality: data.nationality,
-                hobby: data.hobby
-            }));
+            // Verificar si realmente tiene perfil (al menos un campo lleno)
+            const hasData = data.profile_name || data.nationality || data.hobby;
             
-            populateForm(data);
-            updateProfileStatus(true);
-            
-            console.log('✅ Datos del perfil cargados:', data);
+            if (hasData) {
+                // Actualizar localStorage
+                localStorage.setItem("hasProfile", true);
+                localStorage.setItem("profileData", JSON.stringify({
+                    profile_name: data.profile_name,
+                    nationality: data.nationality,
+                    hobby: data.hobby
+                }));
+                
+                populateForm(data);
+                updateProfileStatus(true);
+                hasProfile = true;
+                
+                console.log('✅ Perfil cargado del servidor:', data);
+            } else {
+                updateProfileStatus(false);
+                hasProfile = false;
+                console.log('ℹ️ Usuario no tiene perfil completo');
+            }
+        } else {
+            updateProfileStatus(false);
+            hasProfile = false;
         }
     } catch (error) {
         console.log('ℹ️ No hay datos previos del perfil o error:', error);
+        updateProfileStatus(false);
+        hasProfile = false;
     }
 }
 
@@ -503,11 +476,11 @@ function populateForm(data) {
 }
 
 // Función para actualizar el estado del perfil
-function updateProfileStatus(hasProfile) {
+function updateProfileStatus(isComplete) {
     const statusDiv = document.getElementById('profileStatus');
     const statusText = document.getElementById('profileStatusText');
     
-    if (hasProfile) {
+    if (isComplete) {
         statusDiv.textContent = "Perfil Completo";
         statusDiv.className = "profile-status complete";
         statusText.textContent = "Tu perfil está completo";
@@ -534,6 +507,12 @@ document.getElementById('profileForm').addEventListener('submit', async function
     const profile_name = document.getElementById('profile_name').value.trim();
     const nationality = document.getElementById('nationality').value;
     const hobby = document.getElementById('hobby').value.trim();
+    
+    // Validar que al menos un campo esté lleno
+    if (!profile_name && !nationality && !hobby) {
+        showMessage('Por favor, completa al menos un campo del perfil', 'error');
+        return;
+    }
     
     // Mostrar estado de carga
     const submitBtn = document.getElementById('submitBtn');
@@ -578,6 +557,7 @@ document.getElementById('profileForm').addEventListener('submit', async function
             
             // Actualizar estado del perfil
             updateProfileStatus(true);
+            hasProfile = true;
             
             console.log('Respuesta del servidor:', result);
         } else {
