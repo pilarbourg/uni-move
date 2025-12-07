@@ -720,7 +720,7 @@ main section {
   padding: 1rem;
   width: 100%;
   overflow-y: auto;
-  border: 1px solid blue;
+  border: 1px solid #d4e0e8;
 }
 
 .events-calendar {
