@@ -208,12 +208,12 @@ main section {
 
 .tabcontent {
   display: none;
-  padding: 2.5rem;
-  border-radius: 20px;
+  padding: 1rem;
+  border-radius: 15px;
   background: linear-gradient(145deg, #f8f9fa, #ffffff);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   width: 1400px;
-  margin: 2rem auto;
+  margin: 1rem auto;
   animation: fadeIn 0.5s ease;
 }
 
@@ -708,7 +708,6 @@ main section {
   grid-template-columns: 1fr 2fr;
   width: 100%;
   margin: 0 auto;
-  padding: 2rem;
 }
 
 #event-list {
@@ -716,11 +715,10 @@ main section {
   display: flex;
   flex-direction: column;
   height: 75vh;
-  gap: 1.5rem;
+  gap: 1rem;
   padding: 1rem;
   width: 100%;
   overflow-y: auto;
-  border: 1px solid #d4e0e8;
 }
 
 .events-calendar {
@@ -729,5 +727,39 @@ main section {
   padding: 1rem;
   margin-left: 2rem;
   border-radius: 20px;
-  border: 1px solid green;
+}
+
+.event-card {
+  border-radius: 6px;
+  padding: 5px 6px;
+  margin-bottom: 6px;
+  background-color: #5a7c9950;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  transition: box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+  box-shadow: 0 4px 12px rgba(98, 126, 158, 0.4);
+}
+
+.event-card h4 {
+  margin: 0 0 6px;
+  font-size: 1.1em;
+  color: #2c5777;
+}
+
+.event-card p {
+  margin: 0 0 8px;
+  color: #5a7c99;
+  font-weight: 600;
+}
+
+.event-card a {
+  color: #627e9e;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.event-card a:hover {
+  text-decoration: underline;
 }
