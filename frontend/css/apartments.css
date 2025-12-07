@@ -7,10 +7,8 @@
 body {
   font-family: "Roboto", sans-serif;
   line-height: 1.8;
-  background-color: #fdfcfb;
-  color: #556e8c;
-  padding: 0;
-  margin: 0;
+  background-color: #f2f5f7;
+  color: #627e9e;
 }
 
 :root {
@@ -197,6 +195,12 @@ body {
     border-top: 6px solid #1a4d8f;
 }
 
+.search-card h2 {
+    color: #1a4d8f;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
 .search-box {
     margin-top: 15px;
     display: flex;
@@ -221,7 +225,10 @@ body {
     font-weight: bold;
     cursor: pointer;
 }
-.reset { background: #444 !important; }
+
+.search-box button:hover {
+    background-color: #153a6c;
+}
 
 .results {
     width: 95%;
@@ -230,6 +237,18 @@ body {
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+}
+
+.results-card {
+    padding: 40px;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+.results-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 20px;
 }
 
 .ap-card {

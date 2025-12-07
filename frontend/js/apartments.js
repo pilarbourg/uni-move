@@ -1,41 +1,52 @@
-const results = document.getElementById("results");
-const priceInput = document.getElementById("priceInput");
 const searchBtn = document.getElementById("searchBtn");
-const resetBtn = document.getElementById("resetBtn");
+  const precioInput = document.getElementById("precioInput");
+  const resultsCard = document.getElementById("resultsCard");
+  const resultsList = document.getElementById("resultsList");
 
-async function loadApartments() {
-    const res = await fetch("http://127.0.0.1:8080/api/idealista/properties");
-    const data = await res.json();
-    render(data);
-}
+  function render(apts) {
+    resultsCard.style.display = "block";
+    resultsList.innerHTML = "";
 
-function render(apts) {
-    results.innerHTML = apts.length ? "" : "<p>No apartments found</p>";
+    if (!apts || apts.length === 0) {
+      resultsList.innerHTML = "<p>No apartments found.</p>";
+      return;
+    }
 
     apts.forEach(a => {
-        results.innerHTML += `
-        <div class="ap-card">
-            <img src="${a.thumbnail || 'no_photo.jpg'}">
-            <h3>${a.title}</h3>
-            <p><b>Price:</b> ${a.price} €</p>
-            <p><b>Rooms:</b> ${a.rooms ?? '—'}</p>
-            <p><b>Baths:</b> ${a.bathrooms ?? '—'}</p>
-            <p><b>Size:</b> ${a.size ?? '—'} m²</p>
-            <a href="${a.url}" target="_blank">View on Idealista</a>
-        </div>`;
+      const card = document.createElement("div");
+      card.className = "apt-card";
+
+      card.innerHTML = `
+        <img src="${a.thumbnail}" />
+        <h3>${a.title}</h3>
+        <p><strong>Price:</strong> ${a.price}</p>
+        <p><strong>Rooms:</strong> ${a.rooms ?? "?"}</p>
+        <p><strong>Baths:</strong> ${a.bathrooms ?? "?"}</p>
+        <p><strong>Size:</strong> ${a.size ?? "?"} m²</p>
+        <a href="${a.url}" target="_blank" style="color:#1a4d8f;">View on Idealista</a>
+      `;
+
+      resultsList.appendChild(card);
     });
-}
+  }
 
-function search() {
-    const max = priceInput.value;
-    if (!max) return alert("Enter a price");
+  async function search() {
+    const precio = precioInput.value.trim();
 
-    fetch("http://127.0.0.1:8080/api/idealista/properties")
-    .then(r => r.json())
-    .then(data => render(data.filter(a => parseFloat(a.price) <= max)));
-}
+    if (!precio) {
+      alert("Enter a maximum price.");
+      return;
+    }
 
-searchBtn.onclick = search;
-resetBtn.onclick = loadApartments;
+    const res = await fetch("http://127.0.0.1:8080/idealista/properties");
+    const data = await res.json();
 
-loadApartments();
+    const filtered = data.filter(a => {
+      const price = parseFloat(a.price);
+      return !isNaN(price) && price <= precio;
+    });
+
+    render(filtered);
+  }
+
+  searchBtn.addEventListener("click", search);
