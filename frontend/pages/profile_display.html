@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - UNI-MOVE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .profile-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+        }
+        
+        .form-container {
+            padding: 40px;
+        }
+        
+        .profile-field {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .profile-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .profile-field .value {
+            font-size: 18px;
+            color: #667eea;
+            font-weight: 500;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px 40px 30px;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            .form-container {
+                padding: 30px 25px;
+            }
+            
+            .header {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="profile-icon">👤</div>
+            <h1>Mi Perfil Completo</h1>
+            <p>Tus datos personales están completos</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="profile-field">
+                <label>Email</label>
+                <div id="email" class="value">Cargando...</div>
+            </div>
+            
+            <div class="profile-field">
+                <label>Nombre de Perfil</label>
+                <div id="profile_name" class="value">Cargando...</div>
+            </div>
+            
+            <div class="profile-field">
+                <label>Nacionalidad</label>
+                <div id="nationality" class="value">Cargando...</div>
+            </div>
+            
+            <div class="profile-field">
+                <label>Hobby o Interés</label>
+                <div id="hobby" class="value">Cargando...</div>
+            </div>
+            
+            <a href="profile.html" class="btn btn-secondary">
+                <span>Editar Perfil</span>
+            </a>
+            
+            <a href="../index.html" class="btn">
+                <span>Volver al Inicio</span>
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p><a href="../index.html">← Volver al inicio</a></p>
+            <p style="margin-top: 5px; font-size: 12px;">UNI-MOVE © 2025</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userEmail = localStorage.getItem("userEmail");
+            const profileData = JSON.parse(localStorage.getItem("profileData") || "{}");
+            
+            if (!userEmail) {
+                window.location.href = "login.html";
+                return;
+            }
+            
+            // Mostrar datos
+            document.getElementById('email').textContent = userEmail;
+            document.getElementById('profile_name').textContent = profileData.profile_name || "No especificado";
+            document.getElementById('nationality').textContent = profileData.nationality || "No especificado";
+            document.getElementById('hobby').textContent = profileData.hobby || "No especificado";
+            
+            // Verificar con el servidor para datos actualizados
+            fetch(`http://localhost:8080/api/get_profile?email=${encodeURIComponent(userEmail)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.profile_name) {
+                        document.getElementById('profile_name').textContent = data.profile_name;
+                    }
+                    if (data.nationality) {
+                        document.getElementById('nationality').textContent = data.nationality;
+                    }
+                    if (data.hobby) {
+                        document.getElementById('hobby').textContent = data.hobby;
+                    }
+                })
+                .catch(error => console.log("Error cargando datos del perfil:", error));
+        });
+    </script>
+</body>
+</html>

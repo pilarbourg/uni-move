@@ -19,11 +19,11 @@ class User:
             "password_hash": self.password
         }
 
-@login_routes.route("/api/login", methods=["GET"])
+@login_routes.route("/api/login", methods=["POST"])
 def user_login():
-    data = request.get_json(silent=True) or {}
-    email = request.args.get("email") or data.get("email")
-    password = request.args.get("password") or data.get("password")
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
 
     if not email or not password:
         return jsonify({"message": "Email and password are required."}), 400
@@ -37,7 +37,20 @@ def user_login():
     user = users[0]
 
     if user["password_hash"] == password:
-        return jsonify({"message": "Login successful."}), 200
+        # Verificar si el usuario ya tiene perfil completo
+        has_profile = bool(user.get("profile_name") or user.get("nationality") or user.get("hobby"))
+        
+        return jsonify({
+            "message": "Login successful.",
+            "email": email,
+            "success": True,
+            "has_profile": has_profile,
+            "profile_data": {
+                "profile_name": user.get("profile_name"),
+                "nationality": user.get("nationality"),
+                "hobby": user.get("hobby")
+            }
+        }), 200
 
     return jsonify({"message": "Invalid password"}), 401
 
@@ -58,4 +71,33 @@ def user_register():
     new_user = User(email, password)
     supabase.table("users").insert(new_user.to_dict()).execute()
 
-    return jsonify({"message": "User registered successfully."}), 201
+    return jsonify({
+        "message": "User registered successfully.",
+        "email": email,
+        "success": True,
+        "has_profile": False
+    }), 201
+
+@login_routes.route("/api/check_profile/<email>", methods=["GET"])
+def check_profile(email):
+    """Endpoint para verificar si un usuario tiene perfil completo"""
+    try:
+        result = supabase.table("users").select("*").eq("email", email).execute()
+        
+        if not result.data:
+            return jsonify({"message": "User not found"}), 404
+        
+        user = result.data[0]
+        has_profile = bool(user.get("profile_name") or user.get("nationality") or user.get("hobby"))
+        
+        return jsonify({
+            "has_profile": has_profile,
+            "profile_data": {
+                "profile_name": user.get("profile_name"),
+                "nationality": user.get("nationality"),
+                "hobby": user.get("hobby")
+            }
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"message": f"Error: {str(e)}"}), 500

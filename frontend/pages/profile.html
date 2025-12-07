@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de Usuario - UNI-MOVE</title>
     <style>
-        /* Mismo CSS del anterior profile.html */
         * {
             margin: 0;
             padding: 0;
@@ -48,6 +47,7 @@
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
         }
         
         .header h1 {
@@ -59,6 +59,26 @@
         .header p {
             opacity: 0.9;
             font-size: 16px;
+        }
+        
+        .profile-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .profile-status.complete {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .profile-status.incomplete {
+            background-color: #FF9800;
+            color: white;
         }
         
         .profile-icon {
@@ -145,6 +165,14 @@
             transform: translateY(0);
         }
         
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+        
         .btn-icon {
             font-size: 20px;
         }
@@ -228,18 +256,30 @@
         <div class="header">
             <div class="profile-icon">👤</div>
             <h1>UNI-MOVE Perfil</h1>
-            <p>Completa tu información personal</p>
+            <p id="profileStatusText">Completa tu información personal</p>
+            <div id="profileStatus" class="profile-status incomplete">Perfil Incompleto</div>
         </div>
         
         <div class="form-container">
             <div id="message" class="message"></div>
             
+            <div id="userInfo" style="
+                background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+                padding: 15px;
+                border-radius: 10px;
+                margin-bottom: 20px;
+                text-align: center;
+                border: 2px solid #667eea;
+            ">
+                <p style="margin: 0; font-size: 14px; color: #666;">
+                    <strong>Sesión activa como:</strong>
+                </p>
+                <p id="userEmailDisplay" style="margin: 5px 0 0 0; font-size: 18px; color: #667eea; font-weight: bold;">
+                    Cargando...
+                </p>
+            </div>
+            
             <form id="profileForm">
-                <div class="form-group">
-                    <label for="email">Email (requerido)</label>
-                    <input type="email" id="email" name="email" placeholder="tu@email.com" required>
-                </div>
-                
                 <div class="form-group">
                     <label for="profile_name">Nombre de Perfil</label>
                     <input type="text" id="profile_name" name="profile_name" placeholder="Ej: Juan Pérez">
@@ -270,6 +310,16 @@
                     <span id="btnIcon" class="btn-icon">💾</span>
                 </button>
             </form>
+
+            <div style="margin-top: 20px;">
+                <button type="button" class="btn btn-secondary" onclick="goToHome()">
+                    <span>Ir al Inicio</span>
+                </button>
+                
+                <button type="button" class="btn btn-danger" onclick="logout()" style="margin-top: 10px;">
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
         </div>
         
         <div class="footer">
@@ -279,64 +329,238 @@
     </div>
 
     <script>
-            // En la función submit, cambia la URL a absoluta:
-    document.getElementById('profileForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
+// Variable para el email
+let userEmail = '';
+
+// Cuando carga la página
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('🔍 Cargando página de perfil...');
+    
+    // 1. PRIMERO intentar obtener el email de localStorage
+    userEmail = localStorage.getItem("userEmail");
+    
+    if (!userEmail) {
+        // 2. SI NO hay en localStorage, buscar en los parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        userEmail = urlParams.get('email');
         
-        const email = document.getElementById('email').value.trim();
-        const profile_name = document.getElementById('profile_name').value.trim();
-        const nationality = document.getElementById('nationality').value;
-        const hobby = document.getElementById('hobby').value.trim();
+        if (userEmail) {
+            // Decodificar y guardar en localStorage
+            userEmail = decodeURIComponent(userEmail);
+            localStorage.setItem("userEmail", userEmail);
+        }
+    }
+    
+    // 3. SI NO hay email en ningún lugar, redirigir al login
+    if (!userEmail) {
+        console.log('❌ ERROR: No se encontró email');
+        showMessage('Por favor, inicia sesión primero', 'error');
         
-        if (!email) {
-            showMessage('Por favor, ingresa tu email', 'error');
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 2000);
+        return;
+    }
+    
+    console.log('✅ Email obtenido:', userEmail);
+    
+    // 4. Mostrar el email en la página
+    document.getElementById('userEmailDisplay').textContent = userEmail;
+    
+    // 5. Verificar si el usuario ya tiene perfil
+    await checkAndLoadProfile(userEmail);
+});
+
+// Función para verificar y cargar el perfil
+async function checkAndLoadProfile(email) {
+    try {
+        // Primero intentar cargar desde localStorage
+        const savedProfileData = localStorage.getItem("profileData");
+        const hasProfile = localStorage.getItem("hasProfile") === "true";
+        
+        if (hasProfile && savedProfileData) {
+            const profileData = JSON.parse(savedProfileData);
+            populateForm(profileData);
+            updateProfileStatus(true);
+        }
+        
+        // Luego verificar con el servidor para estar seguros
+        const response = await fetch(`http://localhost:8080/api/check_profile/${encodeURIComponent(email)}`);
+        
+        if (response.ok) {
+            const data = await response.json();
+            
+            // Actualizar localStorage
+            localStorage.setItem("hasProfile", data.has_profile);
+            localStorage.setItem("profileData", JSON.stringify(data.profile_data));
+            
+            if (data.has_profile) {
+                populateForm(data.profile_data);
+                updateProfileStatus(true);
+            } else {
+                updateProfileStatus(false);
+            }
+        }
+        
+        // También cargar datos completos del perfil por si acaso
+        await loadProfileData(email);
+        
+    } catch (error) {
+        console.log('ℹ️ Error al verificar perfil:', error);
+    }
+}
+
+// Función para cargar datos existentes del perfil
+async function loadProfileData(email) {
+    try {
+        const response = await fetch(`http://localhost:8080/api/get_profile?email=${encodeURIComponent(email)}`);
+        
+        if (response.ok) {
+            const data = await response.json();
+            
+            // Actualizar localStorage
+            localStorage.setItem("hasProfile", true);
+            localStorage.setItem("profileData", JSON.stringify({
+                profile_name: data.profile_name,
+                nationality: data.nationality,
+                hobby: data.hobby
+            }));
+            
+            populateForm(data);
+            updateProfileStatus(true);
+            
+            console.log('✅ Datos del perfil cargados:', data);
+        }
+    } catch (error) {
+        console.log('ℹ️ No hay datos previos del perfil o error:', error);
+    }
+}
+
+// Función para rellenar el formulario con datos
+function populateForm(data) {
+    if (data.profile_name) {
+        document.getElementById('profile_name').value = data.profile_name;
+    }
+    if (data.nationality) {
+        document.getElementById('nationality').value = data.nationality;
+    }
+    if (data.hobby) {
+        document.getElementById('hobby').value = data.hobby;
+    }
+}
+
+// Función para actualizar el estado del perfil
+function updateProfileStatus(hasProfile) {
+    const statusDiv = document.getElementById('profileStatus');
+    const statusText = document.getElementById('profileStatusText');
+    
+    if (hasProfile) {
+        statusDiv.textContent = "Perfil Completo";
+        statusDiv.className = "profile-status complete";
+        statusText.textContent = "Tu perfil está completo";
+    } else {
+        statusDiv.textContent = "Perfil Incompleto";
+        statusDiv.className = "profile-status incomplete";
+        statusText.textContent = "Completa tu información personal";
+    }
+}
+
+// Función para enviar el formulario
+document.getElementById('profileForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    if (!userEmail) {
+        userEmail = localStorage.getItem("userEmail");
+        
+        if (!userEmail) {
+            showMessage('Error: No se encontró el email. Inicia sesión nuevamente.', 'error');
             return;
         }
+    }
+    
+    const profile_name = document.getElementById('profile_name').value.trim();
+    const nationality = document.getElementById('nationality').value;
+    const hobby = document.getElementById('hobby').value.trim();
+    
+    // Mostrar estado de carga
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnIcon = document.getElementById('btnIcon');
+    
+    btnText.textContent = 'Guardando...';
+    btnIcon.innerHTML = '<div class="loading"></div>';
+    submitBtn.disabled = true;
+    
+    try {
+        const profileData = {
+            email: userEmail
+        };
         
-        // Mostrar estado de carga
-        const submitBtn = document.getElementById('submitBtn');
-        const btnText = document.getElementById('btnText');
-        const btnIcon = document.getElementById('btnIcon');
+        if (profile_name) profileData.profile_name = profile_name;
+        if (nationality) profileData.nationality = nationality;
+        if (hobby) profileData.hobby = hobby;
         
-        btnText.textContent = 'Guardando...';
-        btnIcon.innerHTML = '<div class="loading"></div>';
-        submitBtn.disabled = true;
+        console.log('📤 Enviando datos al servidor:', profileData);
         
-        try {
-            const profileData = {
-                email: email
-            };
+        const response = await fetch('http://localhost:8080/api/update_profile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(profileData)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            showMessage('✅ Perfil actualizado exitosamente!', 'success');
             
-            if (profile_name) profileData.profile_name = profile_name;
-            if (nationality) profileData.nationality = nationality;
-            if (hobby) profileData.hobby = hobby;
+            // Actualizar localStorage
+            localStorage.setItem("hasProfile", true);
+            localStorage.setItem("profileData", JSON.stringify({
+                profile_name: profile_name,
+                nationality: nationality,
+                hobby: hobby
+            }));
             
-            // IMPORTANTE: Usar URL absoluta con tu puerto
-            const response = await fetch('http://localhost:8080/api/update_profile', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(profileData)
-            });
+            // Actualizar estado del perfil
+            updateProfileStatus(true);
             
-            const result = await response.json();
-            
-            if (response.ok) {
-                showMessage('Perfil actualizado exitosamente!', 'success');
-                console.log('Respuesta del servidor:', result);
-            } else {
-                showMessage(result.message || 'Error al actualizar el perfil', 'error');
-            }
-        } catch (error) {
-            showMessage(`Error de conexión: ${error.message}. Verifica que el servidor esté corriendo.`, 'error');
-            console.error('Error completo:', error);
-        } finally {
-            btnText.textContent = 'Guardar Perfil';
-            btnIcon.innerHTML = '💾';
-            submitBtn.disabled = false;
+            console.log('Respuesta del servidor:', result);
+        } else {
+            showMessage('❌ ' + (result.message || 'Error al actualizar el perfil'), 'error');
         }
-    });
-  </script>
+    } catch (error) {
+        showMessage('⚠️ Error de conexión: ' + error.message, 'error');
+        console.error('Error completo:', error);
+    } finally {
+        btnText.textContent = 'Guardar Perfil';
+        btnIcon.innerHTML = '💾';
+        submitBtn.disabled = false;
+    }
+});
+
+function showMessage(text, type) {
+    const messageDiv = document.getElementById('message');
+    messageDiv.textContent = text;
+    messageDiv.className = `message ${type}`;
+    messageDiv.style.display = 'block';
+    
+    setTimeout(() => {
+        messageDiv.style.display = 'none';
+    }, 5000);
+}
+
+function goToHome() {
+    window.location.href = "../index.html";
+}
+
+function logout() {
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("hasProfile");
+    localStorage.removeItem("profileData");
+    window.location.href = "login.html";
+}
+</script>
 </body>
 </html>

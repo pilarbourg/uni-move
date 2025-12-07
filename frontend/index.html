@@ -61,6 +61,7 @@
               cursor: pointer;
               border: none;
               background: none;
+              display: none;
             "
           ></button>
           <button id="logout" class="boton" style="display: none">
@@ -75,12 +76,12 @@
       <div class="hero-overlay">
         <h1>Welcome to <span class="highlight">UniMove</span></h1>
         <p>
-          Moving to a new city for university can feel overwhelming. That’s why
+          Moving to a new city for university can feel overwhelming. That's why
           we created UniMove — a platform designed to help students settle into
           life in Madrid with ease, confidence, and the right support. Whether
-          you’re looking for trusted moving companies, universities that match
+          you're looking for trusted moving companies, universities that match
           your goals, health services nearby, or tools to track your wellbeing,
-          we’ve got you covered.
+          we've got you covered.
         </p>
         <a href="#services" class="cta-btn">Explore Our Services</a>
       </div>
@@ -125,7 +126,7 @@
             </h3>
             <p>
               Unsure where to study? Our university directory gives you detailed
-              insights into Madrid’s top institutions, their degree programs,
+              insights into Madrid's top institutions, their degree programs,
               and what life is like on each campus.
             </p>
           </div>
@@ -168,7 +169,7 @@
           <p>
             Because UniMove is built by and for students. We understand the
             challenges of moving abroad, adjusting to a new city, and keeping up
-            with both studies and self-care. That’s why every feature on our
+            with both studies and self-care. That's why every feature on our
             platform is focused on making your life smoother:
           </p>
           <ul>
@@ -385,80 +386,105 @@
 
       updateCarousel(false);
     </script>
-  </body>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const username = localStorage.getItem("username");
-      const userNameEl = document.getElementById("user-name");
-      const loginLink = document.getElementById("login-link");
-      const logoutBtn = document.getElementById("logout");
-      const universities = document.getElementById("universitiesLink");
-      const degrees = document.getElementById("degreesLink");
-      const apartments = document.getElementById("apartmentsLink");
-      const health = document.getElementById("healthLink");
-      const clinicalmaps = document.getElementById("clinicalmapsLink");
-      const study = document.getElementById("studyLink");
-      let loggedIn = false;
 
-      if (username) {
-        loggedIn = true;
-        if (userNameEl) {
-          userNameEl.textContent = username;
-          userNameEl.style.display = "inline";
-        }
-        if (logoutBtn) logoutBtn.style.display = "inline";
-        if (loginLink) loginLink.style.display = "none";
-      } else {
-        if (logoutBtn) logoutBtn.style.display = "none";
-        if (loginLink) loginLink.style.display = "inline";
-        if (userNameEl) userNameEl.style.display = "none";
-      }
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const userEmail = localStorage.getItem("userEmail");
+        const hasProfile = localStorage.getItem("hasProfile") === "true";
+        const username = userEmail ? userEmail.split('@')[0] : null;
+        const userNameEl = document.getElementById("user-name");
+        const loginLink = document.getElementById("login-link");
+        const logoutBtn = document.getElementById("logout");
+        const universities = document.getElementById("universitiesLink");
+        const degrees = document.getElementById("degreesLink");
+        const apartments = document.getElementById("apartmentsLink");
+        const health = document.getElementById("healthLink");
+        const clinicalmaps = document.getElementById("clinicalmapsLink");
+        const study = document.getElementById("studyLink");
+        let loggedIn = false;
 
-      if (loggedIn) {
-        if (universities) universities.href = "pages/universidades.html";
-        if (degrees) degrees.href = "pages/searchByDegree.html";
-        if (apartments) apartments.href = "pages/apartments.html";
-        if (health) health.href = "pages/biomedical.html";
-        if (clinicalmaps) clinicalmaps.href = "pages/mapclinics.html";
-        if (study) study.href = "pages/studentLife.html";
-      } else {
-        if (universities) universities.href = "pages/login.html";
-        if (degrees) degrees.href = "pages/login.html";
-        if (apartments) apartments.href = "pages/login.html";
-        if (health) health.href = "pages/login.html";
-        if (clinicalmaps) clinicalmaps.href = "pages/login.html";
-        if (study) study.href = "pages/login.html";
-      }
-
-      if (logoutBtn) {
-        logoutBtn.addEventListener("click", function (e) {
-          e.preventDefault();
-          localStorage.removeItem("username");
+        // Verificar si el usuario está logueado
+        if (userEmail) {
+          loggedIn = true;
           if (userNameEl) {
-            userNameEl.textContent = "";
-            userNameEl.style.display = "none";
+            userNameEl.textContent = username;
+            userNameEl.style.display = "inline";
+            
+            // Agregar evento de clic al nombre de usuario
+            userNameEl.addEventListener("click", async function() {
+              try {
+                // Verificar si ya tiene perfil
+                const response = await fetch(`http://localhost:8080/api/check_profile/${encodeURIComponent(userEmail)}`);
+                if (response.ok) {
+                  const data = await response.json();
+                  
+                  if (data.has_profile) {
+                    // Si ya tiene perfil, redirigir a profile_display.html
+                    window.location.href = "pages/profile_display.html";
+                  } else {
+                    // Si no tiene perfil, redirigir a profile.html
+                    window.location.href = "pages/profile.html";
+                  }
+                }
+              } catch (error) {
+                console.log("Error checking profile:", error);
+                window.location.href = "pages/profile.html";
+              }
+            });
           }
-          logoutBtn.style.display = "none";
+          if (logoutBtn) logoutBtn.style.display = "inline";
+          if (loginLink) loginLink.style.display = "none";
+        } else {
+          if (logoutBtn) logoutBtn.style.display = "none";
           if (loginLink) loginLink.style.display = "inline";
+          if (userNameEl) userNameEl.style.display = "none";
+        }
+
+        // Configurar enlaces según si está logueado
+        if (loggedIn) {
+          if (universities) universities.href = "pages/universidades.html";
+          if (degrees) degrees.href = "pages/searchByDegree.html";
+          if (apartments) apartments.href = "pages/apartments.html";
+          if (health) health.href = "pages/biomedical.html";
+          if (clinicalmaps) clinicalmaps.href = "pages/mapclinics.html";
+          if (study) study.href = "pages/studentLife.html";
+        } else {
           if (universities) universities.href = "pages/login.html";
           if (degrees) degrees.href = "pages/login.html";
           if (apartments) apartments.href = "pages/login.html";
           if (health) health.href = "pages/login.html";
           if (clinicalmaps) clinicalmaps.href = "pages/login.html";
           if (study) study.href = "pages/login.html";
-        });
-      }
-    });
-  </script>
-  <script>
-    const btn = document.getElementById("user-name");
-    btn.textContent = btn.dataset.username || "Usuario";
-    btn.onclick = () => (window.location.href = "pages/profile.html");
-  </script>
-  <script>
-    document.getElementById("logout").style.display = "block";
-    document.getElementById("logout").addEventListener("click", function () {
-      alert("You have successfully logged out.");
-    });
-  </script>
+        }
+
+        // Configurar logout
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            localStorage.removeItem("userEmail");
+            localStorage.removeItem("hasProfile");
+            localStorage.removeItem("profileData");
+            
+            if (userNameEl) {
+              userNameEl.textContent = "";
+              userNameEl.style.display = "none";
+            }
+            logoutBtn.style.display = "none";
+            if (loginLink) loginLink.style.display = "inline";
+            
+            // Actualizar enlaces
+            if (universities) universities.href = "pages/login.html";
+            if (degrees) degrees.href = "pages/login.html";
+            if (apartments) apartments.href = "pages/login.html";
+            if (health) health.href = "pages/login.html";
+            if (clinicalmaps) clinicalmaps.href = "pages/login.html";
+            if (study) study.href = "pages/login.html";
+            
+            // Redirigir al index
+            window.location.reload();
+          });
+        }
+      });
+    </script>
+  </body>
 </html>

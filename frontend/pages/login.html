@@ -26,6 +26,7 @@
     button {
       padding: 8px 16px;
       cursor: pointer;
+      margin-right: 10px;
     }
     .box {
       border: 1px solid navy;
@@ -38,6 +39,32 @@
       color: navy;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     }
+    .message {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      min-height: 40px;
+    }
+    .success {
+      background-color: rgba(0, 128, 0, 0.2);
+      color: white;
+      border: 1px solid green;
+    }
+    .error {
+      background-color: rgba(255, 0, 0, 0.2);
+      color: white;
+      border: 1px solid red;
+    }
+    .redirect-message {
+      background-color: rgba(0, 0, 255, 0.2);
+      color: white;
+      border: 1px solid blue;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -49,20 +76,36 @@
     <input id="regEmail" type="email" placeholder="Email" />
     <input id="regPassword" type="password" placeholder="Password" />
     <button onclick="register()">Register</button>
+    
     <h3>Login</h3>
     <input id="logEmail" type="email" placeholder="Email" />
     <input id="logPassword" type="password" placeholder="Password" />
     <button onclick="login()">Login</button>
   </div>
 
-  <p id="message"></p>
+  <div id="message" class="message"></div>
+  <div id="redirectMessage" class="redirect-message" style="display: none;"></div>
 
   <script>
     const API_URL = "http://localhost:8080/api";
 
+    // Verificar si hay sesión activa al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedEmail = localStorage.getItem("userEmail");
+      
+      if (savedEmail) {
+        document.getElementById("logEmail").value = savedEmail;
+      }
+    });
+
     async function register() {
       const email = document.getElementById("regEmail").value;
       const password_hash = document.getElementById("regPassword").value;
+
+      if (!email || !password_hash) {
+        showMessage("Por favor, completa todos los campos", "error");
+        return;
+      }
 
       const res = await fetch(`${API_URL}/register`, {
         method: "POST",
@@ -71,24 +114,69 @@
       });
 
       const data = await res.json();
-      document.getElementById("message").innerText = data.message;
+      
+      if (res.ok) {
+        showMessage("✅ " + data.message + ". Ahora puedes iniciar sesión.", "success");
+        // Rellenar automáticamente los campos de login
+        document.getElementById("logEmail").value = email;
+        document.getElementById("logPassword").value = password_hash;
+      } else {
+        showMessage("❌ " + data.message, "error");
+      }
     }
 
     async function login() {
       const email = document.getElementById("logEmail").value;
       const password = document.getElementById("logPassword").value;
 
-      const res = await fetch(`${API_URL}/login?email=${email}&password=${password}`);
-      const data = await res.json();
-      document.getElementById("message").innerText = data.message;
-
-      if (res.ok) {
-        const userName = email.split('@')[0];
-        localStorage.setItem("username", userName);
-        window.location.href = "../index.html";
+      if (!email || !password) {
+        showMessage("Por favor, completa todos los campos", "error");
+        return;
       }
+
+      const res = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok && data.success) {
+        // Guardar datos en localStorage
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("hasProfile", data.has_profile);
+        localStorage.setItem("profileData", JSON.stringify(data.profile_data));
+        
+        // Mostrar mensaje de éxito
+        showMessage(`✅ ${data.message}`, "success");
+        
+        // Mostrar mensaje de redirección
+        const redirectMsg = document.getElementById("redirectMessage");
+        redirectMsg.textContent = "Redirigiendo al inicio...";
+        redirectMsg.style.display = "block";
+        
+        // Redirigir automáticamente a index.html después de 2 segundos
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }, 2000);
+        
+      } else {
+        showMessage("❌ " + data.message, "error");
+      }
+    }
+
+    function showMessage(text, type) {
+      const messageDiv = document.getElementById("message");
+      messageDiv.textContent = text;
+      messageDiv.className = `message ${type}`;
+      
+      // Auto-ocultar mensaje después de 5 segundos
+      setTimeout(() => {
+        messageDiv.textContent = "";
+        messageDiv.className = "message";
+      }, 5000);
     }
   </script>
 </body>
 </html>
-
