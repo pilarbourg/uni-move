@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UniMove | Search by Degree</title>
 
-    <link rel="stylesheet" href="../css/mapclinics.css" />
+    <link rel="stylesheet" href="../css/styles.css" />
     <link rel="stylesheet" href="../css/search_by_degree.css" />
   </head>
 
@@ -30,7 +30,7 @@
         <li class="dropdown">
           <a href="#">Moving</a>
           <ul class="dropdown-content">
-            <li><a href="mapaapartamentos.html">Apartments</a></li>
+            <li><a href="movingCompaniesList.html">Moving Companies</a></li>
           </ul>
         </li>
 
@@ -218,11 +218,11 @@
               card.className = "university-card";
               card.innerHTML = `
                 <h3 style="color:#1a4d8f;"> ${u.name}</h3>
-                <p><strong>⭐ Ranking:</strong> ${u.ranking ?? "N/A"}</p>
-                <p><strong>🏛️ Type:</strong> ${displayType}</p>
-                <p><strong>🚇 Public Transport:</strong> ${u.publicTransport ?? "N/A"}</p>
-                <p><strong>📍 Zip Code:</strong> ${u.zipCode ?? "N/A"}</p>
-                <p><strong>📞 Phone:</strong> ${u.phoneNumber ?? "N/A"}</p>
+                <p><strong>★ Ranking:</strong> ${u.ranking ?? "N/A"}</p>
+                <p><strong>🏛 Type:</strong> ${displayType}</p>
+                <p><strong>[M] Public Transport:</strong> ${u.publicTransport ?? "N/A"}</p>
+                <p><strong> 𖡡 Zip Code:</strong> ${u.zipCode ?? "N/A"}</p>
+                <p><strong>☎ Phone:</strong> ${u.phoneNumber ?? "N/A"}</p>
                 <button class="contact-btn" onclick="openContactModal('${u.name}')">💬 Contact</button>
               `;
               resultsList.appendChild(card);
@@ -267,7 +267,6 @@
           document.getElementById("contactMessage").value = "";
         });
 
-      // Cierre del modal al hacer clic fuera (modificado para usar closeContactModal)
       window.onclick = (e) => {
         if (e.target === contactModal) closeContactModal();
       };

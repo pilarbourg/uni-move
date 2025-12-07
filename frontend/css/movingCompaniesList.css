@@ -1,5 +1,3 @@
-
-/* -------------------- NAVBAR GENERAL -------------------- */
 .navbar {
   width: 100%;
   background: #ffffff;
@@ -15,7 +13,6 @@
   font-family: 'Inter', sans-serif;
 }
 
-/* -------------------- LOGO -------------------- */
 .logo {
   display: flex;
   align-items: center;
@@ -28,7 +25,6 @@
   margin-right: 8px;
 }
 
-/* -------------------- MENU -------------------- */
 .menu {
   list-style: none;
   display: flex;
@@ -55,7 +51,6 @@
   color: #5287c9;
 }
 
-/* -------------------- DROPDOWN MENU -------------------- */
 .dropdown-content {
   display: none;
   flex-direction: column;
@@ -88,12 +83,10 @@
   color: #5287c9;
 }
 
-/* Mostrar dropdown en hover */
 .dropdown:hover .dropdown-content {
   display: flex;
 }
 
-/* -------------------- NAV RIGHT SECTION -------------------- */
 .nav-right {
   display: flex;
   align-items: center;
@@ -111,7 +104,6 @@
   transform: scale(1.15);
 }
 
-/* -------------------- USER SECTION -------------------- */
 .user-section {
   list-style: none;
   display: flex;
@@ -130,10 +122,9 @@
   transform: scale(1.1);
 }
 
-/* -------------------- RESPONSIVE (MÓVIL) -------------------- */
 @media (max-width: 850px) {
   .menu {
-    display: none; /* puedes luego hacer un menú hamburguesa si quieres */
+    display: none; 
   }
 
   .navbar {
@@ -141,14 +132,13 @@
   }
 }
 
-    /* ---------- GLOBAL ---------- */
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #f4f6f9;
-      color: #1e1e1e;
-    }
-    /* HEADER LAYOUT */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #f4f6f9;
+  color: #1e1e1e;
+}
+    
 .results-header {
     margin-left: 20px;
     margin-right: 20px;
@@ -158,19 +148,19 @@
     margin-bottom: 12px;
     padding: 4px;
 }
+
 .resultsSection{
   width: 100%;
   margin: 10px;
   
 }
 
-/* FILTER */
 .filter-container {
   position: relative;
 }
 
 .filter-btn {
-  background-color: #1e73ff;
+  background-color: #4f7cac;
   color: white;
   padding: 8px 18px;
   border-radius: 8px;
@@ -180,7 +170,7 @@
 }
 
 .filter-btn:hover {
-  background-color: #1665e0;
+  background-color: #3c5e73;
 }
 
 .loading-spinner {
@@ -197,7 +187,7 @@
   width: 32px;
   height: 32px;
   border: 4px solid #ddd;
-  border-top-color: #4A90E2;
+  border-top-color: #85a4c5;
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
 }
@@ -206,14 +196,11 @@
   to { transform: rotate(360deg); }
 }
 
-
-
-/* FILTER DROPDOWN */
 .filter-menu {
   display: none;
   position: absolute;
   top: 38px;
-  right: 0;                   /* alineado con el botón */
+  right: 0;                 
   background: white;
   box-shadow: 0 4px 18px rgba(0,0,0,0.15);
   border-radius: 10px;
@@ -241,7 +228,6 @@
   background: #f2f2f2;
 }
 
-/* EXPRESS FEE ALERT */
 .extra-price-note {
   background: rgba(255, 255, 255, 0.65);
   border: 1px solid #eee;
@@ -259,67 +245,41 @@
   color: #0568b0;
 }
 
-    /* ---------- NAVBAR ---------- */
-    .navbar {
-      width: 100%;
-      padding: 16px 40px;
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(10px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: fixed;
-      top: 0;
-      z-index: 10;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-    }
+.hero-section {
+  margin-top: 90px;
+  height: 280px;
+  background-image: url('../assets/images/moving.jpeg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 0 0 28px 28px;
+  overflow: hidden;
+}
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    /* ---------- HERO SECTION ---------- */
-    .hero-section {
-      margin-top: 90px;
-      height: 280px;
-      background-image: url('../assets/images/moving.jpeg');
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      border-radius: 0 0 28px 28px;
-      overflow: hidden;
-    }
+.hero-overlay h1 {
+  color: rgb(249, 249, 249);
+  font-size: 2.6rem;
+  font-weight: 600;
+  text-shadow: 0 4px 18px rgba(0,0,0,0.6);
+}
 
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(4px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .hero-overlay h1 {
-      color: rgb(249, 249, 249);
-      font-size: 2.6rem;
-      font-weight: 600;
-      text-shadow: 0 4px 18px rgba(0,0,0,0.6);
-    }
-
-    /* ---------- CONTENT ---------- */
-   .page-content {
+.page-content {
   display: flex;
   justify-content: center;
   width: 100%;
 }
 
-    /* ---------- GRID ---------- */
-   .companies-grid {
+.companies-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 25px;
@@ -327,36 +287,36 @@
   padding: 20px;
 }
 
-    /* ---------- COMPANY CARD ---------- */
-    .company-card {
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(10px);
-      padding: 22px;
-      border-radius: 16px;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
-      transition: 0.25s ease;
-      cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.5);
-    }
+.company-card {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  padding: 22px;
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+  transition: 0.25s ease;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.5);
+}
 
-    .company-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.16);
-    }
+.company-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.16);
+}
 
-    .company-card h2 {
-      margin: 0 0 10px;
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #2c3e50;
-    }
+.company-card h2 {
+  margin: 0 0 10px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
 
-    .company-card p {
-      margin: 4px 0;
-      font-size: 0.95rem;
-      color: #333;
-    }
-    .moving-form-container {
+.company-card p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.moving-form-container {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -364,7 +324,6 @@
   margin-bottom: 40px;
 }
 
-/* FORM AESTHETIC GLASS */
 .moving-form {
   width: 850px;
   background: rgba(248, 248, 248, 0.82);
@@ -384,7 +343,6 @@
   font-weight: 600;
 }
 
-/* FORM GROUP */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -413,7 +371,6 @@
   box-shadow: 0 0 0 3px rgba(79,124,172,0.25);
 }
 
-/* BUTTON */
 .plan-move-btn {
   margin-top: 10px;
   width: 100%;
@@ -473,6 +430,7 @@
   outline: none;
   background: white;
 }
+
 .autocomplete-box {
   position: absolute;
   background: white;
@@ -495,7 +453,6 @@
   background-color: #f0f0f0;
 }
 
-/* ANIMATION */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }

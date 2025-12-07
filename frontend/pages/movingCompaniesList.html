@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniMove | Moving Companies</title>
+    <link rel="stylesheet" href="../css/movingCompaniesList.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar">
+      <h1 class="logo">
+        <img
+          src="../assets/svgs/logo.svg"
+          style="width: 36px; height: 36px"
+        />UniMove
+      </h1>
+
+      <ul class="menu">
+        <li class="dropdown">
+          <a href="#">Universities</a>
+          <ul class="dropdown-content">
+            <li><a href="universidades.html">Search on Map</a></li>
+            <li><a href="searchByDegree.html">Search by Degree</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Moving</a>
+          <ul class="dropdown-content">
+            <li><a href="movingCompaniesList.html">Moving Companies</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Students</a>
+          <ul class="dropdown-content">
+            <li><a href="studentLife.html">Study Section</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#">Health</a>
+          <ul class="dropdown-content">
+            <li><a href="biomedical.html">Health</a></li>
+            <li><a href="mapclinics.html">Clinical Maps</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="nav-right">
+        <a href="../index.html">
+          <img src="../assets/svgs/home.svg" class="home-button"
+        /></a>
+
+        <li class="user-section">
+          <span id="user-name" style="font-weight: bold; color: #5a7c99"></span>
+          <button id="logout" class="boton" style="display: none">
+            <img src="../assets/svgs/logout.svg" />
+          </button>
+        </li>
+      </div>
+    </nav>
+  <main>
+    <section class="hero-section">
+      <div class="hero-overlay">
+        <h1>Moving Companies in Spain</h1>
+      </div>
+    </section>
+    <section class="moving-form-container">
+      <div class="moving-form">
+
+        <h2>Plan your move</h2>
+
+        <div class="form-group">
+          <label>From:</label>
+          <input id="fromCity" type="text" placeholder="Madrid, Barcelona, Valencia...">
+        </div>
+
+        <div class="form-group">
+          <label>To:</label>
+          <input id="toCity" type="text" placeholder="Sevilla, Bilbao, Zaragoza...">
+        </div>
+
+        <div class="form-group">
+          <label>Moving date:</label>
+          <input id="moveDate" type="date">
+        </div>
+
+        <div class="form-section">
+          <h3 class="form-subtitle">Packages</h3>
+
+          <div class="package-grid">
+            <div class="package-item">
+              <label>Small:</label>
+              <input id="smallPackages" type="number" min="0" value="0">
+            </div>
+
+            <div class="package-item">
+              <label>Medium:</label>
+              <input id="mediumPackages" type="number" min="0" value="0">
+            </div>
+
+            <div class="package-item">
+              <label>Large:</label>
+              <input id="largePackages" type="number" min="0" value="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3 class="form-subtitle">Move type</h3>
+          <select id="moveType" class="move-type-select">
+            <option value="only transport">Only transport</option>
+            <option value="half move">Partial move</option>
+            <option value="complete move">Complete move</option>
+          </select>
+        </div>
+
+        <button class="plan-move-btn" onclick="planMove()">Search Companies</button>
+
+      </div>
+    </section>
+    <div id="resultsSection" class="page-content" style="display:none;">
+        <div id="loadingSpinner" class="loading-spinner" style="display:none;">
+      <div class="spinner"></div>
+      <p>Loading companies...</p>
+    </div>
+      <div class="results-header">
+        <h2>Available Companies</h2>
+
+        <div class="filter-container">
+          <button id="filterBtn" class="filter-btn">Filter ⏷</button>
+
+          <div id="filterMenu" class="filter-menu">
+            <div class="filter-option" onclick="applyFilter('price')">Sort by price</div>
+            <div class="filter-option" onclick="applyFilter('rating')">Sort by rating</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="extra-price-note" class="extra-price-note">
+        <p><em>Note: Estimated prices may include express move surcharges based on your selected moving date.</em></p>
+      </div>
+
+      <div id="companies" class="companies-grid"></div>
+
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <img src="../assets/svgs/logo.svg" alt="MotivSMA Logo" />
+        <span>UniMove</span>
+      </div>
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-copy">
+        <p>
+          &copy; 2025 UniMove | Built with ❤️ for students around the world
+        </p>
+      </div>
+    </div>
+  </footer>
+  <script>
+    let loadedCompanies = [];
+    let cachedDistance = 0;
+    let packageCounts = { small: 0, medium: 0, large: 0 };
+
+    document.getElementById("filterBtn").addEventListener("click", () => {
+      document.getElementById("filterMenu").classList.toggle("open");
+    });
+
+    async function fetchCompanies() {
+      try {
+        const res = await fetch("http://127.0.0.1:8080/get_moving_companies");
+        loadedCompanies = await res.json();
+
+        const PACKAGE_WEIGHTS = {
+        small: 12.5,
+        medium: 20,
+        large: 35
+      };
+
+        // Read input values
+        const from = document.getElementById("fromCity").value.trim();
+        const to = document.getElementById("toCity").value.trim();
+
+        packageCounts.small  = Number(document.getElementById("smallPackages").value);
+        packageCounts.medium = Number(document.getElementById("mediumPackages").value);
+        packageCounts.large  = Number(document.getElementById("largePackages").value);
+
+        // Fetch distance
+        const distRes = await fetch(
+          `http://127.0.0.1:8080/calc_distance?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`
+        );
+        const distData = await distRes.json();
+
+        cachedDistance = distData.distance_km ?? 0;
+
+        // Compute estimated price for each company
+        loadedCompanies.forEach(c => {
+          const MAX_WEIGHT_PER_MOVE = c.max_weight_kg; // kg
+          console.log( MAX_WEIGHT_PER_MOVE);
+          const totalWeight =
+            packageCounts.small  * PACKAGE_WEIGHTS.small +
+            packageCounts.medium * PACKAGE_WEIGHTS.medium +
+            packageCounts.large  * PACKAGE_WEIGHTS.large;
+          console.log(totalWeight);
+          c.movesNeeded = Math.ceil(totalWeight / MAX_WEIGHT_PER_MOVE);
+          console.log(c.movesNeeded);
+
+          const base = c.base_fee ?? 0;
+          const km   = c.km_price ?? 0;
+          const smallCost  = packageCounts.small  * (c.price_small_package  ?? 0);
+          const mediumCost = packageCounts.medium * (c.price_medium_package ?? 0);
+          const largeCost  = packageCounts.large  * (c.price_large_package  ?? 0);
+          const moveDate = document.getElementById("moveDate").value;
+          const extra = calculateExpressFee(moveDate, base + smallCost + mediumCost + largeCost + (km * cachedDistance));
+
+          c.daysLeft = extra.daysLeft;
+        c.extraFee = extra.extra;
+
+        c.estimatedPrice = (extra.finalPrice + extra.extra) * c.movesNeeded;
+
+          document.getElementById("extra-price-note").style.display = "block";  
+          const extraMesagge = document.getElementById("extra-price-note");
+          c.daysLeft = extra.daysLeft;
+          c.extraFee = extra.extra;
+          const moveType = extra.daysLeft < 14 ? "an express move" : extra.daysLeft < 30 ? "a moderate surcharge" : "no surcharge";
+          extraMesagge.innerHTML = `
+            <p class="note-line">
+              <strong>Note:</strong> Estimated prices may include express move surcharges.
+              <br>
+              Move in <strong>${extra.daysLeft} days</strong> is considered 
+              <strong>${moveType}</strong>.
+            </p>
+          `;
+        });
+
+        renderCompanies(loadedCompanies);
+
+      } catch (err) {
+        console.error("❌ Error fetching companies:", err);
+      }
+    }
+
+    function applyFilter(criteria) {
+      let list = [...loadedCompanies];
+
+      if (criteria === "price") {
+        list.sort((a, b) => a.estimatedPrice - b.estimatedPrice);
+      }
+
+      if (criteria === "rating") {
+        list.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+      }
+
+      renderCompanies(list);
+    }
+
+    function renderCompanies(companies) {
+      const container = document.getElementById("companies");
+
+      container.innerHTML = companies.map(c => `
+        <div class="company-card" onclick="openCompany(${c.id})">
+
+          <h2>${c.name}</h2>
+
+          <p><strong>City:</strong> ${c.location}</p>
+          <p><strong>Rating:</strong> ${c.rating} ⭐</p>
+          <p><strong>Starting price:</strong> ${c.base_fee} €</p>
+          <p><strong>Extra fee for express move:</strong> ${c.extraFee.toFixed(2)} € (Move in ${c.daysLeft} days)</p>
+          <p><strong>Number of moves estimated:</strong> ${c.movesNeeded} moves </p>
+          <p><strong>Estimated:</strong> ${c.estimatedPrice.toFixed(2)} €</p>
+
+        </div>
+      `).join("");
+      document.getElementById("resultsSection").style.display = "block";
+    }
+
+    function openCompany(id) {
+      const query = new URLSearchParams({
+        id,
+        from: document.getElementById("fromCity").value,
+        to: document.getElementById("toCity").value,
+        date: document.getElementById("moveDate").value,
+        small: document.getElementById("smallPackages").value,
+        medium: document.getElementById("mediumPackages").value,
+        large: document.getElementById("largePackages").value,
+        type: document.getElementById("moveType").value
+      }).toString();
+
+      window.location.href = `company.html?${query}`;
+    }
+
+    async function validateAddressBackend(city) {
+      try {
+        const res = await fetch(`http://127.0.0.1:8080/validate_address?city=${encodeURIComponent(city)}`);
+        const data = await res.json();
+        return data.valid === true;
+      } catch {
+        return false;
+      }
+    }
+
+    const validateDate = date => new Date(date) >= new Date().setHours(0,0,0,0);
+
+    function validatePackages(s, m, l) {
+      return s >= 0 && m >= 0 && l >= 0;
+    }
+
+    async function planMove() {
+      const from = document.getElementById("fromCity").value.trim();
+      const to   = document.getElementById("toCity").value.trim();
+      const date = document.getElementById("moveDate").value;
+
+      if (!from || !to || !date) return alert("Please fill in all fields.");
+
+      if (!await validateAddressBackend(from)) return alert("Invalid origin address.");
+      if (!await   validateAddressBackend(to))   return alert("Invalid destination address.");
+      if (!validateDate(date)) return alert("Invalid moving date.");
+
+      const small  = Number(document.getElementById("smallPackages").value);
+      const medium = Number(document.getElementById("mediumPackages").value);
+      const large  = Number(document.getElementById("largePackages").value);
+        
+      if (!validatePackages(small, medium, large)) {
+        return alert("Invalid package quantities.");
+      }
+      //show results section
+      const resultsSection = document.getElementById("resultsSection");
+    resultsSection.style.display = "block";
+
+    // SHOW LOADING SPINNER
+    document.getElementById("loadingSpinner").style.display = "flex";
+
+    // HIDE COMPANIES WHILE LOADING
+    document.getElementById("companies").innerHTML = "";
+    document.getElementById("companies").style.display = "none";
+
+    // FETCH COMPANIES
+    try {
+      await fetchCompanies();
+
+    } catch (error) {
+      console.error(error);
+      alert("Error loading companies");
+    }
+
+    // HIDE SPINNER
+    document.getElementById("loadingSpinner").style.display = "none";
+
+    // SHOW COMPANIES NOW
+    document.getElementById("companies").style.display = "grid";
+    }
+  function calculateExpressFee(moveDate, finalPrice) {
+    const today = new Date();
+    const target = new Date(moveDate);
+    const daysLeft = daysBetween(today, target);
+
+    let extra = 0;
+
+    if (daysLeft < 14) {
+      // Mudanza express → recargo fuerte
+      extra = finalPrice * 0.2; 
+    } else if (daysLeft < 30) {
+      // Menos de un mes → recargo moderado
+      extra = finalPrice * 0.1;   // +10% (ejemplo)
+    } else {
+      // Más de un mes → sin recargo
+      extra = 0;
+    }
+
+    return {
+      daysLeft,
+      extra,
+      finalPrice
+    };
+  }
+    function daysBetween(date1, date2) {
+    const diff = date2.getTime() - date1.getTime();
+    return Math.ceil(diff / (1000 * 60 * 60 * 24)); // días
+
+  }
+  </script>
+
+</body>
+</html>

@@ -3,7 +3,6 @@ body {
 }
 
 .search-section {
-    /* Fondo con degradado suave para la cabecera (Header Visual) */
     background: linear-gradient(145deg, #e0f0ff 0%, #f9fafc 100%);
     display: flex;
     flex-direction: column;
@@ -83,7 +82,6 @@ body {
     background-color: #f7fcff;
     font-size: 0.95rem;
     appearance: none;
-    /* Icono de flecha SVG en Base64 */
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%231a4d8f%22%20d%3D%22M6%209L0%203h12z%22/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 10px center;
@@ -96,9 +94,6 @@ body {
     color: #444;
 }
 
-/* ==================================== */
-/* 5. Tarjetas de Resultados */
-/* ==================================== */
 .results-card {
     background: #fff;
     padding: 40px;
@@ -114,7 +109,6 @@ body {
     gap: 25px;
 }
 
-/* Animación sutil al cargar las tarjetas */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -175,7 +169,6 @@ body {
     background-color: #45a049;
 }
 
-/* Estilo para los títulos de resultados de búsqueda por grados relacionados */
 .results-list h3 {
     grid-column: 1 / -1;
     font-size: 1.6rem !important;
@@ -185,9 +178,6 @@ body {
     border-left: 4px solid #1a4d8f;
 }
 
-/* ==================================== */
-/* 6. Modal de Contacto (con animación) */
-/* ==================================== */
 .modal {
     display: none;
     position: fixed;
@@ -200,13 +190,12 @@ body {
     align-items: center;
     z-index: 1000;
     opacity: 0;
-    transition: opacity 0.3s ease-out; /* Transición de opacidad */
+    transition: opacity 0.3s ease-out;
 }
 
-/* Estado activo del modal */
 .modal.show {
     opacity: 1;
-    display: flex; /* Asegura que se muestre */
+    display: flex;
 }
 
 .modal-content {
@@ -217,10 +206,9 @@ body {
     max-width: 500px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     transform: translateY(-50px);
-    transition: transform 0.3s ease-out; /* Transición de movimiento */
+    transition: transform 0.3s ease-out;
 }
 
-/* Movimiento del modal cuando está activo */
 .modal.show .modal-content {
     transform: translateY(0);
 }

@@ -25,7 +25,6 @@ class IdealistaAPI:
 
     def create_routes(self):
         bp = Blueprint("idealista", __name__, url_prefix="/idealista")
-
         @bp.route("/properties")
         def get_properties():
             cards = self.search_properties("40.430,-3.702")
