@@ -67,6 +67,10 @@
     </nav>
 
     <main>
+      <section class="hero-title">
+        <h2>Biomedical Section</h2>
+      </section>
+
       <section class="main-biomed-section">
         <article class="hero">
           <img
@@ -322,31 +326,23 @@
     </footer>
 
     <script>
+      const userId = localStorage.getItem("userId");
+
+      if (!userId) {
+        window.location.href = "../pages/login.html";
+      }
+
       async function fetchProfile() {
         const profileContainer = document.getElementById("profileContainer");
         const noProfile = document.getElementById("noProfile");
         const protocolSection = document.getElementById("protocolSection");
         const protocolContent = document.getElementById("protocolContent");
 
-        const token = "fake-jwt-token"; // Replace with real token in production
-
-        if (!token) {
-          profileContainer.style.display = "none";
-          noProfile.style.display = "block";
-          noProfile.innerHTML = `
-          <p>Please log in to view or create your biomedical profile.</p>
-          <a href="/login.html" class="btn">Log In</a>
-        `;
-          return;
-        }
-
         try {
+          const userId = localStorage.getItem("userId");
+
           const res = await fetch(
-            "http://127.0.0.1:8080/api/get_biomedical_profile",
-            {
-              method: "GET",
-              headers: { Authorization: `Bearer ${token}` },
-            }
+            `http://127.0.0.1:8080/api/get_biomedical_profile?user_id=${userId}`
           );
 
           if (res.status === 404) {
@@ -461,17 +457,19 @@
         };
 
         try {
-          const res = await fetch(
-            "http://127.0.0.1:8080/api/post_biomedical_profile",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify(profileData),
-            }
-          );
+          const userId = localStorage.getItem("userId");
+
+          await fetch("http://127.0.0.1:8080/api/post_biomedical_profile", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: userId,
+              allergies: form.allergies.value,
+              illnesses: selectedIllnesses,
+              weight: form.weight.value,
+              height_cm: form.height_cm.value,
+            }),
+          });
 
           if (!res.ok) throw new Error("Failed to save profile");
 

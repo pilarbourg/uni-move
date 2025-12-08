@@ -1020,3 +1020,19 @@ body {
     transform: translateX(100%);
   }
 }
+
+.hero-title {
+  background-color: #e5ebf0;
+  width: 100%;
+  padding: 10px 30px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  text-align: center;
+}
+
+.hero-title h2 {
+  padding: 5px 0px;
+  font-size: 20px;
+  color: #5a7c99;
+  background-color: #2d3e4d12;
+  border-radius: 50px;
+}

@@ -14,7 +14,10 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @bio_profile_routes.route("/api/get_biomedical_profile", methods=["GET"])
 def get_biomedical_profile():
-    user_id = 115  # TEMPORARY for testing
+    user_id = request.args.get("user_id", type=int)
+
+    if not user_id:
+        return jsonify({"message": "Missing user_id"}), 400
 
     response = supabase.table("biomedical_profiles") \
         .select("*") \
@@ -69,7 +72,12 @@ def get_biomedical_profile():
 
 @bio_profile_routes.route("/api/post_biomedical_profile", methods=["POST"])
 def post_biomedical_profile():
-    user_id = 115  # TEMPORARY for testing
+    data = request.json
+    user_id = data.get("user_id")
+
+    if not user_id:
+        return jsonify({"message": "Missing user_id"}), 400
+    
     data = request.json
 
     existing_profile = supabase.table("biomedical_profiles") \

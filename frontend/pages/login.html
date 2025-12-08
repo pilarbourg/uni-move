@@ -314,7 +314,6 @@
             <div id="message" class="message"></div>
             <div id="redirectMessage" class="redirect-message"></div>
             
-            <!-- Login Form -->
             <div id="login-form" class="tab-content active">
                 <form id="loginForm" onsubmit="return login()">
                     <div class="form-group">
@@ -340,7 +339,6 @@
                 </form>
             </div>
             
-            <!-- Register Form -->
             <div id="register-form" class="tab-content">
                 <form id="registerForm" onsubmit="return register()">
                     <div class="form-group">
@@ -553,6 +551,7 @@
                     localStorage.setItem("userEmail", email);
                     localStorage.setItem("hasProfile", data.has_profile);
                     localStorage.setItem("profileData", JSON.stringify(data.profile_data));
+                    localStorage.setItem("userId", data.user_id);
                     
                     showMessage(`✅ ${data.message}`, "success");
                     

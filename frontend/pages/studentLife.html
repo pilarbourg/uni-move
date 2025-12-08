@@ -9,7 +9,10 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   </head>
@@ -86,12 +89,12 @@
         </button>
       </div>
 
-      <div id="Universities" class="tabcontent"> 
-        <h3>Libraries</h3> 
-        <div class="libraries-container"> 
-          <ul id="library-list"></ul> 
-          <div class="libraries-map" id="librariesMap"></div> 
-        </div> 
+      <div id="Universities" class="tabcontent">
+        <h3>Libraries</h3>
+        <div class="libraries-container">
+          <ul id="library-list"></ul>
+          <div class="libraries-map" id="librariesMap"></div>
+        </div>
       </div>
 
       <div id="Degrees" class="tabcontent">
@@ -133,6 +136,10 @@
                 >Auto-start <input type="checkbox" id="p-auto" checked
               /></label>
             </div>
+
+            <div class="pomodoro-footer">
+              <div id="p-count">Completed focus sessions: 0</div>
+            </div>
           </div>
         </div>
       </div>
@@ -144,7 +151,6 @@
           <div class="events-calendar" id="eventsCalendar"></div>
         </div>
       </div>
-
     </main>
 
     <footer class="site-footer">
@@ -190,7 +196,6 @@
       document.addEventListener("DOMContentLoaded", () => {
         document.querySelector(".tablinks").click();
       });
-      
     </script>
 
     <script>

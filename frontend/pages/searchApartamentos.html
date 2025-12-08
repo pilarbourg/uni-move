@@ -1,105 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UniMove | Apartments by Price</title>
-  <link rel="stylesheet" href="../css/styles.css" />
-  <link rel="stylesheet" href="../css/apartments.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UniMove | Apartments by Price</title>
+    <link rel="stylesheet" href="../css/apartments.css" />
+  </head>
 
-<body>
-  <nav class="navbar">
-    <h1 class="logo">
-      <img
-        src="../assets/svgs/logo.svg"
-        style="width: 36px; height: 36px"
-      />UniMove
-    </h1>
+  <body>
+    <nav class="navbar">
+      <h1 class="logo">
+        <img
+          src="../assets/svgs/logo.svg"
+          style="width: 36px; height: 36px"
+        />UniMove
+      </h1>
 
-    <ul class="menu">
-      <li class="dropdown">
-        <a href="#">Universities</a>
-        <ul class="dropdown-content">
-          <li><a href="universidades.html">Search on Map</a></li>
-          <li><a href="searchByDegree.html">Search by Degree</a></li>
-        </ul>
-      </li>
+      <ul class="menu">
+        <li class="dropdown">
+          <a href="#">Universities</a>
+          <ul class="dropdown-content">
+            <li><a href="universidades.html">Search on Map</a></li>
+            <li><a href="searchByDegree.html">Search by Degree</a></li>
+          </ul>
+        </li>
 
-      <li class="dropdown">
-        <a href="#">Moving</a>
-        <ul class="dropdown-content">
-          <li><a href="movingCompaniesList.html">Moving Companies</a></li>
-          <li><a href="searchApartamentos.html">Apartments</a></li>
-        </ul>
-      </li>
+        <li class="dropdown">
+          <a href="#">Moving</a>
+          <ul class="dropdown-content">
+            <li><a href="movingCompaniesList.html">Moving Companies</a></li>
+            <li><a href="searchApartamentos.html">Apartments</a></li>
+          </ul>
+        </li>
 
-      <li class="dropdown">
-        <a href="#">Students</a>
-        <ul class="dropdown-content">
-          <li><a href="studentLife.html">Study Section</a></li>
-        </ul>
-      </li>
+        <li class="dropdown">
+          <a href="#">Students</a>
+          <ul class="dropdown-content">
+            <li><a href="studentLife.html">Study Section</a></li>
+          </ul>
+        </li>
 
-      <li class="dropdown">
-        <a href="#">Health</a>
-        <ul class="dropdown-content">
-          <li><a href="biomedical.html">Health</a></li>
-          <li><a href="mapclinics.html">Clinical Maps</a></li>
-        </ul>
-      </li>
-    </ul>
+        <li class="dropdown">
+          <a href="#">Health</a>
+          <ul class="dropdown-content">
+            <li><a href="biomedical.html">Health</a></li>
+            <li><a href="mapclinics.html">Clinical Maps</a></li>
+          </ul>
+        </li>
+      </ul>
 
-    <div class="nav-right">
-      <a href="../index.html">
-        <img src="../assets/svgs/home.svg" class="home-button"
-      /></a>
+      <div class="nav-right">
+        <a href="../index.html">
+          <img src="../assets/svgs/home.svg" class="home-button"
+        /></a>
 
-      <li class="user-section">
-        <span id="user-name" style="font-weight: bold; color: #5a7c99"></span>
-        <button id="logout" class="boton" style="display: none">
-          <img src="../assets/svgs/logout.svg" />
-        </button>
-      </li>
-    </div>
-  </nav>
+        <li class="user-section">
+          <span id="user-name" style="font-weight: bold; color: #5a7c99"></span>
+          <button id="logout" class="boton" style="display: none">
+            <img src="../assets/svgs/logout.svg" />
+          </button>
+        </li>
+      </div>
+    </nav>
 
-  <main>
-    <section class="search-section">
-      <div class="search-card">
-        <h2>Find Apartments by Price</h2>
-        <p>Search apartments in Madrid filtered only by maximum price.</p>
+    <main>
+      <section class="hero">
+        <h2>Apartments in Madrid</h2>
+      </section>
 
-        <div class="search-box">
-          <input type="number" id="precioInput" placeholder="Max. price (€)" min="0" />
-          <button id="searchBtn">Search</button>
+      <section class="search-section">
+        <div class="search-card">
+          <h2>Find Apartments by Price</h2>
+          <p>Search apartments in Madrid filtered only by maximum price.</p>
+
+          <div class="search-box">
+            <input
+              type="number"
+              id="precioInput"
+              placeholder="Max. price (€)"
+              min="0"
+            />
+            <button id="searchBtn">Search</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="results-card" id="resultsCard" style="display: none">
+        <div id="resultsList" class="results-list"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <img src="../assets/svgs/logo.svg" />
+          <span>UniMove</span>
+        </div>
+
+        <div class="footer-links">
+          <a href="#">About</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Contact</a>
+        </div>
+
+        <div class="footer-copy">
+          <p>© 2025 UniMove | Built with ❤️ for students around the world</p>
         </div>
       </div>
-    </section>
-
-    <section class="results-card" id="resultsCard" style="display:none;">
-      <div id="resultsList" class="results-list"></div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-content">
-      <div class="footer-brand">
-        <img src="../assets/svgs/logo.svg" />
-        <span>UniMove</span>
-      </div>
-
-      <div class="footer-links">
-        <a href="#">About</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Contact</a>
-      </div>
-
-      <div class="footer-copy">
-        <p>© 2025 UniMove | Built with ❤️ for students around the world</p>
-      </div>
-    </div>
-  </footer>
-  <script src="../js/apartments.js"></script>
-</body>
+    </footer>
+    <script src="../js/apartments.js"></script>
+  </body>
 </html>
